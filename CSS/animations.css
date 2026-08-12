@@ -3,653 +3,189 @@
    Cyber / Developer Portfolio Motion System
    ========================================================= */
 
-
-/* =========================================================
-   KEYFRAMES
-   ========================================================= */
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-
-        transform: translateY(35px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform: translateY(0);
-    }
-}
-
-
-@keyframes fadeDown {
-    from {
-        opacity: 0;
-
-        transform: translateY(-25px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform: translateY(0);
-    }
-}
-
-
-@keyframes slideLeft {
-    from {
-        opacity: 0;
-
-        transform: translateX(45px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform: translateX(0);
-    }
-}
-
-
-@keyframes slideRight {
-    from {
-        opacity: 0;
-
-        transform: translateX(-45px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform: translateX(0);
-    }
-}
-
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-
-        transform: scale(0.85);
-    }
-
-    to {
-        opacity: 1;
-
-        transform: scale(1);
-    }
-}
-
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(35px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-25px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideLeft { from { opacity: 0; transform: translateX(45px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideRight { from { opacity: 0; transform: translateX(-45px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
 
 @keyframes pulse {
-
-    0%,
-    100% {
-        opacity: 1;
-
-        transform: scale(1);
-
-        box-shadow:
-            0 0 0 rgba(100, 243, 176, 0);
-    }
-
-    50% {
-        opacity: 0.6;
-
-        transform: scale(0.85);
-
-        box-shadow:
-            0 0 14px rgba(100, 243, 176, 0.7);
-    }
+    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 rgba(100,243,176,0); }
+    50% { opacity: 0.6; transform: scale(0.85); box-shadow: 0 0 14px rgba(100,243,176,0.7); }
 }
-
 
 @keyframes glow {
-
-    0%,
-    100% {
-        text-shadow:
-            0 0 5px rgba(100,243,176,0.15);
-    }
-
-    50% {
-        text-shadow:
-            0 0 25px rgba(100,243,176,0.5);
-    }
+    0%, 100% { text-shadow: 0 0 5px rgba(100,243,176,0.15); }
+    50% { text-shadow: 0 0 25px rgba(100,243,176,0.5); }
 }
-
 
 @keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-12px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
 }
 
-
-@keyframes rotateSlow {
-
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-
-@keyframes rotateReverse {
-
-    from {
-        transform: rotate(360deg);
-    }
-
-    to {
-        transform: rotate(0deg);
-    }
-}
-
-
-@keyframes scanline {
-
-    0% {
-        transform: translateY(-100%);
-    }
-
-    100% {
-        transform: translateY(100vh);
-    }
-}
-
-
-@keyframes blink {
-
-    0%,
-    45% {
-        opacity: 1;
-    }
-
-    46%,
-    100% {
-        opacity: 0.25;
-    }
-}
-
+@keyframes rotateSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes rotateReverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+@keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100vh); } }
+@keyframes blink { 0%, 45% { opacity: 1; } 46%, 100% { opacity: 0.25; } }
 
 @keyframes glitch {
-
-    0%,
-    90%,
-    100% {
-        transform: translate(0);
-    }
-
-    91% {
-        transform: translate(-2px, 1px);
-    }
-
-    93% {
-        transform: translate(2px, -1px);
-    }
-
-    95% {
-        transform: translate(-1px, 2px);
-    }
-
-    97% {
-        transform: translate(1px, -2px);
-    }
+    0%, 90%, 100% { transform: translate(0); }
+    91% { transform: translate(-2px, 1px); }
+    93% { transform: translate(2px, -1px); }
+    95% { transform: translate(-1px, 2px); }
+    97% { transform: translate(1px, -2px); }
 }
 
+body { animation: fadeIn 0.8s ease both; }
+.nav { animation: fadeDown 0.7s ease both; }
+.hero-left { animation: slideRight 0.9s 0.1s ease both; }
+.hero-right { animation: slideLeft 1s 0.2s ease both; }
+.system-panel { animation: fadeUp 0.8s 0.5s ease both; }
+.hero-name { animation: fadeUp 0.9s 0.25s ease both; }
 
 /* =========================================================
-   PAGE LOAD
-   ========================================================= */
-
-body {
-    animation:
-        fadeIn 0.8s ease both;
-}
-
-
-.nav {
-    animation:
-        fadeDown 0.7s ease both;
-}
-
-
-.hero-left {
-    animation:
-        slideRight 0.9s 0.1s ease both;
-}
-
-
-.hero-right {
-    animation:
-        slideLeft 1s 0.2s ease both;
-}
-
-
-.system-panel {
-    animation:
-        fadeUp 0.8s 0.5s ease both;
-}
-
-
-/* =========================================================
-   HERO NAME
-   ========================================================= */
-
-.hero-name {
-    animation:
-        fadeUp 0.9s 0.25s ease both;
-}
-
-
+   HERO NAME — BLUR TO SHARP REVEAL
+   JS/three-name.js adds .letter-visible one letter at a time.
+========================================================= */
 .hero-name .letter {
-    animation:
-        fadeUp 0.6s ease both;
+    display: inline-block;
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateY(10px) scale(0.98);
+    will-change: opacity, filter, transform;
+    transition:
+        opacity 0.65s ease,
+        filter 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
+        transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
+    animation: none;
 }
 
-
-.hero-name .name-line:first-child .letter:nth-child(1) {
-    animation-delay: 0.25s;
+.hero-name .letter-visible {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
 }
 
-.hero-name .name-line:first-child .letter:nth-child(2) {
-    animation-delay: 0.30s;
+.hero-name .letter-pulse {
+    text-shadow:
+        0 0 8px rgba(100,243,176,0.45),
+        0 0 22px rgba(100,243,176,0.35);
 }
 
-.hero-name .name-line:first-child .letter:nth-child(3) {
-    animation-delay: 0.35s;
-}
+.pulse { animation: pulse 1.8s infinite ease-in-out; }
+.hero-eyebrow .dot { animation: pulse 2s infinite ease-in-out; }
+.profile-frame { animation: float 5s ease-in-out infinite; }
+.ring-1 { animation: rotateSlow 18s linear infinite; }
+.ring-2 { animation: rotateReverse 28s linear infinite; }
+.profile-fallback { animation: scaleIn 1s 0.3s ease both; }
 
-.hero-name .name-line:first-child .letter:nth-child(4) {
-    animation-delay: 0.40s;
-}
-
-.hero-name .name-line:first-child .letter:nth-child(5) {
-    animation-delay: 0.45s;
-}
-
-.hero-name .name-line:first-child .letter:nth-child(6) {
-    animation-delay: 0.50s;
-}
-
-.hero-name .name-line:first-child .letter:nth-child(7) {
-    animation-delay: 0.55s;
-}
-
-
-.hero-name .name-line:nth-child(2) .letter:nth-child(1) {
-    animation-delay: 0.60s;
-}
-
-.hero-name .name-line:nth-child(2) .letter:nth-child(2) {
-    animation-delay: 0.65s;
-}
-
-.hero-name .name-line:nth-child(2) .letter:nth-child(3) {
-    animation-delay: 0.70s;
-}
-
-.hero-name .name-line:nth-child(2) .letter:nth-child(4) {
-    animation-delay: 0.75s;
-}
-
-.hero-name .name-line:nth-child(2) .letter:nth-child(5) {
-    animation-delay: 0.80s;
-}
-
-.hero-name .name-line:nth-child(2) .letter:nth-child(6) {
-    animation-delay: 0.85s;
-}
-
-
-/* =========================================================
-   LIVE STATUS
-   ========================================================= */
-
-.pulse {
-    animation:
-        pulse 1.8s infinite ease-in-out;
-}
-
-
-.hero-eyebrow .dot {
-    animation:
-        pulse 2s infinite ease-in-out;
-}
-
-
-/* =========================================================
-   PROFILE
-   ========================================================= */
-
-.profile-frame {
-    animation:
-        float 5s ease-in-out infinite;
-}
-
-
-.ring-1 {
-    animation:
-        rotateSlow 18s linear infinite;
-}
-
-
-.ring-2 {
-    animation:
-        rotateReverse 28s linear infinite;
-}
-
-
-.profile-fallback {
-    animation:
-        scaleIn 1s 0.3s ease both;
-}
-
-
-/* =========================================================
-   SCROLL INDICATOR
-   ========================================================= */
-
-.scroll-cue span {
-    animation:
-        scrollLine 1.8s infinite ease-in-out;
-}
-
+.scroll-cue span { animation: scrollLine 1.8s infinite ease-in-out; }
 
 @keyframes scrollLine {
-
-    0% {
-        transform: scaleY(0);
-
-        transform-origin: top;
-
-        opacity: 0;
-    }
-
-    35% {
-        transform: scaleY(1);
-
-        transform-origin: top;
-
-        opacity: 1;
-    }
-
-    65% {
-        transform: scaleY(1);
-
-        transform-origin: bottom;
-
-        opacity: 1;
-    }
-
-    100% {
-        transform: scaleY(0);
-
-        transform-origin: bottom;
-
-        opacity: 0;
-    }
+    0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+    35% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+    65% { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+    100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
 }
-
-
-/* =========================================================
-   HOVER EFFECTS
-   ========================================================= */
 
 .skill-card,
 .project-card,
 .cert-card,
 .timeline-item {
-    transition:
-        transform 0.35s ease,
-        border-color 0.35s ease,
-        box-shadow 0.35s ease;
+    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
-
 
 .skill-card:hover,
 .project-card:hover,
 .cert-card:hover {
-    box-shadow:
-        0 18px 45px rgba(0,0,0,0.25);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.25);
 }
-
 
 .project-card:hover::after {
     content: "";
-
     position: absolute;
-
     inset: 0;
-
     pointer-events: none;
-
     border: 1px solid rgba(100,243,176,0.12);
-
     border-radius: inherit;
-
-    animation:
-        pulse 1.8s infinite;
+    animation: pulse 1.8s infinite;
 }
-
-
-/* =========================================================
-   BUTTON EFFECT
-   ========================================================= */
 
 .btn-primary::before {
     content: "";
-
     position: absolute;
-
     top: 0;
     left: -120%;
-
     width: 80%;
     height: 100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(255,255,255,0.45),
-            transparent
-        );
-
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
     transform: skewX(-20deg);
-
     transition: left 0.6s ease;
 }
 
-
-.btn-primary:hover::before {
-    left: 140%;
-}
-
-
-/* =========================================================
-   GLITCH EFFECT
-   ========================================================= */
-
-.hero-name[data-glitch="true"] {
-    animation:
-        glitch 4s infinite;
-}
-
-
-/* =========================================================
-   CYBER SCANLINE
-   ========================================================= */
+.btn-primary:hover::before { left: 140%; }
+.hero-name[data-glitch="true"] { animation: glitch 4s infinite; }
 
 .hero::after {
     content: "";
-
     position: absolute;
-
     left: 0;
-
     width: 100%;
     height: 1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(100,243,176,0.25),
-            transparent
-        );
-
+    background: linear-gradient(90deg, transparent, rgba(100,243,176,0.25), transparent);
     pointer-events: none;
-
     opacity: 0.5;
-
-    animation:
-        scanline 10s linear infinite;
+    animation: scanline 10s linear infinite;
 }
-
-
-/* =========================================================
-   TERMINAL BLINK
-   ========================================================= */
 
 .terminal-cursor {
     display: inline-block;
-
     width: 7px;
     height: 14px;
-
     margin-left: 5px;
-
     background: var(--accent);
-
-    animation:
-        blink 1s infinite;
+    animation: blink 1s infinite;
 }
-
-
-/* =========================================================
-   REVEAL SYSTEM
-   ========================================================= */
 
 .reveal {
     opacity: 0;
-
     transform: translateY(35px);
-
-    transition:
-        opacity 0.8s ease,
-        transform 0.8s ease;
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
-
-
-.reveal.visible {
-    opacity: 1;
-
-    transform: translateY(0);
-}
-
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
 .reveal-left {
     opacity: 0;
-
     transform: translateX(-40px);
-
-    transition:
-        opacity 0.8s ease,
-        transform 0.8s ease;
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
-
-
-.reveal-left.visible {
-    opacity: 1;
-
-    transform: translateX(0);
-}
-
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
 
 .reveal-right {
     opacity: 0;
-
     transform: translateX(40px);
-
-    transition:
-        opacity 0.8s ease,
-        transform 0.8s ease;
+    transition: opacity 0.8s ease, transform 0.8s ease;
 }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
 
-
-.reveal-right.visible {
-    opacity: 1;
-
-    transform: translateX(0);
-}
-
-
-/* =========================================================
-   STAGGERED CARDS
-   ========================================================= */
-
-.skills-grid .skill-card:nth-child(1) {
-    transition-delay: 0.05s;
-}
-
-.skills-grid .skill-card:nth-child(2) {
-    transition-delay: 0.1s;
-}
-
-.skills-grid .skill-card:nth-child(3) {
-    transition-delay: 0.15s;
-}
-
-.skills-grid .skill-card:nth-child(4) {
-    transition-delay: 0.2s;
-}
-
-.skills-grid .skill-card:nth-child(5) {
-    transition-delay: 0.25s;
-}
-
-.skills-grid .skill-card:nth-child(6) {
-    transition-delay: 0.3s;
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
+.skills-grid .skill-card:nth-child(1) { transition-delay: 0.05s; }
+.skills-grid .skill-card:nth-child(2) { transition-delay: 0.1s; }
+.skills-grid .skill-card:nth-child(3) { transition-delay: 0.15s; }
+.skills-grid .skill-card:nth-child(4) { transition-delay: 0.2s; }
+.skills-grid .skill-card:nth-child(5) { transition-delay: 0.25s; }
+.skills-grid .skill-card:nth-child(6) { transition-delay: 0.3s; }
 
 @media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
         animation: none !important;
-
         transition: none !important;
-
         scroll-behavior: auto !important;
+        filter: none !important;
+    }
+    .hero-name .letter {
+        opacity: 1 !important;
+        transform: none !important;
     }
 }

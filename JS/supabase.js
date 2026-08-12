@@ -26,9 +26,9 @@
      * NEVER put the service_role key in this file.
      */
 
-    const SUPABASE_URL = "";
+    const SUPABASE_URL = "https://gcxxnyrocdjilnteezkt.supabase.co";
 
-    const SUPABASE_ANON_KEY = "";
+    const SUPABASE_ANON_KEY = "sb_publishable_R-wc8U-GTylEdMGNiIYeVQ_zvy0sVLz";
 
 
     /* =====================================================

@@ -15,9 +15,6 @@
 
     /* =====================================================
        SUPABASE CONFIGURATION
-       -----------------------------------------------------
-       TODO: Fill these two values with your Supabase project
-       URL and publishable (anon) key.
     ===================================================== */
 
     const SUPABASE_URL = "https://gcxxnyrocdjilnteezkt.supabase.co";
@@ -86,9 +83,23 @@
         }
 
         try {
+            // A lightweight authenticated client check. The actual database
+            // availability is verified by the feature-specific queries.
+            const { error } = await window.supabaseClient
+                .from("site_settings")
+                .select("setting_key")
+                .limit(1);
+
+            if (error) {
+                return {
+                    connected: false,
+                    reason: error.message
+                };
+            }
+
             return {
                 connected: true,
-                reason: "Supabase client initialized."
+                reason: "Supabase database is reachable."
             };
         } catch (error) {
             return {
@@ -111,4 +122,34 @@
             return window.supabaseClient || null;
         }
     };
+
+    /* =====================================================
+       OPTIONAL REMOTE CONTENT MODULE
+       -----------------------------------------------------
+       Loaded after this client is initialized. It never replaces
+       static portfolio content with an empty/error response.
+    ===================================================== */
+
+    function loadRemoteContentModule() {
+        const existing = document.querySelector(
+            'script[data-supabase-content-loader="true"]'
+        );
+
+        if (existing) return;
+
+        const script = document.createElement("script");
+        script.src = "JS/supabase-content.js";
+        script.async = true;
+        script.dataset.supabaseContentLoader = "true";
+        script.onerror = function () {
+            console.warn("[Supabase] Optional content loader could not be loaded. Static content remains active.");
+        };
+        document.head.appendChild(script);
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", loadRemoteContentModule, { once: true });
+    } else {
+        loadRemoteContentModule();
+    }
 })();

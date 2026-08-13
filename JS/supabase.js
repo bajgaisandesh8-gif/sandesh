@@ -20,8 +20,8 @@
        URL and publishable (anon) key.
     ===================================================== */
 
-    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
-    const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY_HERE";
+    const SUPABASE_URL = "https://gcxxnyrocdjilnteezkt.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_R-wc8U-GTylEdMGNiIYeVQ_zvy0sVLz";
 
     const hasPlaceholderCredentials =
         SUPABASE_URL.includes("PASTE_YOUR_") ||

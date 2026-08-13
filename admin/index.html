@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sandesh | Admin Dashboard</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <main class="shell">
+    <section id="loginView" class="card login-card">
+      <div class="eyebrow">SANDESH BAJGAI / ADMIN</div>
+      <h1>Secure Login</h1>
+      <p class="muted">Sign in with the Supabase account you created. This area is separate from the public portfolio.</p>
+      <form id="loginForm">
+        <label>Email<input id="email" type="email" autocomplete="email" required></label>
+        <label>Password<input id="password" type="password" autocomplete="current-password" required></label>
+        <button class="primary" type="submit">SIGN IN</button>
+        <p id="loginStatus" class="status" role="alert"></p>
+      </form>
+    </section>
+
+    <section id="dashboardView" class="dashboard hidden">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">CONTROL CENTER</div>
+          <h1>Portfolio Admin</h1>
+        </div>
+        <div class="topbar-actions">
+          <span id="userEmail" class="muted"></span>
+          <button id="logoutButton" class="ghost">LOG OUT</button>
+        </div>
+      </header>
+
+      <div id="dashboardStatus" class="status"></div>
+
+      <section class="stats">
+        <article class="stat"><span>Projects</span><strong id="projectCount">—</strong></article>
+        <article class="stat"><span>Skills</span><strong id="skillCount">—</strong></article>
+        <article class="stat"><span>Experience</span><strong id="experienceCount">—</strong></article>
+        <article class="stat"><span>Messages</span><strong id="messageCount">—</strong></article>
+      </section>
+
+      <section class="grid">
+        <article class="card panel">
+          <div class="panel-head"><h2>Projects</h2><button class="primary small" data-action="add" data-table="project">+ ADD</button></div>
+          <div id="projectsList" class="list"></div>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head"><h2>Skills</h2><button class="primary small" data-action="add" data-table="skill">+ ADD</button></div>
+          <div id="skillsList" class="list"></div>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head"><h2>Experience</h2><button class="primary small" data-action="add" data-table="experience">+ ADD</button></div>
+          <div id="experienceList" class="list"></div>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head"><h2>Certifications</h2><button class="primary small" data-action="add" data-table="certifications">+ ADD</button></div>
+          <div id="certificationsList" class="list"></div>
+        </article>
+
+        <article class="card panel wide">
+          <div class="panel-head"><h2>Contact Messages</h2></div>
+          <div id="messagesList" class="list"></div>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="editorDialog">
+    <form id="editorForm" method="dialog" class="editor">
+      <div class="panel-head"><h2 id="editorTitle">Edit</h2><button type="button" id="closeEditor" class="icon">×</button></div>
+      <div id="editorFields" class="form-grid"></div>
+      <div class="editor-actions"><button type="button" id="cancelEditor" class="ghost">CANCEL</button><button class="primary" type="submit">SAVE</button></div>
+      <p id="editorStatus" class="status" role="alert"></p>
+    </form>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="../JS/supabase.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

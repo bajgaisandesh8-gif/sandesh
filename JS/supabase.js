@@ -2,239 +2,113 @@
    SANDESH BAJGAI PORTFOLIO
    supabase.js
    ---------------------------------------------------------
-   Handles:
-   - Supabase client initialization
-   - Public configuration
-   - Safe availability check
-   - Future database features
+   Supabase public client configuration.
+
+   IMPORTANT:
+   - The URL and publishable/anon key are intended for browser use.
+   - NEVER put the Supabase service_role/secret key here.
+   - Database security MUST be enforced with RLS policies.
 ========================================================= */
 
 (function () {
     "use strict";
 
-
     /* =====================================================
        SUPABASE CONFIGURATION
+       -----------------------------------------------------
+       TODO: Fill these two values with your Supabase project
+       URL and publishable (anon) key.
     ===================================================== */
 
-    /*
-     * IMPORTANT:
-     *
-     * Replace these with your Supabase PROJECT URL
-     * and PUBLIC ANON KEY.
-     *
-     * NEVER put the service_role key in this file.
-     */
+    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
+    const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY_HERE";
 
-    const SUPABASE_URL = "https://gcxxnyrocdjilnteezkt.supabase.co";
-
-    const SUPABASE_ANON_KEY = "sb_publishable_R-wc8U-GTylEdMGNiIYeVQ_zvy0sVLz";
-
-
-    /* =====================================================
-       GLOBAL CONFIG
-    ===================================================== */
+    const hasPlaceholderCredentials =
+        SUPABASE_URL.includes("PASTE_YOUR_") ||
+        SUPABASE_ANON_KEY.includes("PASTE_YOUR_");
 
     window.SUPABASE_CONFIG = {
-
-        url:
-            SUPABASE_URL,
-
-        anonKey:
-            SUPABASE_ANON_KEY,
-
-        enabled:
-            Boolean(
-                SUPABASE_URL &&
-                SUPABASE_ANON_KEY
-            )
+        url: SUPABASE_URL,
+        anonKey: SUPABASE_ANON_KEY,
+        enabled: Boolean(
+            SUPABASE_URL &&
+            SUPABASE_ANON_KEY &&
+            !hasPlaceholderCredentials
+        )
     };
-
 
     /* =====================================================
        CLIENT INITIALIZATION
     ===================================================== */
 
     function initializeSupabase() {
-
-        /*
-         * Supabase library hasn't loaded.
-         */
-
-        if (
-            typeof window.supabase ===
-            "undefined"
-        ) {
-
-            console.warn(
-                "[Supabase] Supabase library not loaded."
-            );
-
-            window.supabaseClient =
-                null;
-
+        if (typeof window.supabase === "undefined") {
+            console.warn("[Supabase] Supabase library not loaded.");
+            window.supabaseClient = null;
             return;
         }
 
-
-        /*
-         * No credentials yet.
-         *
-         * This is completely fine.
-         * The portfolio can work without Supabase.
-         */
-
-        if (
-            !SUPABASE_URL ||
-            !SUPABASE_ANON_KEY
-        ) {
-
-            console.info(
-                "[Supabase] No credentials configured. Running in local mode."
-            );
-
-            window.supabaseClient =
-                null;
-
+        if (!window.SUPABASE_CONFIG.enabled) {
+            console.info("[Supabase] Credentials not configured. Running in local mode.");
+            window.supabaseClient = null;
             return;
         }
-
-
-        /*
-         * Create client.
-         */
 
         try {
-
-            window.supabaseClient =
-                window.supabase.createClient(
-                    SUPABASE_URL,
-                    SUPABASE_ANON_KEY
-                );
-
-
-            console.log(
-                "%c[SUPABASE]%c connected.",
-                "color:#64f3b0;font-weight:bold;",
-                "color:inherit;"
+            window.supabaseClient = window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
             );
 
+            console.log("[SUPABASE] Client initialized.");
         } catch (error) {
-
-            console.error(
-                "[Supabase] Client initialization failed:",
-                error
-            );
-
-            window.supabaseClient =
-                null;
+            console.error("[Supabase] Client initialization failed:", error);
+            window.supabaseClient = null;
         }
     }
 
-
-    /* =====================================================
-       INITIALIZE AFTER DOM LOAD
-    ===================================================== */
-
-    if (
-        document.readyState ===
-        "loading"
-    ) {
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            initializeSupabase
-        );
-
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initializeSupabase);
     } else {
-
         initializeSupabase();
     }
-
 
     /* =====================================================
        CONNECTION CHECK
     ===================================================== */
 
-    window.checkSupabaseConnection =
-        async function () {
+    window.checkSupabaseConnection = async function () {
+        if (!window.supabaseClient) {
+            return {
+                connected: false,
+                reason: "Supabase client is not configured."
+            };
+        }
 
-            if (
-                !window.supabaseClient
-            ) {
-
-                return {
-
-                    connected: false,
-
-                    reason:
-                        "Supabase client is not configured."
-                };
-            }
-
-
-            try {
-
-                /*
-                 * We don't make an unnecessary
-                 * database query here.
-                 *
-                 * Successful client creation means
-                 * the client is available.
-                 */
-
-                return {
-
-                    connected: true,
-
-                    reason:
-                        "Supabase client initialized."
-                };
-
-            } catch (error) {
-
-                return {
-
-                    connected: false,
-
-                    reason:
-                        error.message
-                };
-            }
-        };
-
+        try {
+            return {
+                connected: true,
+                reason: "Supabase client initialized."
+            };
+        } catch (error) {
+            return {
+                connected: false,
+                reason: error.message
+            };
+        }
+    };
 
     /* =====================================================
-       FUTURE DATABASE HELPERS
+       PORTFOLIO DATABASE HELPER
     ===================================================== */
 
     window.PortfolioSupabase = {
-
-        /*
-         * Check whether Supabase is available.
-         */
-
         isAvailable: function () {
-
-            return Boolean(
-                window.supabaseClient
-            );
+            return Boolean(window.supabaseClient);
         },
 
-
-        /*
-         * Get the current client.
-         */
-
         getClient: function () {
-
-            return (
-                window.supabaseClient ||
-                null
-            );
+            return window.supabaseClient || null;
         }
-
     };
-
-
 })();

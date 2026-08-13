@@ -2,18 +2,13 @@
    SANDESH BAJGAI PORTFOLIO
    navigation.js
    ---------------------------------------------------------
-   Desktop navigation
-   Mobile menu
-   Active section
-   Scroll progress
-   Navbar state
+   Shared navigation for single-page and multi-page views.
 ========================================================= */
 
 (function () {
     "use strict";
 
     document.addEventListener("DOMContentLoaded", function () {
-
         const nav = document.getElementById("nav");
         const navLinksContainer = document.getElementById("navLinks");
         const navToggle = document.getElementById("navToggle");
@@ -21,10 +16,7 @@
         const navLinks = document.querySelectorAll(".nav-link");
         const sections = document.querySelectorAll("main section[id]");
 
-        if (!nav || !navLinksContainer || !navToggle) {
-            console.warn("[Navigation] Required navigation elements not found.");
-            return;
-        }
+        if (!nav || !navLinksContainer || !navToggle) return;
 
         function openMenu() {
             navLinksContainer.classList.add("open");
@@ -44,70 +36,60 @@
 
         navToggle.addEventListener("click", function (event) {
             event.stopPropagation();
-
-            if (navLinksContainer.classList.contains("open")) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
+            navLinksContainer.classList.contains("open") ? closeMenu() : openMenu();
         });
 
         navLinks.forEach(function (link) {
-            link.addEventListener("click", closeMenu);
+            link.addEventListener("click", function () {
+                closeMenu();
+
+                /* Compatibility layer for the original single-page links. */
+                const href = link.getAttribute("href") || "";
+                const pageMap = {
+                    "#about": "about.html",
+                    "#skills": "skills.html",
+                    "#experience": "experience.html",
+                    "#projects": "projects.html",
+                    "#contact": "contact.html"
+                };
+
+                if (pageMap[href] && !document.querySelector(href)) {
+                    window.location.href = pageMap[href];
+                }
+            });
         });
 
         document.addEventListener("click", function (event) {
-            if (!nav.contains(event.target)) {
-                closeMenu();
-            }
+            if (!nav.contains(event.target)) closeMenu();
         });
 
         document.addEventListener("keydown", function (event) {
-            if (event.key === "Escape") {
-                closeMenu();
-            }
+            if (event.key === "Escape") closeMenu();
         });
 
         function updateActiveSection() {
             if (!sections.length) return;
-
             let currentSection = "home";
             const marker = window.scrollY + 220;
 
             sections.forEach(function (section) {
-                if (marker >= section.offsetTop) {
-                    currentSection = section.id;
-                }
+                if (marker >= section.offsetTop) currentSection = section.id;
             });
 
             navLinks.forEach(function (link) {
-                const sectionName = link.dataset.section ||
-                    (link.getAttribute("href") || "").replace("#", "");
-
+                const sectionName = link.dataset.section || "";
+                if (!sectionName) return;
                 const active = sectionName === currentSection;
-
                 link.classList.toggle("active", active);
-
-                if (active) {
-                    link.setAttribute("aria-current", "page");
-                } else {
-                    link.removeAttribute("aria-current");
-                }
+                if (active) link.setAttribute("aria-current", "page");
+                else link.removeAttribute("aria-current");
             });
         }
 
         function updateScrollProgress() {
             if (!navProgress) return;
-
-            const scrollableHeight =
-                document.documentElement.scrollHeight - window.innerHeight;
-
-            if (scrollableHeight <= 0) {
-                navProgress.style.width = "0%";
-                return;
-            }
-
-            const percentage = (window.scrollY / scrollableHeight) * 100;
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const percentage = scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
             navProgress.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
         }
 
@@ -116,12 +98,9 @@
         }
 
         let ticking = false;
-
         function handleScroll() {
             if (ticking) return;
-
             ticking = true;
-
             window.requestAnimationFrame(function () {
                 updateActiveSection();
                 updateScrollProgress();
@@ -131,7 +110,6 @@
         }
 
         window.addEventListener("scroll", handleScroll, { passive: true });
-
         window.addEventListener("resize", function () {
             if (window.innerWidth > 900) closeMenu();
             updateActiveSection();
@@ -141,11 +119,5 @@
         updateActiveSection();
         updateScrollProgress();
         updateNavbarState();
-
-        console.log(
-            "%c[NAVIGATION]%c initialized.",
-            "color:#64f3b0;font-weight:bold;",
-            "color:inherit;"
-        );
     });
 })();

@@ -48,13 +48,15 @@
 
         /* -------------------------------------------------
            Lighting
+           The photo itself uses an unlit material so the
+           original image cannot be blown out by 3D lights.
         ------------------------------------------------- */
-        scene.add(new THREE.AmbientLight(0xffffff, 1.8));
-        const keyLight = new THREE.PointLight(0x64f3b0, 12, 18);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.65));
+        const keyLight = new THREE.PointLight(0x64f3b0, 4.5, 18);
         keyLight.position.set(3, 4, 6);
         scene.add(keyLight);
 
-        const fillLight = new THREE.PointLight(0x54a8ff, 8, 16);
+        const fillLight = new THREE.PointLight(0x54a8ff, 2.5, 16);
         fillLight.position.set(-4, -2, 4);
         scene.add(fillLight);
 
@@ -84,10 +86,10 @@
             emissiveIntensity: 0.5
         });
 
-        const frontMaterial = new THREE.MeshStandardMaterial({
-            map: photo,
-            metalness: 0.08,
-            roughness: 0.32
+        /* IMPORTANT: the original photo is not lighted by Three.js.
+           MeshBasicMaterial preserves the actual image exposure. */
+        const frontMaterial = new THREE.MeshBasicMaterial({
+            map: photo
         });
 
         const backMaterial = new THREE.MeshStandardMaterial({
@@ -96,7 +98,6 @@
             roughness: 0.25
         });
 
-        /* BoxGeometry gives the photo real depth instead of a flat DOM image. */
         const photoGeometry = new THREE.BoxGeometry(3.55, 4.45, 0.18);
         const photoCard = new THREE.Mesh(photoGeometry, [
             sideMaterial,
@@ -224,8 +225,6 @@
         resize();
         window.addEventListener("resize", resize);
 
-        /* Keep the original DOM image available as an accessibility/loading fallback,
-           but let the WebGL card be the visible hero photo. */
         const fallback = profileImage.closest(".profile-fallback");
         if (fallback) fallback.style.opacity = "0";
 

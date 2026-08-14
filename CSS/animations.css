@@ -31,8 +31,6 @@ body{animation:fadeIn .8s ease both}.nav{animation:fadeDown .7s ease both}.hero-
 .skills-grid .skill-card:nth-child(1){transition-delay:.05s}.skills-grid .skill-card:nth-child(2){transition-delay:.1s}.skills-grid .skill-card:nth-child(3){transition-delay:.15s}.skills-grid .skill-card:nth-child(4){transition-delay:.2s}.skills-grid .skill-card:nth-child(5){transition-delay:.25s}.skills-grid .skill-card:nth-child(6){transition-delay:.3s}
 .profile-stage::before,.profile-stage::after,.profile-ring::before,.profile-ring::after{position:absolute;z-index:8;padding:7px 10px;border:1px solid rgba(100,243,176,.28);border-radius:4px;background:rgba(5,7,10,.82);color:rgba(100,243,176,.92);font:600 10px/1.1 'JetBrains Mono',monospace;letter-spacing:.12em;white-space:nowrap;box-shadow:0 0 18px rgba(100,243,176,.08),inset 0 0 14px rgba(100,243,176,.035);backdrop-filter:blur(6px);pointer-events:none}
 .profile-stage::before{content:'NETWORKING';top:12%;left:-12%;animation:skillFloatA 5.2s ease-in-out infinite}.profile-stage::after{content:'CYBERSECURITY';right:-14%;top:25%;animation:skillFloatB 6.4s ease-in-out infinite}.profile-ring.ring-1::before{content:'LINUX';left:-24%;bottom:22%;animation:skillFloatB 5.8s ease-in-out infinite .4s}.profile-ring.ring-1::after{content:'PYTHON';right:-20%;bottom:13%;animation:skillFloatA 6.1s ease-in-out infinite .8s}.profile-ring.ring-2::before{content:'AI';left:5%;top:-8%;animation:skillFloatA 4.8s ease-in-out infinite .6s}.profile-ring.ring-2::after{content:'CLOUD';right:4%;bottom:-8%;animation:skillFloatB 5.6s ease-in-out infinite 1s}
-@media(max-width:900px){.profile-stage::before{left:-4%;top:8%}.profile-stage::after{right:-5%;top:22%}.profile-ring.ring-1::before{left:-7%;bottom:18%}.profile-ring.ring-1::after{right:-6%;bottom:10%}.profile-ring.ring-2::before{left:7%;top:-4%}.profile-ring.ring-2::after{right:6%;bottom:-4%}}
-@media(max-width:600px){.profile-stage::before,.profile-stage::after,.profile-ring::before,.profile-ring::after{font-size:8px;padding:5px 7px;letter-spacing:.08em}.profile-stage::before{left:0;top:4%}.profile-stage::after{right:0;top:18%}.profile-ring.ring-1::before{left:0;bottom:18%}.profile-ring.ring-1::after{right:0;bottom:8%}.profile-ring.ring-2::before{left:12%;top:0}.profile-ring.ring-2::after{right:12%;bottom:0}}
 
 /* =========================================================
    PREMIUM CYBER CURSOR
@@ -42,4 +40,20 @@ body{animation:fadeIn .8s ease both}.nav{animation:fadeDown .7s ease both}.hero-
 .cursor-glow::before{width:1px;height:34px}.cursor-glow::after{width:34px;height:1px}
 @media(pointer:fine){body{cursor:none}a,button,input,textarea,select,[role="button"]{cursor:none}}
 @media(pointer:coarse){.cursor-glow{display:none!important}}
+
+/* =========================================================
+   PREMIUM NAV LOGO GLOW / HOVER
+========================================================= */
+.nav-logo{position:relative;display:inline-flex;align-items:center;gap:1px;padding:8px 10px;border:1px solid transparent;border-radius:8px;isolation:isolate;overflow:hidden;transition:color .3s ease,border-color .3s ease,background .3s ease,transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease}
+.nav-logo::before{content:"";position:absolute;inset:-1px;z-index:-2;background:radial-gradient(circle at var(--logo-x,50%) var(--logo-y,50%),rgba(100,243,176,.26),transparent 42%);opacity:0;transition:opacity .35s ease}
+.nav-logo::after{content:"";position:absolute;top:-40%;left:-80%;width:55%;height:180%;z-index:-1;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transform:skewX(-20deg);transition:left .65s cubic-bezier(.2,.8,.2,1)}
+.nav-logo:hover{color:var(--text-primary);border-color:rgba(100,243,176,.38);background:rgba(100,243,176,.035);transform:translateY(-1px) scale(1.025);box-shadow:0 0 18px rgba(100,243,176,.12),0 8px 25px rgba(0,0,0,.24),inset 0 0 18px rgba(100,243,176,.035)}
+.nav-logo:hover::before{opacity:1}.nav-logo:hover::after{left:140%}
+.nav-logo .logo-bracket{transition:color .3s ease,text-shadow .3s ease,transform .3s cubic-bezier(.2,.8,.2,1)}
+.nav-logo:hover .logo-bracket{color:var(--accent);text-shadow:0 0 8px rgba(100,243,176,.7),0 0 20px rgba(100,243,176,.3)}
+.nav-logo:hover .logo-bracket:first-child{transform:translateX(-2px)}.nav-logo:hover .logo-bracket:last-child{transform:translateX(2px)}
+.nav-logo:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+
+@media(max-width:900px){.profile-stage::before{left:-4%;top:8%}.profile-stage::after{right:-5%;top:22%}.profile-ring.ring-1::before{left:-7%;bottom:18%}.profile-ring.ring-1::after{right:-6%;bottom:10%}.profile-ring.ring-2::before{left:7%;top:-4%}.profile-ring.ring-2::after{right:6%;bottom:-4%}}
+@media(max-width:600px){.profile-stage::before,.profile-stage::after,.profile-ring::before,.profile-ring::after{font-size:8px;padding:5px 7px;letter-spacing:.08em}.profile-stage::before{left:0;top:4%}.profile-stage::after{right:0;top:18%}.profile-ring.ring-1::before{left:0;bottom:18%}.profile-ring.ring-1::after{right:0;bottom:8%}.profile-ring.ring-2::before{left:12%;top:0}.profile-ring.ring-2::after{right:12%;bottom:0}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;filter:none!important}.cursor-glow{display:none!important}.hero-name .letter{opacity:1!important;transform:none!important}}

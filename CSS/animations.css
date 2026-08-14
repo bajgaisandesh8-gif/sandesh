@@ -54,6 +54,15 @@ body{animation:fadeIn .8s ease both}.nav{animation:fadeDown .7s ease both}.hero-
 .nav-logo:hover .logo-bracket:first-child{transform:translateX(-2px)}.nav-logo:hover .logo-bracket:last-child{transform:translateX(2px)}
 .nav-logo:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 
+/* =========================================================
+   SANDESH WORDMARK
+   Keeps the existing HTML structure while replacing the compact SB mark visually.
+========================================================= */
+.nav-logo{font-size:0;min-width:0;letter-spacing:.08em}
+.nav-logo .logo-bracket{font-size:0}
+.nav-logo::after{content:"SANDESH";top:50%;left:50%;width:auto;height:auto;z-index:1;background:none;transform:translate(-50%,-50%);color:var(--text-primary);font:700 14px/1 'JetBrains Mono',monospace;letter-spacing:.12em;text-shadow:0 0 7px rgba(100,243,176,.18);transition:color .3s ease,text-shadow .3s ease,transform .3s cubic-bezier(.2,.8,.2,1)}
+.nav-logo:hover::after{left:50%;transform:translate(-50%,-50%) scale(1.03);color:var(--accent);text-shadow:0 0 8px rgba(100,243,176,.75),0 0 22px rgba(100,243,176,.35)}
+
 @media(max-width:900px){.profile-stage::before{left:-4%;top:8%}.profile-stage::after{right:-5%;top:22%}.profile-ring.ring-1::before{left:-7%;bottom:18%}.profile-ring.ring-1::after{right:-6%;bottom:10%}.profile-ring.ring-2::before{left:7%;top:-4%}.profile-ring.ring-2::after{right:6%;bottom:-4%}}
 @media(max-width:600px){.profile-stage::before,.profile-stage::after,.profile-ring::before,.profile-ring::after{font-size:8px;padding:5px 7px;letter-spacing:.08em}.profile-stage::before{left:0;top:4%}.profile-stage::after{right:0;top:18%}.profile-ring.ring-1::before{left:0;bottom:18%}.profile-ring.ring-1::after{right:0;bottom:8%}.profile-ring.ring-2::before{left:12%;top:0}.profile-ring.ring-2::after{right:12%;bottom:0}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;filter:none!important}.cursor-glow{display:none!important}.hero-name .letter{opacity:1!important;transform:none!important}}

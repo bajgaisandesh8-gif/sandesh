@@ -5,17 +5,6 @@
 (function(){
   "use strict";
   const HOLD_MS=12000, started=Date.now();
-  const originalRemove=Element.prototype.remove;
-  let released=false;
-
-  /* Keep the gateway visible for the intended cinematic sequence. */
-  Element.prototype.remove=function(){
-    if(this&&(this.id==="sb-gateway"||this.id==="sb-secure")&&!released){
-      const wait=Math.max(0,HOLD_MS-(Date.now()-started));
-      setTimeout(()=>{released=true;originalRemove.call(this)},wait); return;
-    }
-    return originalRemove.call(this);
-  };
 
   function addStyles(){
     const s=document.createElement("style");
@@ -112,7 +101,6 @@
     addStyles();initCursor();initNav();initFooter();
     const hero=document.getElementById("home");
     if(hero&&!hero.querySelector(".sb-ui-hero-tag")){const t=document.createElement("span");t.className="sb-ui-hero-tag";t.textContent="DIGITAL PROFILE // NODE-07";Object.assign(t.style,{position:"absolute",right:"24px",top:"88px",zIndex:4,font:'600 7px "JetBrains Mono",monospace',letterSpacing:'.14em',color:'#49615f',padding:'7px 9px',border:'1px solid #17302a',background:'rgba(2,7,6,.62)'});hero.appendChild(t)}
-    /* Cards are focusable even when generated remotely. */
     const focusCards=()=>document.querySelectorAll("#skillsGrid .skill-card,#projectsGrid .project-card,#certsGrid .cert-card").forEach(c=>c.setAttribute("tabindex","0"));
     focusCards();new MutationObserver(focusCards).observe(document.getElementById("skillsGrid")||document.body,{childList:true});
   }

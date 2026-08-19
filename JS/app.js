@@ -104,15 +104,15 @@
     }
 
     /* =========================================================
-       CINEMATIC ENTRY — SANDESH // DIGITAL IDENTITY
+       SECURE ACCESS ENTRY — SANDESH // DIGITAL IDENTITY
        ---------------------------------------------------------
-       Short, skippable, accessible portfolio gateway.
-       The versioned session key ensures a newly deployed intro
-       is shown once even if an older version was already seen.
+       Visual cybersecurity-inspired gateway. This is NOT an
+       authentication system; it is an entry experience for the
+       portfolio. It is short, skippable and mobile-first.
     ========================================================= */
     function initializeIdentityEntry() {
         const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const ENTRY_KEY = "sandeshIdentitySeen_v2";
+        const ENTRY_KEY = "sandeshSecureAccess_v1";
         let introSeen = false;
 
         try {
@@ -123,49 +123,85 @@
         if (introSeen) return;
 
         const style = document.createElement("style");
-        style.id = "sandesh-identity-entry-styles";
+        style.id = "sandesh-secure-entry-styles";
         style.textContent = `
-            .sb-entry{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:24px;overflow:hidden;background:radial-gradient(circle at 50% 45%,rgba(100,243,176,.075),transparent 34%),radial-gradient(circle at 15% 85%,rgba(84,168,255,.045),transparent 30%),#030608;color:#f1f5f9;font-family:"Space Grotesk",system-ui,sans-serif;opacity:1;transition:opacity .65s ease,visibility .65s ease}
-            .sb-entry::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(100,243,176,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(100,243,176,.035) 1px,transparent 1px);background-size:46px 46px;mask-image:linear-gradient(to bottom,black,transparent 92%)}
-            .sb-entry::after{content:"";position:absolute;left:0;right:0;top:-20%;height:20%;pointer-events:none;background:linear-gradient(to bottom,transparent,rgba(100,243,176,.08),transparent);animation:sb-entry-scan 2.8s linear infinite}
-            .sb-entry.is-closing{opacity:0;visibility:hidden;pointer-events:none}
-            .sb-entry-card{position:relative;z-index:2;width:min(720px,100%);padding:clamp(28px,5vw,52px);border:1px solid rgba(100,243,176,.22);border-radius:20px;background:linear-gradient(145deg,rgba(12,20,27,.94),rgba(4,8,12,.96));box-shadow:0 35px 100px rgba(0,0,0,.58),0 0 70px rgba(100,243,176,.055);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);animation:sb-entry-card-in .7s cubic-bezier(.2,.8,.2,1) both}
-            .sb-entry-top{display:flex;align-items:center;justify-content:space-between;gap:18px;color:#64748b;font:600 .62rem/1 "JetBrains Mono",monospace;letter-spacing:.14em}
-            .sb-entry-dot{display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:#64f3b0;box-shadow:0 0 12px #64f3b0}
-            .sb-entry-kicker{margin-top:clamp(42px,7vw,70px);color:#64f3b0;font:600 .7rem/1 "JetBrains Mono",monospace;letter-spacing:.16em}
-            .sb-entry-title{margin-top:12px;font:700 clamp(2.4rem,7vw,5.5rem)/.95 "JetBrains Mono",monospace;letter-spacing:-.075em;text-transform:uppercase}
-            .sb-entry-title span{color:#64f3b0}
-            .sb-entry-subtitle{max-width:620px;margin-top:18px;color:#94a3b8;font-size:clamp(.92rem,2vw,1.05rem);line-height:1.7}
-            .sb-entry-status{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:32px}
-            .sb-entry-status span{padding:10px 9px;border:1px solid rgba(255,255,255,.055);border-radius:7px;background:rgba(255,255,255,.012);color:#aeb9c5;text-align:center;font:500 .55rem/1.35 "JetBrains Mono",monospace;letter-spacing:.06em}
-            .sb-entry-status b{display:block;margin-bottom:5px;color:#64f3b0;font-weight:600}
-            .sb-entry-actions{display:flex;align-items:center;flex-wrap:wrap;gap:14px;margin-top:34px}
-            .sb-entry-enter{display:inline-flex;align-items:center;justify-content:center;min-width:180px;min-height:48px;padding:0 20px;border:1px solid #64f3b0;border-radius:6px;background:#64f3b0;color:#031009;cursor:pointer;font:700 .68rem/1 "JetBrains Mono",monospace;letter-spacing:.09em;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
-            .sb-entry-enter:hover,.sb-entry-enter:focus-visible{transform:translateY(-2px);box-shadow:0 12px 35px rgba(100,243,176,.2)}
-            .sb-entry-skip{border:0;background:transparent;color:#64748b;cursor:pointer;font:500 .62rem/1 "JetBrains Mono",monospace;letter-spacing:.06em}
-            .sb-entry-skip:hover,.sb-entry-skip:focus-visible{color:#f1f5f9}
-            .sb-entry-foot{display:flex;justify-content:space-between;gap:20px;margin-top:30px;padding-top:14px;border-top:1px solid rgba(255,255,255,.055);color:#475569;font:500 .55rem/1.5 "JetBrains Mono",monospace}
-            @keyframes sb-entry-card-in{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
-            @keyframes sb-entry-scan{from{transform:translateY(0)}to{transform:translateY(600%)}}
-            @media(max-width:620px){.sb-entry{padding:15px}.sb-entry-card{padding:25px 20px;border-radius:16px}.sb-entry-status{grid-template-columns:repeat(2,1fr)}.sb-entry-actions{align-items:stretch;flex-direction:column}.sb-entry-enter{width:100%}.sb-entry-skip{min-height:40px}.sb-entry-foot{flex-direction:column;gap:6px}}
-            @media(prefers-reduced-motion:reduce){.sb-entry,.sb-entry-card{animation:none!important;transition:none!important}.sb-entry::after{display:none}}
+            .sb-secure{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;overflow:auto;padding:clamp(14px,3vw,36px);background:#020506;color:#eef5f2;font-family:"Space Grotesk",system-ui,sans-serif;isolation:isolate;opacity:1;visibility:visible;transition:opacity .55s ease,visibility .55s ease}
+            .sb-secure.is-closing{opacity:0;visibility:hidden;pointer-events:none}
+            .sb-secure::before{content:"";position:absolute;inset:0;z-index:-3;background:radial-gradient(circle at 50% 50%,rgba(100,243,176,.075),transparent 35%),radial-gradient(circle at 8% 90%,rgba(62,145,255,.055),transparent 30%),#020506}
+            .sb-secure::after{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background-image:linear-gradient(rgba(100,243,176,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(100,243,176,.028) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(ellipse at center,#000 20%,transparent 78%)}
+            .sb-secure-noise{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.055;background:repeating-linear-gradient(0deg,transparent 0,transparent 3px,rgba(255,255,255,.04) 4px);mix-blend-mode:screen}
+            .sb-secure-shell{position:relative;width:min(1080px,100%);min-height:min(690px,calc(100vh - 40px));display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);border:1px solid rgba(100,243,176,.18);border-radius:18px;background:linear-gradient(145deg,rgba(8,16,19,.96),rgba(3,8,10,.97));box-shadow:0 40px 120px rgba(0,0,0,.68),0 0 100px rgba(100,243,176,.045);overflow:hidden;animation:sb-shell-in .7s cubic-bezier(.2,.8,.2,1) both}
+            .sb-secure-shell::before{content:"";position:absolute;inset:0;pointer-events:none;border:1px solid rgba(255,255,255,.025);border-radius:inherit}
+            .sb-secure-terminal{position:relative;padding:clamp(24px,4vw,44px);border-right:1px solid rgba(255,255,255,.055);display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+            .sb-secure-terminal::after{content:"";position:absolute;top:0;bottom:0;right:-1px;width:1px;background:linear-gradient(transparent,rgba(100,243,176,.35),transparent)}
+            .sb-secure-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;color:#60717a;font:600 .6rem/1 "JetBrains Mono",monospace;letter-spacing:.12em}
+            .sb-secure-brand{color:#dce8e3}.sb-secure-brand b{color:#64f3b0;font-weight:700}
+            .sb-secure-dots{display:flex;gap:6px}.sb-secure-dots i{width:6px;height:6px;border-radius:50%;background:#2b3a3b}.sb-secure-dots i:first-child{background:#64f3b0;box-shadow:0 0 10px rgba(100,243,176,.55)}
+            .sb-secure-terminal-main{padding:clamp(45px,8vh,100px) 0 25px}
+            .sb-secure-kicker{display:flex;align-items:center;gap:9px;color:#64f3b0;font:600 .62rem/1 "JetBrains Mono",monospace;letter-spacing:.13em;text-transform:uppercase}
+            .sb-secure-kicker::before{content:"";width:24px;height:1px;background:#64f3b0;box-shadow:0 0 10px rgba(100,243,176,.7)}
+            .sb-secure-title{margin:18px 0 0;font:700 clamp(2.5rem,6vw,5.7rem)/.9 "JetBrains Mono",monospace;letter-spacing:-.075em;text-transform:uppercase}
+            .sb-secure-title span{display:block;color:#64f3b0;text-shadow:0 0 35px rgba(100,243,176,.15)}
+            .sb-secure-copy{max-width:600px;margin-top:24px;color:#82939a;font-size:clamp(.88rem,1.7vw,1rem);line-height:1.75}
+            .sb-secure-log{display:grid;gap:7px;margin-top:34px;padding:15px 17px;border-left:1px solid rgba(100,243,176,.22);background:rgba(100,243,176,.018);font:500 .58rem/1.55 "JetBrains Mono",monospace;color:#53666b}
+            .sb-secure-log div{display:flex;gap:10px}.sb-secure-log b{color:#64f3b0;font-weight:600}.sb-secure-log span{color:#91a3a5}.sb-secure-log .muted{color:#506066}
+            .sb-secure-footer{display:flex;align-items:center;justify-content:space-between;gap:15px;padding-top:18px;border-top:1px solid rgba(255,255,255,.05);color:#435357;font:500 .56rem/1.4 "JetBrains Mono",monospace}
+            .sb-secure-access{position:relative;display:flex;flex-direction:column;justify-content:center;padding:clamp(25px,4vw,46px);background:linear-gradient(180deg,rgba(255,255,255,.018),rgba(255,255,255,.005))}
+            .sb-secure-access-label{color:#64767b;font:600 .58rem/1.2 "JetBrains Mono",monospace;letter-spacing:.13em;text-transform:uppercase}
+            .sb-secure-avatar{position:relative;width:86px;height:86px;margin:24px 0 20px;border:1px solid rgba(100,243,176,.25);border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,rgba(100,243,176,.09),rgba(100,243,176,.015) 58%,transparent 60%);box-shadow:0 0 45px rgba(100,243,176,.06)}
+            .sb-secure-avatar::before,.sb-secure-avatar::after{content:"";position:absolute;border:1px solid rgba(100,243,176,.15);border-radius:50%}.sb-secure-avatar::before{inset:-7px}.sb-secure-avatar::after{inset:8px;border-style:dashed;opacity:.65}
+            .sb-secure-avatar span{font:700 1.15rem/1 "JetBrains Mono",monospace;color:#64f3b0}
+            .sb-secure-name{font-size:1.2rem;font-weight:700;letter-spacing:-.02em}.sb-secure-role{margin-top:6px;color:#687a80;font:500 .58rem/1.4 "JetBrains Mono",monospace;letter-spacing:.06em}
+            .sb-secure-status{display:flex;align-items:center;gap:8px;margin-top:22px;color:#64f3b0;font:600 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.08em}.sb-secure-status i{width:6px;height:6px;border-radius:50%;background:#64f3b0;box-shadow:0 0 12px rgba(100,243,176,.75)}
+            .sb-secure-enter{width:100%;min-height:52px;margin-top:30px;border:1px solid #64f3b0;border-radius:7px;background:linear-gradient(135deg,#64f3b0,#42d895);color:#021008;cursor:pointer;font:800 .68rem/1 "JetBrains Mono",monospace;letter-spacing:.09em;box-shadow:0 10px 30px rgba(100,243,176,.09);transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+            .sb-secure-enter:hover,.sb-secure-enter:focus-visible{transform:translateY(-2px);filter:brightness(1.04);box-shadow:0 16px 40px rgba(100,243,176,.17)}
+            .sb-secure-bypass{width:100%;min-height:42px;margin-top:9px;border:0;background:transparent;color:#53666b;cursor:pointer;font:500 .58rem/1 "JetBrains Mono",monospace;letter-spacing:.07em;transition:color .2s ease}.sb-secure-bypass:hover,.sb-secure-bypass:focus-visible{color:#c4d0cd}
+            .sb-secure-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:25px}.sb-secure-meta div{padding:11px 10px;border:1px solid rgba(255,255,255,.045);border-radius:6px;background:rgba(255,255,255,.012)}.sb-secure-meta small{display:block;color:#4d5f64;font:500 .48rem/1 "JetBrains Mono",monospace;letter-spacing:.08em}.sb-secure-meta strong{display:block;margin-top:6px;color:#94a5a8;font:600 .56rem/1 "JetBrains Mono",monospace}
+            .sb-secure-hint{margin-top:auto;padding-top:28px;color:#3f5054;text-align:center;font:500 .5rem/1.5 "JetBrains Mono",monospace}
+            .sb-secure-corner{position:absolute;width:14px;height:14px;border-color:rgba(100,243,176,.45);pointer-events:none}.sb-secure-corner.tl{top:12px;left:12px;border-top:1px solid;border-left:1px solid}.sb-secure-corner.tr{top:12px;right:12px;border-top:1px solid;border-right:1px solid}.sb-secure-corner.bl{bottom:12px;left:12px;border-bottom:1px solid;border-left:1px solid}.sb-secure-corner.br{bottom:12px;right:12px;border-bottom:1px solid;border-right:1px solid}
+            @keyframes sb-shell-in{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
+            @keyframes sb-log-pulse{0%,100%{opacity:.55}50%{opacity:1}}
+            .sb-secure-log b{animation:sb-log-pulse 1.8s ease-in-out infinite}
+            @media(max-width:820px){.sb-secure-shell{grid-template-columns:1fr;min-height:auto;max-height:calc(100vh - 28px);overflow:auto}.sb-secure-terminal{border-right:0;border-bottom:1px solid rgba(255,255,255,.055);padding-bottom:24px}.sb-secure-terminal::after{display:none}.sb-secure-terminal-main{padding:42px 0 25px}.sb-secure-access{padding:30px 24px 26px}.sb-secure-avatar{margin-top:18px}.sb-secure-hint{margin-top:20px}}
+            @media(max-width:520px){.sb-secure{padding:10px}.sb-secure-shell{width:100%;border-radius:14px;max-height:calc(100vh - 20px)}.sb-secure-terminal,.sb-secure-access{padding:20px}.sb-secure-terminal-main{padding:32px 0 20px}.sb-secure-title{font-size:clamp(2.15rem,12vw,3.6rem)}.sb-secure-copy{font-size:.82rem;line-height:1.65;margin-top:18px}.sb-secure-log{margin-top:24px;padding:12px}.sb-secure-log div{gap:7px}.sb-secure-footer{font-size:.48rem}.sb-secure-access-label{font-size:.52rem}.sb-secure-name{font-size:1.08rem}.sb-secure-enter{min-height:50px}.sb-secure-meta{margin-top:18px}.sb-secure-hint{font-size:.46rem;padding-top:18px}}
+            @media(prefers-reduced-motion:reduce){.sb-secure,.sb-secure-shell,.sb-secure-log b{animation:none!important;transition:none!important}}
         `;
         document.head.appendChild(style);
 
         const entry = document.createElement("div");
-        entry.className = "sb-entry";
+        entry.className = "sb-secure";
         entry.setAttribute("role", "dialog");
         entry.setAttribute("aria-modal", "true");
-        entry.setAttribute("aria-label", "Sandesh digital identity entry");
+        entry.setAttribute("aria-label", "Sandesh secure access portfolio entry");
         entry.innerHTML = `
-            <div class="sb-entry-card">
-                <div class="sb-entry-top"><span><i class="sb-entry-dot"></i>IDENTITY SYSTEM</span><span>SB / 01</span></div>
-                <p class="sb-entry-kicker">SANDESH // DIGITAL IDENTITY</p>
-                <h2 class="sb-entry-title">Sandesh <span>Bajgai</span></h2>
-                <p class="sb-entry-subtitle">A personal portfolio built around networking, cybersecurity, software development and continuous technical exploration.</p>
-                <div class="sb-entry-status" aria-label="Areas of focus"><span><b>01</b>NETWORKING</span><span><b>02</b>CYBERSECURITY</span><span><b>03</b>DEVELOPMENT</span><span><b>04</b>AI / SYSTEMS</span></div>
-                <div class="sb-entry-actions"><button class="sb-entry-enter" type="button">ENTER PORTFOLIO&nbsp; →</button><button class="sb-entry-skip" type="button">SKIP INTRO</button></div>
-                <div class="sb-entry-foot"><span>SYSTEM READY</span><span>ESC TO SKIP</span></div>
+            <div class="sb-secure-noise"></div>
+            <div class="sb-secure-shell">
+                <i class="sb-secure-corner tl"></i><i class="sb-secure-corner tr"></i><i class="sb-secure-corner bl"></i><i class="sb-secure-corner br"></i>
+                <section class="sb-secure-terminal">
+                    <div class="sb-secure-bar"><span class="sb-secure-brand">SANDESH <b>//</b> SECURE ACCESS</span><span class="sb-secure-dots"><i></i><i></i><i></i></span></div>
+                    <div class="sb-secure-terminal-main">
+                        <p class="sb-secure-kicker">Digital identity gateway</p>
+                        <h2 class="sb-secure-title">Welcome to <span>Sandesh.</span></h2>
+                        <p class="sb-secure-copy">A personal digital environment focused on networking, cybersecurity, software development and practical technical exploration.</p>
+                        <div class="sb-secure-log" aria-label="System status">
+                            <div><b>[ OK ]</b><span>PORTFOLIO CORE</span><span class="muted">READY</span></div>
+                            <div><b>[ OK ]</b><span>IDENTITY MODULE</span><span class="muted">VERIFIED</span></div>
+                            <div><b>[ OK ]</b><span>INTERFACE</span><span class="muted">ONLINE</span></div>
+                        </div>
+                    </div>
+                    <div class="sb-secure-footer"><span>SESSION / PERSONAL PORTFOLIO</span><span>v1.0</span></div>
+                </section>
+                <aside class="sb-secure-access">
+                    <span class="sb-secure-access-label">Identity verification</span>
+                    <div class="sb-secure-avatar" aria-hidden="true"><span>SB</span></div>
+                    <strong class="sb-secure-name">Sandesh Bajgai</strong>
+                    <span class="sb-secure-role">IT • NETWORKING • CYBERSECURITY</span>
+                    <span class="sb-secure-status"><i></i> ACCESS READY</span>
+                    <button class="sb-secure-enter" type="button">AUTHENTICATE &amp; ENTER&nbsp; →</button>
+                    <button class="sb-secure-bypass" type="button">BYPASS INTRO&nbsp; / &nbsp;ESC</button>
+                    <div class="sb-secure-meta"><div><small>MODE</small><strong>PORTFOLIO</strong></div><div><small>ACCESS</small><strong>PUBLIC</strong></div></div>
+                    <p class="sb-secure-hint">This is a visual entry experience — no password is required.</p>
+                </aside>
             </div>`;
 
         document.body.prepend(entry);
@@ -176,13 +212,13 @@
             try { sessionStorage.setItem(ENTRY_KEY, "1"); } catch (error) { /* ignore */ }
             entry.classList.add("is-closing");
             document.body.style.overflow = "";
-            window.setTimeout(function () { entry.remove(); style.remove(); }, reducedMotion ? 0 : 700);
+            window.setTimeout(function () { entry.remove(); style.remove(); }, reducedMotion ? 0 : 600);
         };
 
-        const enterButton = entry.querySelector(".sb-entry-enter");
-        const skipButton = entry.querySelector(".sb-entry-skip");
+        const enterButton = entry.querySelector(".sb-secure-enter");
+        const bypassButton = entry.querySelector(".sb-secure-bypass");
         enterButton.addEventListener("click", closeEntry);
-        skipButton.addEventListener("click", closeEntry);
+        bypassButton.addEventListener("click", closeEntry);
 
         document.addEventListener("keydown", function onEntryKeydown(event) {
             if (!document.body.contains(entry)) {
@@ -196,7 +232,7 @@
         });
 
         enterButton.focus({ preventScroll: true });
-        window.setTimeout(closeEntry, reducedMotion ? 900 : 3200);
+        window.setTimeout(closeEntry, reducedMotion ? 1200 : 6500);
     }
 
     window.PORTFOLIO_CONFIG = CONFIG;

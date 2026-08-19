@@ -64,6 +64,15 @@
         });
     }
 
+    function initializeAccessibility() {
+        if (document.querySelector('script[data-sandesh-a11y="true"]')) return;
+        const script = document.createElement("script");
+        script.src = "JS/accessibility.js";
+        script.defer = true;
+        script.dataset.sandeshA11y = "true";
+        document.head.appendChild(script);
+    }
+
     function initializePageReady() {
         document.documentElement.classList.add("js-ready");
     }
@@ -74,6 +83,7 @@
         initializeBackToTop();
         initializeProfileImage();
         initializeSmoothAnchors();
+        initializeAccessibility();
         initializePageReady();
     }, { once: true });
 })();

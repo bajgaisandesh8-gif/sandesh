@@ -1,105 +1,53 @@
-/* SANDESH // CINEMATIC CYBER GATEWAY v8 */
+/* SANDESH // DESKTOP CYBER LOGIN GATEWAY v9 */
 (function () {
   "use strict";
-
-  document.addEventListener("DOMContentLoaded", function () {
-    // Load the premium interaction layer after the gateway starts.
-    if (!document.querySelector('script[data-sandesh-premium]')) {
-      const premium = document.createElement("script");
-      premium.src = "JS/portfolio-enhance.js";
-      premium.dataset.sandeshPremium = "1";
-      premium.defer = true;
-      document.body.appendChild(premium);
-    }
-
+  function startGateway() {
+    if (document.getElementById("sb-gateway")) return;
     const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const KEY = "sandeshCyberGateway_v8";
-    let seen = false;
-    try { seen = sessionStorage.getItem(KEY) === "1"; } catch (e) {}
-    if (seen && !window.location.search.includes("?intro")) return;
-
-    const style = document.createElement("style");
-    style.id = "sandesh-cyber-gateway-styles";
-    style.textContent = `
-      #sb-gateway{position:fixed;inset:0;z-index:1000000;overflow:hidden;background:#010304;color:#e8fff5;font-family:"JetBrains Mono",monospace;cursor:crosshair;isolation:isolate}
-      #sb-gateway *{box-sizing:border-box}
-      #sb-gateway .bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(100,243,176,.075),transparent 25%),radial-gradient(circle at 50% 110%,rgba(84,168,255,.045),transparent 38%),#010304}
-      #sb-gateway .stars{position:absolute;inset:0;opacity:.3;background-image:radial-gradient(circle,#64f3b0 0 1px,transparent 1.5px);background-size:73px 71px;animation:sbStars 18s linear infinite}@keyframes sbStars{to{background-position:73px 71px}}
-      #sb-gateway .grid{position:absolute;left:-25%;right:-25%;bottom:-30%;height:76%;background-image:linear-gradient(rgba(100,243,176,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(100,243,176,.055) 1px,transparent 1px);background-size:58px 58px;transform:perspective(600px) rotateX(61deg);transform-origin:center bottom;mask-image:linear-gradient(to top,#000,transparent 92%);animation:sbGrid 6s linear infinite}@keyframes sbGrid{to{background-position:0 58px,58px 0}}
-      #sb-gateway .scan{position:absolute;left:0;right:0;top:-3px;height:2px;background:linear-gradient(90deg,transparent,#64f3b0,transparent);box-shadow:0 0 30px #64f3b055;animation:sbScan 3.2s linear infinite;z-index:10}@keyframes sbScan{to{top:100%}}
-      #sb-gateway .crt{position:absolute;inset:0;z-index:20;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(185,255,241,.035) 4px),radial-gradient(circle,transparent 48%,rgba(0,0,0,.7) 100%)}
-      #sb-gateway .noise{position:absolute;inset:-50%;z-index:21;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:sbNoise .15s steps(2) infinite}@keyframes sbNoise{25%{transform:translate(1%,-1%)}50%{transform:translate(-1%,1%)}75%{transform:translate(1%,1%)}}
-      #sb-gateway .hud{position:absolute;inset:0;padding:clamp(18px,3vw,42px);z-index:12;pointer-events:none}.sb-top,.sb-bottom{display:flex;justify-content:space-between;gap:20px;color:#405858;font-size:8px;letter-spacing:.16em}.sb-top b{color:#64f3b0}.sb-live{display:inline-block;width:5px;height:5px;margin-right:7px;border-radius:50%;background:#64f3b0;box-shadow:0 0 14px #64f3b0;animation:sbBlink .8s infinite}@keyframes sbBlink{50%{opacity:.2}}
-      #sb-gateway .corner{position:absolute;width:52px;height:52px;border-color:rgba(100,243,176,.4);border-style:solid;z-index:12}.sb-tl{left:28px;top:72px;border-width:1px 0 0 1px}.sb-tr{right:28px;top:72px;border-width:1px 1px 0 0}.sb-bl{left:28px;bottom:64px;border-width:0 0 1px 1px}.sb-br{right:28px;bottom:64px;border-width:0 1px 1px 0}
-      #sb-gateway .target{position:absolute;left:50%;top:50%;width:280px;height:280px;transform:translate(-50%,-50%);border:1px solid rgba(100,243,176,.12);border-radius:50%;z-index:5;animation:sbRotate 22s linear infinite}.target:before,.target:after{content:"";position:absolute;background:rgba(100,243,176,.2)}.target:before{width:1px;height:340px;left:50%;top:-30px}.target:after{height:1px;width:340px;top:50%;left:-30px}@keyframes sbRotate{to{transform:translate(-50%,-50%) rotate(360deg)}}
-      #sb-gateway .target i{position:absolute;inset:25%;border:1px dashed rgba(84,168,255,.18);border-radius:50%;animation:sbRotateReverse 10s linear infinite}@keyframes sbRotateReverse{to{transform:rotate(-360deg)}}
-      #sb-gateway .core{position:absolute;inset:0;z-index:8;display:grid;place-items:center;text-align:center;padding:20px}.core-inner{width:min(1100px,94vw)}
-      .protocol{color:#64f3b0;font-size:9px;letter-spacing:.45em;margin-bottom:25px}.gateway-name{position:relative;margin:0;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:clamp(76px,17vw,230px);line-height:.78;letter-spacing:-.105em;color:#effff8;text-shadow:0 0 70px rgba(100,243,176,.13)}
-      .gateway-name:before,.gateway-name:after{content:"SANDESH";position:absolute;inset:0;opacity:0;pointer-events:none}.gateway-name:before{color:#ff315b;transform:translate(-6px,0);animation:sbGlitch 3.8s infinite}.gateway-name:after{color:#1ddcff;transform:translate(6px,0);animation:sbGlitch 3.8s .06s infinite}@keyframes sbGlitch{0%,84%,100%{opacity:0;clip-path:inset(50% 0 50%)}87%{opacity:.8;clip-path:inset(5% 0 80%)}90%{opacity:.55;clip-path:inset(65% 0 15%)}93%{opacity:.65;clip-path:inset(35% 0 42%)}}
-      .gateway-sub{margin-top:25px;color:#607a77;font-size:9px;letter-spacing:.23em}.gateway-phase{display:inline-block;margin-top:18px;padding:8px 14px;border:1px solid #18362e;background:rgba(2,8,7,.75);color:#64f3b0;font-size:8px;letter-spacing:.16em;min-width:250px}
-      .side{position:absolute;z-index:13;top:50%;transform:translateY(-50%);width:255px;padding:14px;border:1px solid #153029;background:rgba(2,7,6,.72);backdrop-filter:blur(7px);box-shadow:0 20px 70px rgba(0,0,0,.45)}.side-left{left:clamp(18px,4vw,65px)}.side-right{right:clamp(18px,4vw,65px)}.side-title{display:flex;justify-content:space-between;color:#4c6663;font-size:8px;letter-spacing:.12em;margin-bottom:10px}.side-title b{color:#64f3b0;font-weight:500}.terminal-log{height:142px;overflow:hidden;color:#526e6b;font-size:8px}.terminal-log div{padding:3px 0;white-space:nowrap}.terminal-log .ok{color:#64f3b0}.terminal-log .blue{color:#5cd7ff}.meter{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;margin-top:10px;color:#425a58;font-size:7px}.meter i{height:2px;background:#132620;overflow:hidden}.meter i b{display:block;width:0;height:100%;background:#64f3b0;box-shadow:0 0 10px #64f3b0;transition:width .3s}.telemetry{display:grid;gap:8px}.telemetry-row{display:flex;justify-content:space-between;color:#49615f;font-size:8px;border-bottom:1px solid rgba(255,255,255,.05);padding-bottom:7px}.telemetry-row:last-child{border:0}.telemetry-row b{color:#64f3b0;font-weight:500}
-      .boot-ui{position:absolute;left:clamp(18px,4vw,65px);right:clamp(18px,4vw,65px);bottom:27px;z-index:14}.boot-bar{height:2px;background:#10231e}.boot-bar b{display:block;width:0;height:100%;background:#64f3b0;box-shadow:0 0 18px #64f3b0;transition:width .28s}.boot-meta{display:flex;justify-content:space-between;margin-top:8px;color:#425956;font-size:7px;letter-spacing:.12em}.boot-meta b{color:#64f3b0}
-      .gateway-skip{position:absolute;right:clamp(18px,3vw,42px);top:clamp(18px,3vw,42px);z-index:30;padding:7px 10px;border:1px solid #1b302d;background:rgba(2,6,5,.75);color:#49615f;font:700 7px "JetBrains Mono",monospace;letter-spacing:.1em;cursor:pointer}.gateway-skip:hover{color:#64f3b0;border-color:#64f3b0}
-      #sb-gateway.exit{animation:sbExit .9s cubic-bezier(.7,0,.15,1) forwards}@keyframes sbExit{0%{opacity:1;transform:scale(1);filter:none}25%{filter:contrast(1.8) brightness(1.35);transform:scale(1.01)}50%{transform:scale(1.02) skewX(-1deg);filter:contrast(2.1) brightness(1.6)}72%{transform:scale(1.045) skewX(1.5deg);opacity:.9}100%{opacity:0;transform:scale(1.12);filter:blur(13px)}}
-      @media(max-width:1050px){.side{width:215px}.target{opacity:.6}}
-      @media(max-width:800px){.side{display:none}.gateway-name{font-size:clamp(65px,22vw,135px)}.protocol{font-size:7px;letter-spacing:.27em}.gateway-sub{font-size:7px}.target{width:190px;height:190px}.target:before{height:240px;top:-25px}.target:after{width:240px;left:-25px}.corner{width:34px;height:34px}.sb-tl{left:18px;top:65px}.sb-tr{right:18px;top:65px}.sb-bl{left:18px;bottom:56px}.sb-br{right:18px;bottom:56px}.boot-ui{bottom:23px}}
-      @media(max-width:480px){.sb-top span:last-child,.sb-bottom span:first-child{display:none}.gateway-name{font-size:clamp(58px,24vw,110px)}.gateway-sub{line-height:1.7}.target{width:145px;height:145px}}
-      @media(prefers-reduced-motion:reduce){#sb-gateway *,#sb-gateway:before{animation:none!important;transition:none!important}}
-    `;
-    document.head.appendChild(style);
-
     const gateway = document.createElement("div");
     gateway.id = "sb-gateway";
+    gateway.setAttribute("role", "dialog");
+    gateway.setAttribute("aria-label", "Sandesh secure digital environment");
     gateway.innerHTML = `
-      <div class="bg"></div><div class="stars"></div><div class="grid"></div><div class="scan"></div><div class="crt"></div><div class="noise"></div>
-      <div class="hud"><div class="sb-top"><span><i class="sb-live"></i><b>LIVE</b> // SANDESH DIGITAL ENVIRONMENT</span><span>NODE-07 // SECURE CHANNEL</span></div><div class="sb-bottom"><span>CYBERSECURITY / NETWORKING / SOFTWARE / AI</span><span id="sbClock">00:00:00</span></div></div>
-      <i class="corner sb-tl"></i><i class="corner sb-tr"></i><i class="corner sb-bl"></i><i class="corner sb-br"></i>
-      <div class="target"><i></i></div>
-      <button class="gateway-skip" id="sbGatewaySkip" type="button">SKIP [ESC]</button>
-      <div class="core"><div class="core-inner"><div class="protocol" id="sbProtocol">PROTOCOL // SYSTEM WAKE</div><h1 class="gateway-name">SANDESH</h1><div class="gateway-sub" id="sbMessage">INITIALIZING DIGITAL ENVIRONMENT</div><div class="gateway-phase" id="sbPhase">SYSTEM INITIALIZING</div></div></div>
-      <section class="side side-left"><div class="side-title"><span>LIVE TERMINAL</span><b>STREAM</b></div><div class="terminal-log" id="sbLog"></div><div class="meter"><span>LOAD</span><i><b id="sbMeter"></b></i><span id="sbMeterValue">00%</span></div></section>
-      <section class="side side-right"><div class="side-title"><span>TELEMETRY</span><b>ACTIVE</b></div><div class="telemetry"><div class="telemetry-row"><span>NETWORK</span><b id="sbNetwork">SCANNING</b></div><div class="telemetry-row"><span>CORE</span><b id="sbCore">BOOTING</b></div><div class="telemetry-row"><span>SECURITY</span><b id="sbSecurity">CHECKING</b></div><div class="telemetry-row"><span>IDENTITY</span><b id="sbIdentity">PENDING</b></div><div class="telemetry-row"><span>ACCESS</span><b id="sbAccess">LOCKED</b></div></div></section>
-      <div class="boot-ui"><div class="boot-bar"><b id="sbBar"></b></div><div class="boot-meta"><span>PORTFOLIO BOOT SEQUENCE // VISUAL INTERFACE</span><b id="sbPercent">00%</b></div></div>`;
-    document.body.prepend(gateway);
+      <style>
+        #sb-gateway{position:fixed;inset:0;z-index:2147483000;overflow:hidden;background:#020504;color:#dffff0;font-family:"JetBrains Mono",monospace;isolation:isolate;cursor:crosshair}
+        #sb-gateway,#sb-gateway *{box-sizing:border-box}
+        #sb-gateway .g-bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(73,255,169,.12),transparent 24%),radial-gradient(circle at 50% 100%,rgba(30,140,255,.08),transparent 42%),#020504}
+        #sb-gateway .g-stars{position:absolute;inset:0;opacity:.3;background-image:radial-gradient(circle,#72ffc0 0 1px,transparent 1.6px);background-size:71px 67px;animation:gStars 14s linear infinite}
+        #sb-gateway .g-grid{position:absolute;left:-20%;right:-20%;bottom:-32%;height:72%;background-image:linear-gradient(rgba(89,255,184,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(89,255,184,.07) 1px,transparent 1px);background-size:56px 56px;transform:perspective(620px) rotateX(60deg);transform-origin:center bottom;mask-image:linear-gradient(#000,transparent 92%);animation:gGrid 5s linear infinite}
+        #sb-gateway .g-scan{position:absolute;inset:0;z-index:15;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 4px,rgba(220,255,240,.025) 5px)}
+        #sb-gateway .g-line{position:absolute;left:0;right:0;top:-3px;height:2px;background:linear-gradient(90deg,transparent,#6dffc0,transparent);box-shadow:0 0 30px #6dffc0;z-index:18;animation:gScan 3s linear infinite}
+        #sb-gateway .g-hud{position:absolute;inset:0;padding:clamp(18px,2.8vw,40px);z-index:20;pointer-events:none;font-size:8px;letter-spacing:.16em;color:#46615a}.g-hud-top,.g-hud-bottom{display:flex;justify-content:space-between;gap:24px}.g-live{color:#6dffc0}.g-live:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#6dffc0;box-shadow:0 0 12px #6dffc0;margin-right:7px;animation:gBlink .8s infinite}
+        #sb-gateway .g-corner{position:absolute;width:55px;height:55px;border:1px solid rgba(109,255,192,.35);z-index:20}.g-tl{left:28px;top:70px;border-right:0!important;border-bottom:0!important}.g-tr{right:28px;top:70px;border-left:0!important;border-bottom:0!important}.g-bl{left:28px;bottom:62px;border-right:0!important;border-top:0!important}.g-br{right:28px;bottom:62px;border-left:0!important;border-top:0!important}
+        #sb-gateway .g-core{position:absolute;inset:0;display:grid;place-items:center;text-align:center;z-index:10;padding:20px}.g-core-inner{width:min(1050px,90vw)}
+        .g-protocol{font-size:9px;letter-spacing:.45em;color:#6dffc0;margin-bottom:25px}.g-name{position:relative;margin:0;font-family:"Space Grotesk",sans-serif;font-size:clamp(76px,15vw,215px);line-height:.78;letter-spacing:-.1em;font-weight:700;color:#f1fff8;text-shadow:0 0 55px rgba(109,255,192,.18)}.g-name:before,.g-name:after{content:"SANDESH";position:absolute;inset:0;opacity:0}.g-name:before{color:#ff315c;transform:translate(-5px);animation:gGlitch 3.4s infinite}.g-name:after{color:#1ddcff;transform:translate(5px);animation:gGlitch 3.4s .05s infinite}.g-sub{margin-top:25px;color:#5e7971;font-size:9px;letter-spacing:.25em}.g-status{display:inline-block;min-width:280px;margin-top:17px;padding:9px 15px;border:1px solid #194237;background:rgba(2,10,7,.82);color:#6dffc0;font-size:8px;letter-spacing:.16em}
+        #sb-gateway .g-target{position:absolute;left:50%;top:50%;width:330px;height:330px;transform:translate(-50%,-50%);border:1px solid rgba(109,255,192,.14);border-radius:50%;z-index:5;animation:gRotate 20s linear infinite}.g-target:before,.g-target:after{content:"";position:absolute;background:rgba(109,255,192,.18)}.g-target:before{width:1px;height:400px;left:50%;top:-35px}.g-target:after{height:1px;width:400px;top:50%;left:-35px}.g-target i{position:absolute;inset:22%;border:1px dashed rgba(29,220,255,.2);border-radius:50%;animation:gRotateBack 9s linear infinite}
+        #sb-gateway .g-panel{position:absolute;top:50%;transform:translateY(-50%);width:250px;padding:14px;border:1px solid #17372d;background:rgba(2,8,6,.82);backdrop-filter:blur(8px);z-index:22;box-shadow:0 20px 60px #0008}.g-left{left:clamp(20px,4vw,65px)}.g-right{right:clamp(20px,4vw,65px)}.g-panel-title{display:flex;justify-content:space-between;color:#526d65;font-size:8px;margin-bottom:11px}.g-panel-title b{color:#6dffc0;font-weight:500}.g-log{height:150px;overflow:hidden;font-size:8px;color:#527068}.g-log div{padding:3px 0;white-space:nowrap}.g-log .ok{color:#6dffc0}.g-log .blue{color:#4fd9ff}.g-telemetry{display:grid;gap:10px}.g-row{display:flex;justify-content:space-between;padding-bottom:7px;border-bottom:1px solid #ffffff0c;color:#526d65;font-size:8px}.g-row b{color:#6dffc0;font-weight:500}
+        #sb-gateway .g-boot{position:absolute;left:clamp(20px,4vw,65px);right:clamp(20px,4vw,65px);bottom:27px;z-index:25}.g-bar{height:2px;background:#10251e}.g-bar b{display:block;height:100%;width:0;background:#6dffc0;box-shadow:0 0 18px #6dffc0}.g-boot-meta{display:flex;justify-content:space-between;margin-top:8px;color:#49625c;font-size:7px}.g-boot-meta b{color:#6dffc0}.g-skip{position:absolute;right:clamp(18px,3vw,42px);top:clamp(18px,3vw,42px);z-index:30;border:1px solid #1d3b31;background:#020806d9;color:#56716a;padding:8px 11px;font:700 7px "JetBrains Mono",monospace;letter-spacing:.1em;cursor:pointer}.g-skip:hover,.g-skip:focus{color:#6dffc0;border-color:#6dffc0;outline:none}
+        #sb-gateway.g-exit{animation:gExit .9s cubic-bezier(.7,0,.15,1) forwards}@keyframes gStars{to{background-position:71px 67px}}@keyframes gGrid{to{background-position:0 56px,56px 0}}@keyframes gScan{to{top:100%}}@keyframes gRotate{to{transform:translate(-50%,-50%) rotate(360deg)}}@keyframes gRotateBack{to{transform:rotate(-360deg)}}@keyframes gBlink{50%{opacity:.2}}@keyframes gGlitch{0%,82%,100%{opacity:0;clip-path:inset(50% 0 50%)}86%{opacity:.75;clip-path:inset(5% 0 80%)}90%{opacity:.55;clip-path:inset(65% 0 15%)}94%{opacity:.7;clip-path:inset(35% 0 42%)}}@keyframes gExit{0%{opacity:1;transform:scale(1);filter:none}45%{transform:scale(1.025) skewX(-1deg);filter:contrast(1.7) brightness(1.3)}100%{opacity:0;transform:scale(1.12);filter:blur(12px)}}
+        @media(max-width:1050px){#sb-gateway .g-panel{width:210px}}
+        @media(max-width:800px){#sb-gateway .g-panel{display:none}.g-name{font-size:clamp(65px,22vw,135px)}.g-target{width:210px!important;height:210px!important}.g-target:before{height:260px!important;top:-25px!important}.g-target:after{width:260px!important;left:-25px!important}.g-corner{width:35px!important;height:35px!important}.g-tl{left:18px!important;top:65px!important}.g-tr{right:18px!important;top:65px!important}.g-bl{left:18px!important;bottom:56px!important}.g-br{right:18px!important;bottom:56px!important}}
+        @media(max-width:480px){.g-hud-top span:last-child,.g-hud-bottom span:first-child{display:none}.g-name{font-size:clamp(58px,24vw,108px)}.g-protocol{font-size:7px}.g-sub{font-size:7px;line-height:1.8}.g-status{min-width:0;width:min(280px,85vw)}}
+        @media(prefers-reduced-motion:reduce){#sb-gateway *{animation:none!important;transition:none!important}}
+      </style>
+      <div class="g-bg"></div><div class="g-stars"></div><div class="g-grid"></div><div class="g-line"></div><div class="g-scan"></div>
+      <div class="g-hud"><div class="g-hud-top"><span class="g-live">LIVE // SANDESH DIGITAL ENVIRONMENT</span><span>NODE-07 // SECURE CHANNEL</span></div><div class="g-hud-bottom"><span>CYBERSECURITY / NETWORKING / SOFTWARE / AI</span><span id="gClock">00:00:00</span></div></div>
+      <i class="g-corner g-tl"></i><i class="g-corner g-tr"></i><i class="g-corner g-bl"></i><i class="g-corner g-br"></i><div class="g-target"><i></i></div>
+      <button class="g-skip" id="gSkip" type="button">SKIP [ESC]</button>
+      <div class="g-core"><div class="g-core-inner"><div class="g-protocol" id="gProtocol">SECURE PROTOCOL // SYSTEM WAKE</div><h1 class="g-name">SANDESH</h1><div class="g-sub" id="gSub">INITIALIZING DIGITAL ENVIRONMENT</div><div class="g-status" id="gStatus">AUTHENTICATING VISUAL INTERFACE</div></div></div>
+      <section class="g-panel g-left"><div class="g-panel-title"><span>LIVE TERMINAL</span><b>STREAM</b></div><div class="g-log" id="gLog"></div></section>
+      <section class="g-panel g-right"><div class="g-panel-title"><span>TELEMETRY</span><b>ACTIVE</b></div><div class="g-telemetry"><div class="g-row"><span>NETWORK</span><b id="gNetwork">SCANNING</b></div><div class="g-row"><span>CORE</span><b id="gCore">BOOTING</b></div><div class="g-row"><span>SECURITY</span><b id="gSecurity">CHECKING</b></div><div class="g-row"><span>IDENTITY</span><b id="gIdentity">PENDING</b></div><div class="g-row"><span>ACCESS</span><b id="gAccess">LOCKED</b></div></div></section>
+      <div class="g-boot"><div class="g-bar"><b id="gBar"></b></div><div class="g-boot-meta"><span>PORTFOLIO BOOT SEQUENCE // VISUAL INTERFACE</span><b id="gPercent">00%</b></div></div>`;
+    document.body.appendChild(gateway);
     document.body.style.overflow = "hidden";
-
-    const $ = (id) => gateway.querySelector(id);
-    const log = $("#sbLog"), bar = $("#sbBar"), meter = $("#sbMeter"), percent = $("#sbPercent"), meterValue = $("#sbMeterValue");
-    const phase = $("#sbPhase"), message = $("#sbMessage"), protocol = $("#sbProtocol");
-    const network = $("#sbNetwork"), core = $("#sbCore"), security = $("#sbSecurity"), identity = $("#sbIdentity"), access = $("#sbAccess");
-    const lines = [
-      ["[ OK ]","kernel interface initialized","CORE ONLINE"],
-      ["[ OK ]","loading encrypted visual modules","MODULES READY"],
-      ["[NET]","scanning portfolio network nodes","NETWORK LINK"],
-      ["[ OK ]","secure channel established","CHANNEL OPEN"],
-      ["[SEC]","running interface integrity check","INTEGRITY 100%"],
-      ["[ID ]","matching personal environment","IDENTITY FOUND"],
-      ["[ OK ]","loading projects / skills / credentials","CONTENT READY"],
-      ["[SYS]","all systems nominal","ACCESS GRANTED"]
-    ];
-    let progress = 0, closed = false;
-
-    function addLog(i){const row=document.createElement("div");row.innerHTML=`<span class="${i%3===2?'blue':'ok'}">${lines[i][0]}</span> ${lines[i][1]} <span style="color:#334a49">// ${lines[i][2]}</span>`;log.appendChild(row);while(log.children.length>8)log.removeChild(log.firstChild)}
-    function setState(p){progress=p;bar.style.width=p+"%";meter.style.width=p+"%";percent.textContent=String(p).padStart(2,"0")+"%";meterValue.textContent=String(p).padStart(2,"0")+"%"}
-    function tickClock(){const d=new Date();$("#sbClock").textContent=[d.getHours(),d.getMinutes(),d.getSeconds()].map(x=>String(x).padStart(2,"0")).join(":")}
-    tickClock();const clockTimer=setInterval(tickClock,1000);
-
-    function finish(){if(closed)return;closed=true;clearInterval(clockTimer);try{sessionStorage.setItem(KEY,"1")}catch(e){}gateway.classList.add("exit");document.body.style.overflow="";setTimeout(()=>{gateway.remove();style.remove()},reduced?0:900)}
-    function run(){
-      if(reduced){setState(100);phase.textContent="ACCESS GRANTED";message.textContent="ENTERING DIGITAL ENVIRONMENT";network.textContent="ONLINE";core.textContent="READY";security.textContent="SECURE";identity.textContent="VERIFIED";access.textContent="GRANTED";addLog(7);setTimeout(finish,250);return}
-      let i=0;const timer=setInterval(()=>{
-        if(closed){clearInterval(timer);return}
-        const item=lines[i];addLog(i);const p=Math.min(100,Math.round(((i+1)/lines.length)*100));setState(p);
-        if(i===1){protocol.textContent="PROTOCOL 02 // MODULE LOAD";phase.textContent="LOADING MODULES";core.textContent="READY"}
-        if(i===2){protocol.textContent="PROTOCOL 03 // NETWORK LINK";phase.textContent="NETWORK SCANNING";network.textContent="ONLINE"}
-        if(i===4){protocol.textContent="PROTOCOL 04 // SECURITY CHECK";phase.textContent="INTEGRITY VERIFIED";security.textContent="SECURE"}
-        if(i===5){protocol.textContent="PROTOCOL 05 // IDENTITY MATCH";phase.textContent="IDENTITY VERIFIED";identity.textContent="VERIFIED"}
-        if(i===7){protocol.textContent="PROTOCOL 06 // ACCESS GRANTED";phase.textContent="ACCESS GRANTED";message.textContent="ENTERING SANDESH'S DIGITAL ENVIRONMENT";access.textContent="GRANTED";setTimeout(finish,700)}
-        i++;if(i>=lines.length)clearInterval(timer);
-      },520);
-    }
-    $("#sbGatewaySkip").addEventListener("click",finish);
-    document.addEventListener("keydown",function onKey(e){if(!document.body.contains(gateway)){document.removeEventListener("keydown",onKey);return}if(e.key==="Escape"){e.preventDefault();finish()}});
-    run();
-  });
+    const q=s=>gateway.querySelector(s), bar=q("#gBar"), pct=q("#gPercent"), status=q("#gStatus"), sub=q("#gSub"), protocol=q("#gProtocol"), log=q("#gLog"), net=q("#gNetwork"), core=q("#gCore"), sec=q("#gSecurity"), identity=q("#gIdentity"), access=q("#gAccess"), clock=q("#gClock");
+    const phases=[[6,"SYSTEM WAKE","LOADING SECURE INTERFACE","KERNEL ONLINE","BOOTING","CHECKING","PENDING","LOCKED"],[22,"NETWORK DISCOVERY","SCANNING DIGITAL NODES","LINK DETECTED","ONLINE","CHECKING","PENDING","LOCKED"],[42,"SECURITY HANDSHAKE","VERIFYING SECURITY LAYERS","CONNECTED","ONLINE","VERIFIED","MATCHING","LOCKED"],[64,"IDENTITY VERIFY","IDENTITY SIGNATURE DETECTED","CONNECTED","ONLINE","VERIFIED","SANDESH BAJGAI","LOCKED"],[82,"ACCESS NEGOTIATION","ESTABLISHING CONTROL CHANNEL","CONNECTED","ONLINE","VERIFIED","VERIFIED","GRANTED"],[100,"ACCESS GRANTED","DIGITAL ENVIRONMENT READY","CONNECTED","ONLINE","SECURE","VERIFIED","GRANTED"]];
+    const messages=["[ OK ] kernel interface initialized","[ OK ] visual modules loaded","[NET] scanning portfolio network nodes","[ OK ] secure channel established","[SEC] security layer verified","[AUTH] identity signature matched","[ OK ] interface permissions accepted","[SYS] digital environment ready"];
+    const started=performance.now(), duration=reduced?1800:10500; let lastLog=-1,finished=false;
+    function tick(now){const progress=Math.min(100,(now-started)/duration*100),current=phases.reduce((a,p)=>progress>=p[0]?p:a,phases[0]),value=Math.round(progress);bar.style.width=value+"%";pct.textContent=String(value).padStart(2,"0")+"%";status.textContent=current[1];sub.textContent=current[2];net.textContent=current[3];core.textContent=current[4];sec.textContent=current[5];identity.textContent=current[6];access.textContent=current[7];protocol.textContent=progress>=82?"SECURE PROTOCOL // ACCESS NEGOTIATED":"SECURE PROTOCOL // SYSTEM WAKE";const count=Math.min(messages.length,Math.floor(now-started)/duration*(messages.length+2));if(count-1>lastLog){for(let i=lastLog+1;i<count;i++){const row=document.createElement("div");row.className=messages[i].includes("[NET]")||messages[i].includes("[AUTH]")?"blue":"ok";row.textContent=messages[i];log.appendChild(row)}lastLog=count-1;while(log.children.length>8)log.removeChild(log.firstChild)}if(!finished&&progress>=100)finish();if(!finished)requestAnimationFrame(tick)}
+    function finish(){finished=true;status.textContent="ACCESS GRANTED";sub.textContent="WELCOME TO THE DIGITAL ENVIRONMENT";access.textContent="GRANTED";setTimeout(()=>{gateway.classList.add("g-exit");setTimeout(()=>{gateway.remove();document.body.style.overflow=""},900)},reduced?250:850)}
+    function skip(){if(finished)return;finished=true;gateway.classList.add("g-exit");setTimeout(()=>{gateway.remove();document.body.style.overflow=""},500)}
+    q("#gSkip").addEventListener("click",skip);function onKey(e){if(e.key==="Escape"&&document.getElementById("sb-gateway")){skip();document.removeEventListener("keydown",onKey)}}document.addEventListener("keydown",onKey);setInterval(()=>{if(document.getElementById("sb-gateway"))clock.textContent=new Date().toLocaleTimeString([],{hour12:false})},1000);requestAnimationFrame(tick)
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",startGateway,{once:true});else startGateway();
 })();

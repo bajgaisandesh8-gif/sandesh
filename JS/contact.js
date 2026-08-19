@@ -1,218 +1,143 @@
 /* =========================================================
-   SANDESH BAJGAI PORTFOLIO
-   contact.js
+   SANDESH BAJGAI PORTFOLIO — CONTACT
    ---------------------------------------------------------
-   Contact form with:
-   - Client-side validation
-   - Honeypot spam protection
-   - Supabase database submission
-   - Safe mailto fallback
-   - Loading / success / error states
+   Client-side validation + honeypot + Supabase submission
+   with a safe mailto fallback. Never reports a fake success.
 ========================================================= */
-
 (function () {
     "use strict";
 
     const CONTACT_EMAIL = "bajgaisandesh8@gmail.com";
     const SUPABASE_TIMEOUT_MS = 8000;
-
     const form = document.getElementById("contactForm");
-    if (!form) {
-        console.warn("[Contact] Contact form not found.");
-        return;
-    }
+    if (!form) return;
 
-    const nameInput = document.getElementById("cf-name");
-    const emailInput = document.getElementById("cf-email");
-    const subjectInput = document.getElementById("cf-subject");
-    const messageInput = document.getElementById("cf-message");
-    const honeypotInput = document.getElementById("cf-website");
-    const statusElement = document.getElementById("cfStatus");
-    const submitButton = document.getElementById("cfSubmit");
-    const submitText = document.getElementById("cfSubmitText");
-
+    const $ = (id) => document.getElementById(id);
+    const nameInput = $("cf-name");
+    const emailInput = $("cf-email");
+    const subjectInput = $("cf-subject");
+    const messageInput = $("cf-message");
+    const honeypotInput = $("cf-website");
+    const statusElement = $("cfStatus");
+    const submitButton = $("cfSubmit");
+    const submitText = $("cfSubmitText");
     const errors = {
-        name: document.getElementById("err-name"),
-        email: document.getElementById("err-email"),
-        subject: document.getElementById("err-subject"),
-        message: document.getElementById("err-message")
+        name: $("err-name"),
+        email: $("err-email"),
+        subject: $("err-subject"),
+        message: $("err-message")
     };
 
-    function showError(input, errorElement, message) {
-        if (errorElement) {
-            errorElement.textContent = message;
-            errorElement.classList.add("visible");
-        }
-        if (input) {
-            input.classList.add("input-error");
-            input.setAttribute("aria-invalid", "true");
-        }
+    function showError(input, error, message) {
+        if (error) { error.textContent = message; error.classList.add("visible"); }
+        if (input) { input.classList.add("input-error"); input.setAttribute("aria-invalid", "true"); }
     }
 
-    function clearError(input, errorElement) {
-        if (errorElement) {
-            errorElement.textContent = "";
-            errorElement.classList.remove("visible");
-        }
-        if (input) {
-            input.classList.remove("input-error");
-            input.removeAttribute("aria-invalid");
-        }
+    function clearError(input, error) {
+        if (error) { error.textContent = ""; error.classList.remove("visible"); }
+        if (input) { input.classList.remove("input-error"); input.removeAttribute("aria-invalid"); }
     }
 
-    function clearAllErrors() {
+    function clearErrors() {
         clearError(nameInput, errors.name);
         clearError(emailInput, errors.email);
         clearError(subjectInput, errors.subject);
         clearError(messageInput, errors.message);
     }
 
-    function isValidEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-    function validateForm() {
-        clearAllErrors();
-
-        const name = nameInput ? nameInput.value.trim() : "";
-        const email = emailInput ? emailInput.value.trim() : "";
-        const subject = subjectInput ? subjectInput.value.trim() : "";
-        const message = messageInput ? messageInput.value.trim() : "";
+    function validate() {
+        clearErrors();
+        const data = {
+            name: nameInput?.value.trim() || "",
+            email: emailInput?.value.trim() || "",
+            subject: subjectInput?.value.trim() || "",
+            message: messageInput?.value.trim() || ""
+        };
         let valid = true;
 
-        if (name.length < 2) {
-            showError(nameInput, errors.name, "Please enter your name.");
-            valid = false;
-        }
-        if (!isValidEmail(email)) {
-            showError(emailInput, errors.email, "Please enter a valid email address.");
-            valid = false;
-        }
-        if (subject.length < 3) {
-            showError(subjectInput, errors.subject, "Please enter a subject.");
-            valid = false;
-        }
-        if (message.length < 10) {
-            showError(messageInput, errors.message, "Message must contain at least 10 characters.");
-            valid = false;
-        }
+        if (data.name.length < 2) { showError(nameInput, errors.name, "Enter your name."); valid = false; }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { showError(emailInput, errors.email, "Enter a valid email address."); valid = false; }
+        if (data.subject.length < 3) { showError(subjectInput, errors.subject, "Enter a subject."); valid = false; }
+        if (data.message.length < 10) { showError(messageInput, errors.message, "Message must contain at least 10 characters."); valid = false; }
 
-        return { valid, name, email, subject, message };
+        return { valid, data };
     }
 
     function setStatus(message, type = "") {
         if (!statusElement) return;
         statusElement.textContent = message;
-        statusElement.className = "form-status";
-        if (type) statusElement.classList.add(type);
+        statusElement.className = "form-status" + (type ? ` ${type}` : "");
     }
 
     function setLoading(loading) {
-        if (submitButton) submitButton.disabled = loading;
-        if (submitText) submitText.textContent = loading ? "SENDING..." : "SEND MESSAGE";
+        if (submitButton) {
+            submitButton.disabled = loading;
+            submitButton.setAttribute("aria-busy", String(loading));
+        }
+        if (submitText) submitText.textContent = loading ? "TRANSMITTING..." : "SEND MESSAGE";
     }
 
-    function createMailto(data) {
-        const body = [
-            `Name: ${data.name}`,
-            `Email: ${data.email}`,
-            "",
-            data.message
-        ].join("\n");
-
-        return (
-            "mailto:" + CONTACT_EMAIL +
-            "?subject=" + encodeURIComponent(data.subject) +
-            "&body=" + encodeURIComponent(body)
-        );
+    function mailto(data) {
+        const body = [`Name: ${data.name}`, `Email: ${data.email}`, "", data.message].join("\n");
+        return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(body)}`;
     }
 
-    async function submitToSupabase(data) {
+    async function saveToSupabase(data) {
         const client = window.supabaseClient;
+        if (!client) return { success: false, reason: "not-configured" };
 
-        if (!client) {
-            return { success: false, reason: "not-configured" };
-        }
+        const payload = { name: data.name, email: data.email, subject: data.subject, message: data.message };
+        const tables = ["contact_messages", "contact_message"];
 
-        try {
-            const request = client
-                .from("contact_messages")
-                .insert({
-                    name: data.name,
-                    email: data.email,
-                    subject: data.subject,
-                    message: data.message
-                });
-
-            const timeout = new Promise((_, reject) => {
-                window.setTimeout(
-                    () => reject(new Error("Supabase request timed out.")),
-                    SUPABASE_TIMEOUT_MS
-                );
-            });
-
-            const { error } = await Promise.race([request, timeout]);
-
-            if (error) {
-                console.warn("[Supabase] Contact submission failed:", error);
-                return { success: false, reason: "database-error" };
+        for (const table of tables) {
+            try {
+                const request = client.from(table).insert(payload);
+                const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), SUPABASE_TIMEOUT_MS));
+                const { error } = await Promise.race([request, timeout]);
+                if (!error) return { success: true, reason: "saved" };
+            } catch (error) {
+                console.warn(`[Contact] ${table} unavailable.`, error);
             }
-
-            return { success: true, reason: "saved" };
-        } catch (error) {
-            console.warn("[Supabase] Contact request failed:", error);
-            return { success: false, reason: "request-error" };
         }
+        return { success: false, reason: "database-unavailable" };
     }
 
-    form.addEventListener("submit", async function (event) {
+    form.addEventListener("submit", async (event) => {
         event.preventDefault();
+        if (honeypotInput?.value.trim()) return;
 
-        if (honeypotInput && honeypotInput.value.trim()) {
-            console.warn("[Contact] Spam submission blocked.");
-            return;
-        }
-
-        const data = validateForm();
-        if (!data.valid) {
+        const result = validate();
+        if (!result.valid) {
             setStatus("Please fix the highlighted fields.", "error");
             return;
         }
 
         setLoading(true);
-        setStatus("Sending your message...", "loading");
+        setStatus("SECURE CHANNEL: CONNECTING...", "loading");
 
-        const result = await submitToSupabase(data);
-
-        if (result.success) {
-            setStatus("Message sent successfully.", "success");
+        const saved = await saveToSupabase(result.data);
+        if (saved.success) {
             form.reset();
-            clearAllErrors();
+            clearErrors();
             setLoading(false);
+            setStatus("Message received. I'll get back to you soon.", "success");
             return;
         }
 
-        setStatus("Database unavailable — opening your email application...", "success");
-        window.location.href = createMailto(data);
-
-        window.setTimeout(function () {
-            setLoading(false);
-        }, 1500);
+        setLoading(false);
+        setStatus("Database is unavailable. Opening your email app instead.", "error");
+        window.setTimeout(() => { window.location.href = mailto(result.data); }, 250);
     });
 
     [
-        { input: nameInput, error: errors.name },
-        { input: emailInput, error: errors.email },
-        { input: subjectInput, error: errors.subject },
-        { input: messageInput, error: errors.message }
-    ].forEach(function (field) {
-        if (!field.input) return;
-
-        field.input.addEventListener("input", function () {
-            clearError(field.input, field.error);
+        [nameInput, errors.name], [emailInput, errors.email],
+        [subjectInput, errors.subject], [messageInput, errors.message]
+    ].forEach(([input, error]) => {
+        input?.addEventListener("input", () => {
+            clearError(input, error);
             if (statusElement) setStatus("");
         });
     });
 
-    console.log("%c[CONTACT]%c initialized.", "color:#64f3b0;font-weight:bold;", "color:inherit;");
+    console.log("%c[CONTACT]%c secure contact flow initialized.", "color:#64f3b0;font-weight:bold;", "color:inherit");
 })();

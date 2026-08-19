@@ -1,6 +1,6 @@
 /* =========================================================
    SANDESH BAJGAI PORTFOLIO
-   app.js — core utilities only
+   app.js — core utilities + profile narrative
    ========================================================= */
 (function () {
     "use strict";
@@ -73,6 +73,56 @@
         document.head.appendChild(script);
     }
 
+    function initializeAboutNarrative() {
+        const aboutCopy = document.querySelector("#about .about-copy");
+        if (!aboutCopy || aboutCopy.dataset.narrativeReady === "true") return;
+        aboutCopy.dataset.narrativeReady = "true";
+
+        const lead = aboutCopy.querySelector(".about-lead");
+        const body = aboutCopy.querySelector(".about-body");
+
+        if (lead) {
+            lead.textContent = "I’m building across the parts of technology that interest me most — networking and IT infrastructure, cybersecurity, web development, databases, backend systems, AI-assisted development, and practical software tools.";
+        }
+
+        if (body) {
+            body.textContent = "My learning has moved beyond just writing frontend pages. I’ve worked with HTML, CSS and JavaScript, explored Node.js and backend concepts, worked with Supabase and SQL-style database workflows, explored MongoDB and Python, and experimented with AI-assisted development. I’m also learning how these pieces connect: a frontend talks to a backend, the backend works with data, and the whole system has to be reliable and secure. Alongside development, I’ve explored tools such as VS Code, GitHub, Canva, Photoshop and office software while building projects and working with real IT infrastructure. I’m still developing these skills, so I prefer to describe them as areas I’m building and exploring rather than pretending I’m an expert.";
+        }
+
+        const values = aboutCopy.querySelector(".values-row");
+        if (!values) return;
+
+        const stack = document.createElement("div");
+        stack.className = "about-stack";
+        stack.setAttribute("aria-label", "Technology areas I am exploring");
+        stack.innerHTML = `
+            <div class="about-stack-label">CURRENT BUILD AREAS</div>
+            <div class="about-stack-grid">
+                <span>HTML / CSS / JS</span>
+                <span>Node.js / Backend</span>
+                <span>Supabase / SQL</span>
+                <span>MongoDB</span>
+                <span>Python</span>
+                <span>AI-assisted Development</span>
+                <span>Git / GitHub</span>
+                <span>Software &amp; IT Tools</span>
+            </div>
+        `;
+        values.insertAdjacentElement("beforebegin", stack);
+
+        const style = document.createElement("style");
+        style.textContent = `
+            #about .about-stack{margin:26px 0 22px;padding:15px;border:1px solid rgba(100,243,176,.13);background:linear-gradient(135deg,rgba(100,243,176,.035),rgba(84,168,255,.025));border-radius:10px}
+            #about .about-stack-label{font:600 9px/1.2 "JetBrains Mono",monospace;letter-spacing:.16em;color:#64f3b0;margin-bottom:12px}
+            #about .about-stack-grid{display:flex;flex-wrap:wrap;gap:7px}
+            #about .about-stack-grid span{padding:7px 9px;border:1px solid rgba(255,255,255,.07);border-radius:5px;background:rgba(2,8,10,.55);color:#a8bab7;font:500 10px/1.2 "JetBrains Mono",monospace}
+            #about .about-stack-grid span:hover{border-color:rgba(100,243,176,.28);color:#d9fff0}
+            @media(max-width:700px){#about .about-stack{margin-top:20px;padding:13px}#about .about-stack-grid span{font-size:9px}}
+            @media(prefers-reduced-motion:reduce){#about .about-stack-grid span{transition:none!important}}
+        `;
+        document.head.appendChild(style);
+    }
+
     function initializePageReady() {
         document.documentElement.classList.add("js-ready");
     }
@@ -84,6 +134,7 @@
         initializeProfileImage();
         initializeSmoothAnchors();
         initializeAccessibility();
+        initializeAboutNarrative();
         initializePageReady();
     }, { once: true });
 })();

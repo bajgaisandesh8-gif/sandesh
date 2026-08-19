@@ -1,83 +1,38 @@
-/* SANDESH // PORTFOLIO ENHANCEMENT LAYER */
+/* SANDESH // FULL PORTFOLIO UPGRADE LAYER */
 (function () {
   "use strict";
   const boot = () => {
-    const hero = document.querySelector("#home");
-    if (!hero || hero.dataset.enhanced === "1") return;
-    hero.dataset.enhanced = "1";
-
+    if (document.documentElement.dataset.sandeshUpgrade === "1") return;
+    document.documentElement.dataset.sandeshUpgrade = "1";
     const style = document.createElement("style");
     style.textContent = `
-      .hero::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(circle at 18% 45%,rgba(100,243,176,.09),transparent 28%),radial-gradient(circle at 78% 48%,rgba(84,168,255,.08),transparent 25%)}
-      .hero-inner{transform-style:preserve-3d}
-      .hero-left,.hero-right{transition:transform .18s ease-out}
-      .hero-eyebrow{position:relative;width:max-content;padding:7px 10px;border:1px solid rgba(100,243,176,.18);background:rgba(100,243,176,.025);box-shadow:0 0 30px rgba(100,243,176,.04)}
-      .hero-eyebrow::after{content:"";position:absolute;right:-1px;top:-1px;width:28px;height:2px;background:var(--accent);box-shadow:0 0 12px var(--accent)}
-      .hero-name{position:relative;text-shadow:0 0 50px rgba(100,243,176,.08)}
-      .hero-name::after{content:"SYSTEM / IDENTITY";position:absolute;right:0;bottom:-18px;color:rgba(100,243,176,.35);font:500 8px "JetBrains Mono",monospace;letter-spacing:.22em}
-      .hero-headline{max-width:650px}
-      .hero-desc{max-width:610px}
-      .hero-command-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
-      .hero-command-strip span{padding:6px 9px;border:1px solid var(--border);background:rgba(5,7,10,.65);color:var(--text-muted);font:500 8px "JetBrains Mono",monospace;letter-spacing:.06em}
-      .hero-command-strip span b{color:var(--accent);font-weight:600}
-      .system-panel{position:relative;overflow:hidden}
-      .system-panel::before{content:"";position:absolute;left:0;right:0;top:-100%;height:100%;background:linear-gradient(transparent,rgba(100,243,176,.07),transparent);animation:systemScan 4s linear infinite;pointer-events:none}
-      @keyframes systemScan{to{top:100%}}
-      .profile-stage{filter:drop-shadow(0 30px 70px rgba(0,0,0,.45))}
-      .profile-stage::before{content:"";position:absolute;inset:7%;border:1px solid rgba(100,243,176,.18);clip-path:polygon(0 0,28% 0,28% 2px,72% 2px,72% 0,100% 0,100% 28%,calc(100% - 2px) 28%,calc(100% - 2px) 72%,100% 72%,100% 100%,72% 100%,72% calc(100% - 2px),28% calc(100% - 2px),28% 100%,0 100%,0 72%,2px 72%,2px 28%,0 28%);animation:framePulse 3s ease-in-out infinite}
-      @keyframes framePulse{50%{opacity:.45;transform:scale(1.02)}}
-      .profile-frame{box-shadow:0 0 80px rgba(100,243,176,.1),inset 0 0 35px rgba(100,243,176,.04);transition:transform .2s ease-out}
-      .profile-frame::after{content:"SANDESH / NODE-07";position:absolute;left:18px;bottom:18px;padding:5px 8px;border:1px solid rgba(100,243,176,.3);background:rgba(2,6,8,.72);color:var(--accent);font:600 8px "JetBrains Mono",monospace;letter-spacing:.1em}
-      .profile-ring{animation:orbit 12s linear infinite}
-      .ring-2{animation-duration:18s;animation-direction:reverse}
-      @keyframes orbit{to{transform:rotate(360deg)}}
-      .hero-data-dock{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:22px;border:1px solid var(--border);background:var(--border);width:min(100%,560px)}
-      .hero-data-dock article{padding:11px 13px;background:rgba(5,7,10,.82)}
-      .hero-data-dock small{display:block;color:var(--text-muted);font:500 7px "JetBrains Mono",monospace;letter-spacing:.1em}
-      .hero-data-dock strong{display:block;margin-top:4px;color:var(--text-primary);font:600 11px "JetBrains Mono",monospace}
-      .hero-data-dock i{display:inline-block;width:5px;height:5px;margin-right:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 9px var(--accent)}
-      .nav{box-shadow:0 1px 0 rgba(100,243,176,.03),0 12px 40px rgba(0,0,0,.12)}
-      .nav-logo{transition:transform .2s ease,color .2s ease}.nav-logo:hover{transform:translateY(-2px)}
-      .section-head{position:relative}.section-head::after{content:"";display:block;width:70px;height:1px;margin-top:18px;background:linear-gradient(90deg,var(--accent),transparent)}
-      .section-title{max-width:850px}
-      .project-card,.skill-card,.cert-card{transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s ease,box-shadow .35s ease}
-      .project-card:hover,.skill-card:hover,.cert-card:hover{transform:translateY(-7px);border-color:rgba(100,243,176,.45);box-shadow:0 20px 55px rgba(0,0,0,.28),0 0 28px rgba(100,243,176,.05)}
-      @media(max-width:700px){.hero-name::after{display:none}.hero-data-dock{grid-template-columns:1fr}.hero-command-strip span{font-size:7px}.profile-frame::after{font-size:7px}}
-      @media(prefers-reduced-motion:reduce){.system-panel::before,.profile-stage::before,.profile-ring{animation:none}.hero-left,.hero-right,.profile-frame{transition:none}}
+      body{background-color:#030609}.section{position:relative}.section::before{content:"";position:absolute;left:24px;right:24px;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(100,243,176,.18),transparent)}
+      .section-head{position:relative;padding-left:16px}.section-head::before{content:"";position:absolute;left:0;top:2px;width:2px;height:calc(100% - 4px);background:var(--accent);box-shadow:0 0 15px rgba(100,243,176,.5)}.section-tag{font-family:"JetBrains Mono",monospace;letter-spacing:.18em;color:var(--accent);font-size:.65rem}.section-title{text-shadow:0 0 35px rgba(100,243,176,.05)}
+      #about .about-copy,#about .about-panel{position:relative;overflow:hidden;border-color:#172631;background:linear-gradient(145deg,rgba(10,18,25,.96),rgba(3,8,12,.94));box-shadow:0 25px 80px rgba(0,0,0,.2)}#about .about-copy::before,#about .about-panel::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,rgba(100,243,176,.045),transparent 35%,rgba(84,168,255,.025) 75%,transparent)}#about .about-copy::after{content:"PROFILE / 01";position:absolute;right:22px;top:18px;color:#3d5659;font:600 8px "JetBrains Mono",monospace;letter-spacing:.15em}#about .about-lead{font-size:clamp(1.25rem,2vw,1.55rem);line-height:1.45;max-width:650px}#about .about-body{max-width:650px;line-height:1.8}#about .value-chip{position:relative;transition:.25s ease}#about .value-chip:hover{border-color:var(--accent);background:rgba(100,243,176,.06);transform:translateY(-2px);box-shadow:0 0 20px rgba(100,243,176,.06)}#about .level-row{position:relative;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.045)}#about .level-row:last-child{border-bottom:0}#about .level-bar{height:4px;background:#101b23}#about .level-fill{background:linear-gradient(90deg,var(--accent),var(--accent-blue));box-shadow:0 0 14px rgba(100,243,176,.22);animation:upgradeFill 1.4s cubic-bezier(.2,.8,.2,1) both}@keyframes upgradeFill{from{width:0!important}}
+      #skills .skills-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}#skills .skill-card{position:relative;overflow:hidden;min-height:180px;border-color:#172631;background:linear-gradient(145deg,#0a1219,#050a0f);transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease}#skills .skill-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(100,243,176,.11),transparent 42%);opacity:0;transition:opacity .25s;pointer-events:none}#skills .skill-card:hover{transform:translateY(-8px);border-color:rgba(100,243,176,.55);box-shadow:0 22px 50px rgba(0,0,0,.4),0 0 30px rgba(100,243,176,.06)}#skills .skill-card:hover::before{opacity:1}
+      .upgrade-index{position:absolute;right:15px;top:13px;color:#33474c;font:600 8px "JetBrains Mono",monospace;letter-spacing:.12em}
+      #experience .timeline{position:relative;padding-left:28px}#experience .timeline::before{content:"";position:absolute;left:6px;top:0;bottom:0;width:1px;background:linear-gradient(var(--accent),rgba(100,243,176,.08),transparent);box-shadow:0 0 12px rgba(100,243,176,.18)}#experience .timeline-item,#experience .experience-item{position:relative}#experience .timeline-item::before,#experience .experience-item::before{content:"";position:absolute;left:-27px;top:28px;width:9px;height:9px;border:1px solid var(--accent);background:#030609;border-radius:50%;box-shadow:0 0 16px rgba(100,243,176,.55)}#experience .timeline-item:hover::before,#experience .experience-item:hover::before{background:var(--accent)}#experience .project-card{position:relative;overflow:hidden;border-color:#172631;background:#070d13;transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}#experience .project-card:hover{transform:translateY(-9px);border-color:rgba(100,243,176,.5);box-shadow:0 24px 55px rgba(0,0,0,.45),0 0 25px rgba(100,243,176,.06)}#experience .project-card img{height:230px;transition:transform .6s ease,filter .5s}#experience .project-card:hover img{transform:scale(1.07);filter:brightness(1.05) saturate(1.08)}
+      #projects .projects-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}#projects .project-card{position:relative;overflow:hidden;border:1px solid var(--border);background:linear-gradient(145deg,#0b1219,#05090d);transition:transform .4s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .4s}#projects .project-card:hover{transform:translateY(-10px);border-color:rgba(100,243,176,.6);box-shadow:0 28px 65px rgba(0,0,0,.45),0 0 35px rgba(100,243,176,.07)}#projects .project-card img{transition:transform .7s ease}#projects .project-card:hover img{transform:scale(1.05)}#projects .project-card::after{content:"OPEN PROJECT ↗";position:absolute;right:16px;top:16px;padding:6px 9px;border:1px solid rgba(100,243,176,.35);background:rgba(2,6,8,.8);color:var(--accent);font:600 8px "JetBrains Mono",monospace;letter-spacing:.1em;opacity:0;transform:translateY(-6px);transition:.25s;pointer-events:none}#projects .project-card:hover::after{opacity:1;transform:none}
+      #certifications .certs-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}#certifications .cert-card{position:relative;min-height:190px;overflow:hidden;border:1px solid var(--border);background:linear-gradient(145deg,#0a1219,#04080c);transition:.35s cubic-bezier(.2,.8,.2,1)}#certifications .cert-card::before{content:"VERIFIED CREDENTIAL";position:absolute;right:14px;top:14px;color:#385258;font:600 7px "JetBrains Mono",monospace;letter-spacing:.12em}#certifications .cert-card::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);transform:scaleX(.2);transition:.4s}#certifications .cert-card:hover{transform:translateY(-8px);border-color:rgba(100,243,176,.5);box-shadow:0 22px 55px rgba(0,0,0,.38)}#certifications .cert-card:hover::after{transform:scaleX(1)}
+      #contact .contact-grid{align-items:stretch}#contact .contact-info,#contact .contact-form{position:relative;overflow:hidden;border:1px solid var(--border);background:linear-gradient(145deg,rgba(10,17,24,.95),rgba(3,8,12,.95));padding:28px;border-radius:var(--radius-lg)}#contact .contact-info::before,#contact .contact-form::before{content:"SECURE CHANNEL";position:absolute;right:20px;top:18px;color:#344b50;font:600 7px "JetBrains Mono",monospace;letter-spacing:.14em}#contact .contact-lead{max-width:560px;line-height:1.75}#contact .contact-links li{transition:transform .25s ease}#contact .contact-links li:hover{transform:translateX(6px)}#contact .contact-links a{position:relative;overflow:hidden}#contact .contact-links a::before{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--accent);transition:width .3s}#contact .contact-links a:hover::before{width:100%}#contact .field input,#contact .field textarea{border-color:#1a2a34;background:#04090e;transition:border-color .2s,box-shadow .2s,transform .2s}#contact .field input:focus,#contact .field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(100,243,176,.06),0 0 25px rgba(100,243,176,.04);transform:translateY(-1px)}#contact #cfSubmit{position:relative;overflow:hidden}#contact #cfSubmit::after{content:"";position:absolute;left:-100%;top:0;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-20deg);transition:left .6s}#contact #cfSubmit:hover::after{left:130%}
+      .nav-link{transition:color .2s,transform .2s}.nav-link:hover{transform:translateY(-1px)}
+      .upgrade-visible{animation:upgradeReveal .8s cubic-bezier(.2,.8,.2,1) both}@keyframes upgradeReveal{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+      @media(max-width:900px){#skills .skills-grid,#certifications .certs-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#projects .projects-grid{grid-template-columns:1fr}}
+      @media(max-width:600px){.section{padding-top:76px;padding-bottom:76px}.section::before{left:16px;right:16px}#skills .skills-grid,#certifications .certs-grid{grid-template-columns:1fr}#experience .timeline{padding-left:20px}#experience .timeline::before{left:4px}#experience .timeline-item::before,#experience .experience-item::before{left:-23px}#experience .project-card img{height:200px}#contact .contact-info,#contact .contact-form{padding:22px}}
+      @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
     `;
     document.head.appendChild(style);
 
-    const left = hero.querySelector(".hero-left");
-    if (left) {
-      const commands = document.createElement("div");
-      commands.className = "hero-command-strip";
-      commands.innerHTML = `<span><b>01</b> NETWORKING</span><span><b>02</b> CYBERSECURITY</span><span><b>03</b> SOFTWARE</span><span><b>04</b> AI / AUTOMATION</span>`;
-      const panel = left.querySelector(".system-panel");
-      if (panel) panel.before(commands);
+    ["#skillsGrid","#projectsGrid","#certsGrid"].forEach(selector => {
+      const grid=document.querySelector(selector); if(!grid)return;
+      const labelCards=()=>grid.querySelectorAll("article,.skill-card,.project-card,.cert-card").forEach((card,i)=>{if(!card.querySelector(":scope > .upgrade-index")){const tag=document.createElement("span");tag.className="upgrade-index";tag.textContent=String(i+1).padStart(2,"0");card.appendChild(tag)}});
+      labelCards(); new MutationObserver(labelCards).observe(grid,{childList:true});
+    });
 
-      const dock = document.createElement("div");
-      dock.className = "hero-data-dock";
-      dock.innerHTML = `<article><small>CURRENT MODE</small><strong><i></i>BUILDING</strong></article><article><small>PRIMARY STACK</small><strong>HTML / CSS / JS</strong></article><article><small>ENVIRONMENT</small><strong>NEPAL / ONLINE</strong></article>`;
-      left.appendChild(dock);
-    }
+    document.querySelectorAll("#skillsGrid .skill-card").forEach(card=>card.addEventListener("pointermove",e=>{const r=card.getBoundingClientRect();card.style.setProperty("--mx",`${e.clientX-r.left}px`);card.style.setProperty("--my",`${e.clientY-r.top}px`)},{passive:true}));
 
-    const move = (e) => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.innerWidth < 900) return;
-      const x = e.clientX / window.innerWidth - .5;
-      const y = e.clientY / window.innerHeight - .5;
-      const l = hero.querySelector(".hero-left");
-      const r = hero.querySelector(".hero-right");
-      if (l) l.style.transform = `translate3d(${x * -8}px,${y * -5}px,0)`;
-      if (r) r.style.transform = `translate3d(${x * 10}px,${y * 7}px,0)`;
-      const frame = hero.querySelector(".profile-frame");
-      if (frame) frame.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${y * -6}deg) rotate(2deg)`;
-    };
-    const reset = () => {
-      const l = hero.querySelector(".hero-left"), r = hero.querySelector(".hero-right"), f = hero.querySelector(".profile-frame");
-      if (l) l.style.transform = ""; if (r) r.style.transform = ""; if (f) f.style.transform = "";
-    };
-    window.addEventListener("pointermove", move, {passive:true});
-    window.addEventListener("blur", reset);
+    const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("upgrade-visible");io.unobserve(entry.target)}}),{threshold:.12});
+    document.querySelectorAll("#about .about-copy,#about .about-panel,#skillsGrid,#experience .timeline,#experience .network-gallery,#projectsGrid,#certsGrid,#contact .contact-info,#contact .contact-form").forEach(el=>io.observe(el));
   };
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, {once:true}); else boot();
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
 })();

@@ -1,38 +1,209 @@
 /* SANDESH BAJGAI PORTFOLIO — PROJECTS / CONTENT ENGINE */
 (function () {
   "use strict";
+
   const portfolioData = {
-    skills:[
-      {category:"networking",title:"Networking",description:"Practical understanding of networking, connectivity and infrastructure fundamentals.",tags:["IPv4","IPv6","DHCP","DNS","Subnetting","TCP/IP","Wi-Fi"]},
-      {category:"infrastructure",title:"IT Infrastructure",description:"Hands-on exposure to switches, access points, servers, CCTV and IT hardware.",tags:["Switches","PoE","STP","Fiber","CCTV","NVR","Printers"]},
-      {category:"development",title:"Web Development",description:"Building responsive and interactive websites using core web technologies.",tags:["HTML5","CSS3","JavaScript","Git","GitHub","VS Code"]},
-      {category:"cybersecurity",title:"Cybersecurity",description:"Developing knowledge in cybersecurity, networking security and defensive concepts.",tags:["Linux","Networking Security","System Security","Threat Awareness","Security Basics"]},
-      {category:"ai",title:"AI & Automation",description:"Using modern AI tools to improve development, design and productivity workflows.",tags:["Generative AI","Prompt Engineering","AI Tools","Automation"]}
+    skills: [
+      { category: "networking", title: "Networking", description: "Practical understanding of networking, connectivity and infrastructure fundamentals.", tags: ["IPv4", "IPv6", "DHCP", "DNS", "Subnetting", "TCP/IP", "Wi-Fi"] },
+      { category: "infrastructure", title: "IT Infrastructure", description: "Hands-on exposure to switches, access points, servers, CCTV and IT hardware.", tags: ["Switches", "PoE", "STP", "Fiber", "CCTV", "NVR", "Printers"] },
+      {
+        category: "development",
+        title: "Web Development",
+        description: "Building responsive websites while exploring frontend, backend, databases, CMS platforms and modern development tooling.",
+        tags: [
+          "HTML5", "CSS3", "JavaScript", "Responsive Design", "DOM APIs",
+          "Python", "Node.js", "Backend Concepts", "SQL", "Supabase", "MongoDB",
+          "REST APIs", "Git", "GitHub", "VS Code", "Bootstrap", "WordPress"
+        ]
+      },
+      { category: "cybersecurity", title: "Cybersecurity", description: "Developing knowledge in cybersecurity, networking security and defensive concepts.", tags: ["Linux", "Networking Security", "System Security", "Threat Awareness", "Security Basics"] },
+      { category: "ai", title: "AI & Automation", description: "Using modern AI tools to improve development, design and productivity workflows.", tags: ["Generative AI", "Prompt Engineering", "AI Tools", "Automation"] }
     ],
-    experience:[{date:"INTERNSHIP",title:"IT & Network Intern",company:"Soaltee Westend Itahari",description:"Worked with hotel IT infrastructure including networking, Wi-Fi, access points, switches, CCTV, NVR, printers, projectors, POS systems and general technical support."}],
-    projects:[
-      {category:"WEB",title:"Developer Portfolio",description:"A handcrafted developer and cybersecurity portfolio built with HTML5, CSS3 and Vanilla JavaScript.",technologies:["HTML5","CSS3","JavaScript","Three.js"],link:"https://bajgaisandesh8-gif.github.io/sandesh/",github:"https://github.com/bajgaisandesh8-gif/sandesh",status:"LIVE",featured:true},
-      {category:"NETWORKING",title:"Hotel Network QA",description:"Practical quality-assurance work involving access points, Wi-Fi, TVs and network-related infrastructure checks.",technologies:["Networking","Wi-Fi","AP","QA"],link:"#",status:"FIELD WORK"},
-      {category:"IT",title:"IT Infrastructure Practice",description:"Hands-on experience with Ethernet, RJ45 termination, switches, fiber, projectors, printers and CCTV infrastructure.",technologies:["Ethernet","RJ45","Switching","Fiber","CCTV"],link:"#",status:"PRACTICAL"},
-      {category:"AI",title:"AI-Assisted Workflow",description:"Exploring AI tools for development, design, content creation and productivity.",technologies:["AI","Automation","Prompting"],link:"#",status:"EXPLORING"}
+
+    experience: [{
+      date: "INTERNSHIP",
+      title: "IT & Network Intern",
+      company: "Soaltee Westend Itahari",
+      description: "Worked with hotel IT infrastructure including networking, Wi-Fi, access points, switches, CCTV, NVR, printers, projectors, POS systems and general technical support."
+    }],
+
+    projects: [
+      { category: "WEB", title: "Developer Portfolio", description: "A handcrafted developer and cybersecurity portfolio built with HTML5, CSS3 and Vanilla JavaScript.", technologies: ["HTML5", "CSS3", "JavaScript", "Three.js"], link: "https://bajgaisandesh8-gif.github.io/sandesh/", github: "https://github.com/bajgaisandesh8-gif/sandesh", status: "LIVE", featured: true },
+      { category: "NETWORKING", title: "Hotel Network QA", description: "Practical quality-assurance work involving access points, Wi-Fi, TVs and network-related infrastructure checks.", technologies: ["Networking", "Wi-Fi", "AP", "QA"], link: "#", status: "FIELD WORK" },
+      { category: "IT", title: "IT Infrastructure Practice", description: "Hands-on experience with Ethernet, RJ45 termination, switches, fiber, projectors, printers and CCTV infrastructure.", technologies: ["Ethernet", "RJ45", "Switching", "Fiber", "CCTV"], link: "#", status: "PRACTICAL" },
+      { category: "AI", title: "AI-Assisted Workflow", description: "Exploring AI tools for development, design, content creation and productivity.", technologies: ["AI", "Automation", "Prompting"], link: "#", status: "EXPLORING" }
     ],
-    certifications:[
-      {title:"Networking Fundamentals",description:"Networking concepts including IP addressing, subnetting, DHCP, DNS and connectivity."},
-      {title:"Web Development",description:"Practical development using HTML, CSS and JavaScript."},
-      {title:"IT Infrastructure",description:"Hands-on exposure to hardware, network infrastructure and technical support."}
+
+    certifications: [
+      { title: "Networking Fundamentals", description: "Networking concepts including IP addressing, subnetting, DHCP, DNS and connectivity." },
+      { title: "Web Development", description: "Practical development using HTML, CSS and JavaScript, with ongoing exploration of backend, databases, CMS platforms and development tools." },
+      { title: "IT Infrastructure", description: "Hands-on exposure to hardware, network infrastructure and technical support." }
     ]
   };
-  const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
-  const reveal=el=>{if(!el)return;el.querySelectorAll(".reveal").forEach((x,i)=>{x.style.setProperty("--stagger-index",i);requestAnimationFrame(()=>x.classList.add("visible"));});};
-  function renderSkills(category="all"){const el=document.getElementById("skillsGrid");if(!el)return;const items=portfolioData.skills.filter(x=>category==="all"||x.category===category);el.innerHTML=items.map((x,i)=>`<article class="skill-card reveal" data-category="${esc(x.category)}"><span class="card-index">${String(i+1).padStart(2,"0")}</span><div class="skill-card-header"><span class="skill-category">${esc(x.category)}</span></div><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p><div class="skill-tags">${x.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div></article>`).join("");reveal(el);}
-  function renderExperience(){const el=document.getElementById("timeline");if(!el)return;el.innerHTML=portfolioData.experience.map(x=>`<article class="timeline-item reveal"><span class="date">${esc(x.date)}</span><h3>${esc(x.title)}</h3><p class="timeline-company">${esc(x.company)}</p><p>${esc(x.description)}</p></article>`).join("");reveal(el);}
-  function renderProjects(category="ALL"){const el=document.getElementById("projectsGrid");if(!el)return;const items=portfolioData.projects.filter(x=>category==="ALL"||x.category===category);el.innerHTML=items.map((x,i)=>{const idx=portfolioData.projects.indexOf(x);return `<article class="project-card project-card-pro reveal ${x.featured?"is-featured":""}" data-project-index="${idx}" tabindex="0" role="button" aria-label="Open details for ${esc(x.title)}"><div class="project-top"><span class="project-category">${esc(x.category)}</span><span class="project-status">${esc(x.status||"PROJECT")}</span></div><div class="project-number">${String(i+1).padStart(2,"0")}</div><div class="project-icon" aria-hidden="true">⌁</div><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p><div class="project-tech">${x.technologies.map(t=>`<span>${esc(t)}</span>`).join("")}</div><div class="project-actions"><button type="button" class="project-details" data-project="${idx}">VIEW DETAILS</button>${x.link&&x.link!=="#"?`<a class="project-link" href="${esc(x.link)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">LIVE ↗</a>`:""}${x.github?`<a class="project-link secondary" href="${esc(x.github)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">GITHUB ↗</a>`:""}</div></article>`;}).join("");bindProjectCards();reveal(el);}
-  function renderCertifications(){const el=document.getElementById("certsGrid");if(!el)return;el.innerHTML=portfolioData.certifications.map((x,i)=>`<article class="cert-card reveal"><span class="card-index">${String(i+1).padStart(2,"0")}</span><span class="cert-status">CREDENTIAL</span><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p></article>`).join("");reveal(el);}
-  function openProject(index){const x=portfolioData.projects[index];if(!x)return;let modal=document.getElementById("projectModal");if(!modal){modal=document.createElement("div");modal.id="projectModal";modal.className="project-modal";modal.innerHTML=`<div class="project-modal-backdrop" data-close-project></div><div class="project-modal-panel" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle"><button class="project-modal-close" type="button" data-close-project aria-label="Close project details">×</button><span class="modal-kicker">PROJECT // DETAIL</span><div class="modal-category" id="projectModalCategory"></div><h2 id="projectModalTitle"></h2><p id="projectModalDescription"></p><div class="modal-tech" id="projectModalTech"></div><div class="modal-actions" id="projectModalActions"></div></div>`;document.body.appendChild(modal);modal.addEventListener("click",e=>{if(e.target.matches("[data-close-project]"))closeProject();});document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("open"))closeProject();});}modal.querySelector("#projectModalCategory").textContent=x.category+" // "+(x.status||"PROJECT");modal.querySelector("#projectModalTitle").textContent=x.title;modal.querySelector("#projectModalDescription").textContent=x.description;modal.querySelector("#projectModalTech").innerHTML=x.technologies.map(t=>`<span>${esc(t)}</span>`).join("");modal.querySelector("#projectModalActions").innerHTML=`${x.link&&x.link!=="#"?`<a class="btn btn-primary" href="${esc(x.link)}" target="_blank" rel="noopener noreferrer">OPEN LIVE ↗</a>`:""}${x.github?`<a class="btn btn-secondary" href="${esc(x.github)}" target="_blank" rel="noopener noreferrer">VIEW GITHUB ↗</a>`:""}`;modal.classList.add("open");document.body.classList.add("project-modal-open");modal.querySelector(".project-modal-close").focus();}
-  function closeProject(){const modal=document.getElementById("projectModal");if(!modal)return;modal.classList.remove("open");document.body.classList.remove("project-modal-open");}
-  function bindProjectCards(){document.querySelectorAll(".project-card-pro").forEach(card=>{const index=Number(card.dataset.projectIndex);card.addEventListener("click",()=>openProject(index));card.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!e.target.closest("a,button")){e.preventDefault();openProject(index);}});});document.querySelectorAll(".project-details").forEach(btn=>btn.addEventListener("click",e=>{e.stopPropagation();openProject(Number(btn.dataset.project));}));}
-  function initializeFilters(){document.querySelectorAll("#skillsFilter .filter-btn").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("#skillsFilter .filter-btn").forEach(b=>{b.classList.remove("active");b.setAttribute("aria-selected","false")});btn.classList.add("active");btn.setAttribute("aria-selected","true");renderSkills(btn.dataset.category||"all");}));document.querySelectorAll("#projectsFilter .filter-btn").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("#projectsFilter .filter-btn").forEach(b=>{b.classList.remove("active");b.setAttribute("aria-selected","false")});btn.classList.add("active");btn.setAttribute("aria-selected","true");renderProjects(btn.dataset.category||"ALL");}));}
-  function injectStyles(){if(document.getElementById("project-engine-styles"))return;const s=document.createElement("style");s.id="project-engine-styles";s.textContent=`#projectsGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.project-card-pro{position:relative;min-height:310px;padding:26px;overflow:hidden;cursor:pointer;transition:transform .35s ease,border-color .25s ease,box-shadow .35s ease;background:linear-gradient(145deg,#081219,#03080c);border:1px solid #172a32}.project-card-pro:before{content:"";position:absolute;inset:-1px;background:radial-gradient(circle at 15% 10%,rgba(100,243,176,.09),transparent 32%),linear-gradient(120deg,transparent 30%,rgba(84,168,255,.035),transparent 70%);pointer-events:none}.project-card-pro:hover,.project-card-pro:focus-visible{transform:translateY(-8px);border-color:rgba(100,243,176,.55);box-shadow:0 28px 75px rgba(0,0,0,.42),0 0 35px rgba(100,243,176,.07);outline:none}.project-top{display:flex;justify-content:space-between;gap:10px;position:relative;z-index:1}.project-category,.project-status,.modal-kicker{font:600 8px "JetBrains Mono",monospace;letter-spacing:.14em;color:#64f3b0}.project-status{color:#506a70}.project-number{position:absolute;right:24px;top:62px;color:#263d44;font:700 48px "JetBrains Mono",monospace;opacity:.5}.project-icon{position:relative;margin-top:40px;width:48px;height:48px;display:grid;place-items:center;border:1px solid rgba(100,243,176,.25);color:#64f3b0;border-radius:8px;font-size:24px}.project-card-pro h3{position:relative;margin:18px 0 10px;font-size:1.35rem}.project-card-pro p{position:relative;color:#71858b;line-height:1.7}.project-tech{position:relative;display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}.project-tech span,.modal-tech span{padding:6px 8px;border:1px solid #1a3037;background:#071014;color:#7d9695;font:500 8px "JetBrains Mono",monospace}.project-actions{position:relative;display:flex;flex-wrap:wrap;gap:7px;margin-top:20px}.project-actions button,.project-actions a{min-height:36px;padding:8px 11px;border:1px solid #254039;background:#07120f;color:#64f3b0;text-decoration:none;font:700 8px "JetBrains Mono",monospace;letter-spacing:.08em;cursor:pointer}.project-actions .secondary{color:#789093;border-color:#203038}.project-actions button:hover,.project-actions a:hover{border-color:#64f3b0;background:#0a1b16}.project-modal{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease}.project-modal.open{opacity:1;visibility:visible}.project-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(12px)}.project-modal-panel{position:relative;width:min(700px,100%);padding:34px;border:1px solid rgba(100,243,176,.3);background:linear-gradient(145deg,#071116,#03080b);box-shadow:0 35px 120px #000;transform:translateY(15px) scale(.98);transition:transform .25s ease}.project-modal.open .project-modal-panel{transform:none}.project-modal-close{position:absolute;right:15px;top:15px;width:38px;height:38px;border:1px solid #20353b;background:#071014;color:#8ca2a0;cursor:pointer;font-size:20px}.project-modal-close:hover{color:#64f3b0;border-color:#64f3b0}.modal-category{margin:15px 0 9px;color:#536d72;font:600 8px "JetBrains Mono",monospace;letter-spacing:.15em}.project-modal-panel h2{margin:0;font-size:clamp(2rem,5vw,3.5rem)}.project-modal-panel>p{margin:18px 0;color:#819398;line-height:1.8}.modal-tech{display:flex;flex-wrap:wrap;gap:6px}.modal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}.project-modal-open{overflow:hidden}.card-index{position:absolute;right:15px;top:13px;color:#33474c;font:600 8px "JetBrains Mono",monospace;letter-spacing:.12em}.cert-card{position:relative}.cert-status{position:absolute;right:15px;top:30px;color:#385258;font:600 7px "JetBrains Mono",monospace;letter-spacing:.12em}@media(max-width:760px){#projectsGrid{grid-template-columns:1fr}.project-card-pro{min-height:280px;padding:21px}.project-modal-panel{padding:25px 20px}.project-actions{display:grid;grid-template-columns:1fr 1fr}.project-actions>*{width:100%}}@media(max-width:430px){.project-actions{grid-template-columns:1fr}.project-number{font-size:36px}}@media(prefers-reduced-motion:reduce){.project-card-pro,.project-modal,.project-modal-panel{transition:none!important}}`;document.head.appendChild(s);}
-  document.addEventListener("DOMContentLoaded",()=>{injectStyles();renderSkills();renderExperience();renderProjects();renderCertifications();initializeFilters();},{once:true});
-  window.SandeshProjects={data:portfolioData,openProject,closeProject,renderProjects};
+
+  const esc = value => String(value ?? "")
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+
+  const reveal = container => {
+    if (!container) return;
+    container.querySelectorAll(".reveal").forEach((element, index) => {
+      element.style.setProperty("--stagger-index", index);
+      requestAnimationFrame(() => element.classList.add("visible"));
+    });
+  };
+
+  function renderSkills(category = "all") {
+    const el = document.getElementById("skillsGrid");
+    if (!el) return;
+    const items = portfolioData.skills.filter(item => category === "all" || item.category === category);
+    el.innerHTML = items.map((item, index) => `
+      <article class="skill-card reveal" data-category="${esc(item.category)}">
+        <span class="card-index">${String(index + 1).padStart(2, "0")}</span>
+        <div class="skill-card-header"><span class="skill-category">${esc(item.category)}</span></div>
+        <h3>${esc(item.title)}</h3>
+        <p>${esc(item.description)}</p>
+        <div class="skill-tags">${item.tags.map(tag => `<span>${esc(tag)}</span>`).join("")}</div>
+      </article>`).join("");
+    reveal(el);
+  }
+
+  function renderExperience() {
+    const el = document.getElementById("timeline");
+    if (!el) return;
+    el.innerHTML = portfolioData.experience.map(item => `
+      <article class="timeline-item reveal">
+        <span class="date">${esc(item.date)}</span>
+        <h3>${esc(item.title)}</h3>
+        <p class="timeline-company">${esc(item.company)}</p>
+        <p>${esc(item.description)}</p>
+      </article>`).join("");
+    reveal(el);
+  }
+
+  function renderProjects(category = "ALL") {
+    const el = document.getElementById("projectsGrid");
+    if (!el) return;
+    const items = portfolioData.projects.filter(item => category === "ALL" || item.category === category);
+    el.innerHTML = items.map((item, index) => {
+      const originalIndex = portfolioData.projects.indexOf(item);
+      return `
+        <article class="project-card project-card-pro reveal ${item.featured ? "is-featured" : ""}" data-project-index="${originalIndex}" tabindex="0" role="button" aria-label="Open details for ${esc(item.title)}">
+          <div class="project-top"><span class="project-category">${esc(item.category)}</span><span class="project-status">${esc(item.status || "PROJECT")}</span></div>
+          <div class="project-number">${String(index + 1).padStart(2, "0")}</div>
+          <div class="project-icon" aria-hidden="true">⌁</div>
+          <h3>${esc(item.title)}</h3><p>${esc(item.description)}</p>
+          <div class="project-tech">${item.technologies.map(tag => `<span>${esc(tag)}</span>`).join("")}</div>
+          <div class="project-actions">
+            <button type="button" class="project-details" data-project="${originalIndex}">VIEW DETAILS</button>
+            ${item.link && item.link !== "#" ? `<a class="project-link" href="${esc(item.link)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">LIVE ↗</a>` : ""}
+            ${item.github ? `<a class="project-link secondary" href="${esc(item.github)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">GITHUB ↗</a>` : ""}
+          </div>
+        </article>`;
+    }).join("");
+    bindProjectCards();
+    reveal(el);
+  }
+
+  function renderCertifications() {
+    const el = document.getElementById("certsGrid");
+    if (!el) return;
+    el.innerHTML = portfolioData.certifications.map((item, index) => `
+      <article class="cert-card reveal">
+        <span class="card-index">${String(index + 1).padStart(2, "0")}</span>
+        <span class="cert-status">CREDENTIAL</span>
+        <h3>${esc(item.title)}</h3><p>${esc(item.description)}</p>
+      </article>`).join("");
+    reveal(el);
+  }
+
+  function openProject(index) {
+    const item = portfolioData.projects[index];
+    if (!item) return;
+    let modal = document.getElementById("projectModal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "projectModal";
+      modal.className = "project-modal";
+      modal.innerHTML = `
+        <div class="project-modal-backdrop" data-close-project></div>
+        <div class="project-modal-panel" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+          <button class="project-modal-close" type="button" data-close-project aria-label="Close project details">×</button>
+          <span class="modal-kicker">PROJECT // DETAIL</span>
+          <div class="modal-category" id="projectModalCategory"></div>
+          <h2 id="projectModalTitle"></h2><p id="projectModalDescription"></p>
+          <div class="modal-tech" id="projectModalTech"></div><div class="modal-actions" id="projectModalActions"></div>
+        </div>`;
+      document.body.appendChild(modal);
+      modal.addEventListener("click", event => { if (event.target.matches("[data-close-project]")) closeProject(); });
+      document.addEventListener("keydown", event => { if (event.key === "Escape" && modal.classList.contains("open")) closeProject(); });
+    }
+    modal.querySelector("#projectModalCategory").textContent = `${item.category} // ${item.status || "PROJECT"}`;
+    modal.querySelector("#projectModalTitle").textContent = item.title;
+    modal.querySelector("#projectModalDescription").textContent = item.description;
+    modal.querySelector("#projectModalTech").innerHTML = item.technologies.map(tag => `<span>${esc(tag)}</span>`).join("");
+    modal.querySelector("#projectModalActions").innerHTML = `${item.link && item.link !== "#" ? `<a class="btn btn-primary" href="${esc(item.link)}" target="_blank" rel="noopener noreferrer">OPEN LIVE ↗</a>` : ""}${item.github ? `<a class="btn btn-secondary" href="${esc(item.github)}" target="_blank" rel="noopener noreferrer">VIEW GITHUB ↗</a>` : ""}`;
+    modal.classList.add("open");
+    document.body.classList.add("project-modal-open");
+    modal.querySelector(".project-modal-close").focus();
+  }
+
+  function closeProject() {
+    const modal = document.getElementById("projectModal");
+    if (!modal) return;
+    modal.classList.remove("open");
+    document.body.classList.remove("project-modal-open");
+  }
+
+  function bindProjectCards() {
+    document.querySelectorAll(".project-card-pro").forEach(card => {
+      const index = Number(card.dataset.projectIndex);
+      card.addEventListener("click", () => openProject(index));
+      card.addEventListener("keydown", event => {
+        if ((event.key === "Enter" || event.key === " ") && !event.target.closest("a,button")) {
+          event.preventDefault(); openProject(index);
+        }
+      });
+    });
+    document.querySelectorAll(".project-details").forEach(button => button.addEventListener("click", event => {
+      event.stopPropagation(); openProject(Number(button.dataset.project));
+    }));
+  }
+
+  function initializeFilters() {
+    document.querySelectorAll("#skillsFilter .filter-btn").forEach(button => button.addEventListener("click", () => {
+      document.querySelectorAll("#skillsFilter .filter-btn").forEach(btn => { btn.classList.remove("active"); btn.setAttribute("aria-selected", "false"); });
+      button.classList.add("active"); button.setAttribute("aria-selected", "true");
+      renderSkills(button.dataset.category || "all");
+    }));
+    document.querySelectorAll("#projectsFilter .filter-btn").forEach(button => button.addEventListener("click", () => {
+      document.querySelectorAll("#projectsFilter .filter-btn").forEach(btn => { btn.classList.remove("active"); btn.setAttribute("aria-selected", "false"); });
+      button.classList.add("active"); button.setAttribute("aria-selected", "true");
+      renderProjects(button.dataset.category || "ALL");
+    }));
+  }
+
+  function injectStyles() {
+    if (document.getElementById("project-engine-styles")) return;
+    const style = document.createElement("style");
+    style.id = "project-engine-styles";
+    style.textContent = `
+      #projectsGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+      .project-card-pro{position:relative;min-height:310px;padding:26px;overflow:hidden;cursor:pointer;transition:transform .35s ease,border-color .25s ease,box-shadow .35s ease;background:linear-gradient(145deg,#081219,#03080c);border:1px solid #172a32}
+      .project-card-pro:hover,.project-card-pro:focus-visible{transform:translateY(-8px);border-color:rgba(100,243,176,.55);box-shadow:0 28px 75px rgba(0,0,0,.42),0 0 35px rgba(100,243,176,.07);outline:none}
+      .project-top{display:flex;justify-content:space-between;gap:10px;position:relative;z-index:1}.project-category,.project-status,.modal-kicker{font:600 8px "JetBrains Mono",monospace;letter-spacing:.14em;color:#64f3b0}.project-status{color:#506a70}
+      .project-number{position:absolute;right:24px;top:62px;color:#263d44;font:700 48px "JetBrains Mono",monospace;opacity:.5}.project-icon{position:relative;margin-top:40px;width:48px;height:48px;display:grid;place-items:center;border:1px solid rgba(100,243,176,.25);color:#64f3b0;border-radius:8px;font-size:24px}.project-card-pro h3{position:relative;margin:18px 0 10px;font-size:1.35rem}.project-card-pro p{position:relative;color:#71858b;line-height:1.7}
+      .project-tech{position:relative;display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}.project-tech span,.modal-tech span{padding:6px 8px;border:1px solid #1a3037;background:#071014;color:#7d9695;font:500 8px "JetBrains Mono",monospace}
+      .project-actions{position:relative;display:flex;flex-wrap:wrap;gap:7px;margin-top:20px}.project-actions button,.project-actions a{min-height:36px;padding:8px 11px;border:1px solid #254039;background:#07120f;color:#64f3b0;text-decoration:none;font:700 8px "JetBrains Mono",monospace;letter-spacing:.08em;cursor:pointer}.project-actions .secondary{color:#789093;border-color:#203038}.project-actions button:hover,.project-actions a:hover{border-color:#64f3b0;background:#0a1b16}
+      .project-modal{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease}.project-modal.open{opacity:1;visibility:visible}.project-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(12px)}.project-modal-panel{position:relative;width:min(700px,100%);padding:34px;border:1px solid rgba(100,243,176,.3);background:linear-gradient(145deg,#071116,#03080b);box-shadow:0 35px 120px #000;transform:translateY(15px) scale(.98);transition:transform .25s ease}.project-modal.open .project-modal-panel{transform:none}.project-modal-close{position:absolute;right:15px;top:15px;width:38px;height:38px;border:1px solid #20353b;background:#071014;color:#8ca2a0;cursor:pointer;font-size:20px}.project-modal-close:hover{color:#64f3b0;border-color:#64f3b0}.modal-category{margin:15px 0 9px;color:#536d72;font:600 8px "JetBrains Mono",monospace;letter-spacing:.15em}.project-modal-panel h2{margin:0;font-size:clamp(2rem,5vw,3.5rem)}.project-modal-panel>p{margin:18px 0;color:#819398;line-height:1.8}.modal-tech{display:flex;flex-wrap:wrap;gap:6px}.modal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}.project-modal-open{overflow:hidden}.card-index{position:absolute;right:15px;top:13px;color:#33474c;font:600 8px "JetBrains Mono",monospace;letter-spacing:.12em}.cert-card{position:relative}.cert-status{position:absolute;right:15px;top:30px;color:#385258;font:600 7px "JetBrains Mono",monospace;letter-spacing:.12em}
+      @media(max-width:760px){#projectsGrid{grid-template-columns:1fr}.project-card-pro{min-height:280px;padding:21px}.project-modal-panel{padding:25px 20px}.project-actions{display:grid;grid-template-columns:1fr 1fr}.project-actions>*{width:100%}}@media(max-width:430px){.project-actions{grid-template-columns:1fr}.project-number{font-size:36px}}@media(prefers-reduced-motion:reduce){.project-card-pro,.project-modal,.project-modal-panel{transition:none!important}}
+    `;
+    document.head.appendChild(style);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    injectStyles(); renderSkills(); renderExperience(); renderProjects(); renderCertifications(); initializeFilters();
+  }, { once: true });
+
+  window.SandeshProjects = { data: portfolioData, openProject, closeProject, renderProjects, renderSkills };
 })();

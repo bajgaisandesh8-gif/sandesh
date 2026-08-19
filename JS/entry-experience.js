@@ -1,107 +1,105 @@
-/* SANDESH PORTFOLIO — STEP-BY-STEP ENTRY EXPERIENCE */
+/* SANDESH // CINEMATIC CYBER GATEWAY v8 */
 (function () {
   "use strict";
 
   document.addEventListener("DOMContentLoaded", function () {
-    /* Prevent the older app.js gateway from creating its own timed overlay. */
-    try { sessionStorage.setItem("sandeshSecureAccess_v1", "1"); } catch (e) {}
+    // Load the premium interaction layer after the gateway starts.
+    if (!document.querySelector('script[data-sandesh-premium]')) {
+      const premium = document.createElement("script");
+      premium.src = "JS/portfolio-enhance.js";
+      premium.dataset.sandeshPremium = "1";
+      premium.defer = true;
+      document.body.appendChild(premium);
+    }
 
     const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const steps = [
-      ["BOOT SEQUENCE", "Initializing Sandesh portfolio...", "PORTFOLIO CORE", "READY"],
-      ["IDENTITY CHECK", "Verifying digital identity...", "IDENTITY", "VERIFIED"],
-      ["SYSTEM LINK", "Establishing portfolio connection...", "NETWORK", "ONLINE"],
-      ["FINAL CHECK", "Loading personal workspace...", "INTERFACE", "READY"]
-    ];
+    const KEY = "sandeshCyberGateway_v8";
+    let seen = false;
+    try { seen = sessionStorage.getItem(KEY) === "1"; } catch (e) {}
+    if (seen && !window.location.search.includes("?intro")) return;
 
     const style = document.createElement("style");
-    style.id = "sandesh-step-entry-styles";
+    style.id = "sandesh-cyber-gateway-styles";
     style.textContent = `
-      .sb-step-entry{position:fixed;inset:0;z-index:10001;display:grid;place-items:center;padding:14px;background:#020506;color:#eaf4ef;font-family:"Space Grotesk",system-ui,sans-serif;overflow:auto}
-      .sb-step-entry *{box-sizing:border-box}.sb-step-entry-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 42%,rgba(100,243,176,.09),transparent 38%),linear-gradient(rgba(100,243,176,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(100,243,176,.025) 1px,transparent 1px);background-size:auto,42px 42px,42px 42px}
-      .sb-step-shell{position:relative;width:min(960px,100%);border:1px solid rgba(100,243,176,.2);border-radius:16px;background:rgba(3,9,11,.97);box-shadow:0 35px 100px rgba(0,0,0,.7),0 0 80px rgba(100,243,176,.04);overflow:hidden}
-      .sb-step-top{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.06);font:600 .62rem "JetBrains Mono",monospace;letter-spacing:.12em;color:#607278}.sb-step-brand{color:#dce9e3}.sb-step-brand b{color:#64f3b0}.sb-step-live{color:#64f3b0}.sb-step-body{display:grid;grid-template-columns:1.45fr .55fr;min-height:560px}.sb-step-terminal{padding:clamp(28px,5vw,58px);display:flex;flex-direction:column;justify-content:center}.sb-step-counter{color:#64f3b0;font:600 .64rem "JetBrains Mono",monospace;letter-spacing:.14em}.sb-step-title{margin:18px 0 10px;font:700 clamp(2.2rem,6vw,5.3rem)/.95 "JetBrains Mono",monospace;letter-spacing:-.07em;text-transform:uppercase}.sb-step-title span{color:#64f3b0;text-shadow:0 0 28px rgba(100,243,176,.12)}.sb-step-message{color:#8a9b9f;font:500 clamp(.78rem,1.5vw,.95rem)/1.7 "JetBrains Mono",monospace;min-height:28px}.sb-step-log{margin-top:34px;border-left:1px solid rgba(100,243,176,.25);padding:15px 17px;background:rgba(100,243,176,.018);font:500 .61rem/1.7 "JetBrains Mono",monospace}.sb-step-log div{display:flex;gap:10px}.sb-step-log b{color:#64f3b0}.sb-step-log span{color:#8da0a2}.sb-step-progress{margin-top:28px;height:2px;background:#172225;overflow:hidden}.sb-step-progress i{display:block;height:100%;width:25%;background:#64f3b0;box-shadow:0 0 12px rgba(100,243,176,.6);transition:width .35s ease}.sb-step-side{padding:28px;display:flex;flex-direction:column;justify-content:center;border-left:1px solid rgba(255,255,255,.055);background:linear-gradient(180deg,rgba(255,255,255,.015),transparent)}.sb-step-avatar{width:88px;height:88px;border:1px solid rgba(100,243,176,.28);border-radius:50%;display:grid;place-items:center;margin-bottom:20px;box-shadow:0 0 40px rgba(100,243,176,.05);position:relative}.sb-step-avatar:before{content:"";position:absolute;inset:-7px;border:1px dashed rgba(100,243,176,.17);border-radius:50%}.sb-step-avatar span{font:700 1.2rem "JetBrains Mono",monospace;color:#64f3b0}.sb-step-name{font-weight:700;font-size:1.1rem}.sb-step-role{margin-top:7px;color:#65777b;font:500 .57rem "JetBrains Mono",monospace;line-height:1.5}.sb-step-status{margin-top:25px;color:#64f3b0;font:600 .58rem "JetBrains Mono",monospace;letter-spacing:.08em}.sb-step-status i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#64f3b0;box-shadow:0 0 10px rgba(100,243,176,.7);margin-right:7px}.sb-step-enter{margin-top:28px;width:100%;min-height:52px;border:1px solid #64f3b0;border-radius:7px;background:linear-gradient(135deg,#64f3b0,#42d895);color:#021008;cursor:pointer;font:800 .65rem "JetBrains Mono",monospace;letter-spacing:.08em}.sb-step-enter:hover,.sb-step-enter:focus-visible{filter:brightness(1.05);transform:translateY(-1px)}.sb-step-skip{margin-top:10px;border:0;background:transparent;color:#526368;cursor:pointer;font:500 .56rem "JetBrains Mono",monospace}.sb-step-skip:hover,.sb-step-skip:focus-visible{color:#c8d3d0}.sb-step-hint{margin-top:22px;color:#435357;font:500 .49rem/1.5 "JetBrains Mono",monospace}.sb-step-closing{opacity:0;visibility:hidden;transition:opacity .55s ease,visibility .55s ease}.sb-step-entry:not(.sb-step-closing){animation:sbStepIn .55s ease both}@keyframes sbStepIn{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
-      @media(max-width:760px){.sb-step-shell{max-height:calc(100vh - 28px);overflow:auto}.sb-step-body{grid-template-columns:1fr;min-height:0}.sb-step-side{border-left:0;border-top:1px solid rgba(255,255,255,.055);padding:24px}.sb-step-terminal{padding:30px 24px}.sb-step-title{font-size:clamp(2rem,12vw,3.6rem)}.sb-step-log{margin-top:25px}.sb-step-avatar{width:68px;height:68px;margin-bottom:15px}.sb-step-enter{margin-top:20px}}
-      @media(max-width:430px){.sb-step-entry{padding:8px}.sb-step-top{padding:13px 14px;font-size:.52rem}.sb-step-terminal{padding:26px 18px}.sb-step-side{padding:20px 18px}.sb-step-message{font-size:.72rem}.sb-step-log{font-size:.52rem;padding:12px}.sb-step-log div{gap:6px}.sb-step-hint{font-size:.45rem}}
-      @media(prefers-reduced-motion:reduce){.sb-step-entry,.sb-step-progress i,.sb-step-closing{animation:none!important;transition:none!important}}
+      #sb-gateway{position:fixed;inset:0;z-index:1000000;overflow:hidden;background:#010304;color:#e8fff5;font-family:"JetBrains Mono",monospace;cursor:crosshair;isolation:isolate}
+      #sb-gateway *{box-sizing:border-box}
+      #sb-gateway .bg{position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(100,243,176,.075),transparent 25%),radial-gradient(circle at 50% 110%,rgba(84,168,255,.045),transparent 38%),#010304}
+      #sb-gateway .stars{position:absolute;inset:0;opacity:.3;background-image:radial-gradient(circle,#64f3b0 0 1px,transparent 1.5px);background-size:73px 71px;animation:sbStars 18s linear infinite}@keyframes sbStars{to{background-position:73px 71px}}
+      #sb-gateway .grid{position:absolute;left:-25%;right:-25%;bottom:-30%;height:76%;background-image:linear-gradient(rgba(100,243,176,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(100,243,176,.055) 1px,transparent 1px);background-size:58px 58px;transform:perspective(600px) rotateX(61deg);transform-origin:center bottom;mask-image:linear-gradient(to top,#000,transparent 92%);animation:sbGrid 6s linear infinite}@keyframes sbGrid{to{background-position:0 58px,58px 0}}
+      #sb-gateway .scan{position:absolute;left:0;right:0;top:-3px;height:2px;background:linear-gradient(90deg,transparent,#64f3b0,transparent);box-shadow:0 0 30px #64f3b055;animation:sbScan 3.2s linear infinite;z-index:10}@keyframes sbScan{to{top:100%}}
+      #sb-gateway .crt{position:absolute;inset:0;z-index:20;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(185,255,241,.035) 4px),radial-gradient(circle,transparent 48%,rgba(0,0,0,.7) 100%)}
+      #sb-gateway .noise{position:absolute;inset:-50%;z-index:21;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:sbNoise .15s steps(2) infinite}@keyframes sbNoise{25%{transform:translate(1%,-1%)}50%{transform:translate(-1%,1%)}75%{transform:translate(1%,1%)}}
+      #sb-gateway .hud{position:absolute;inset:0;padding:clamp(18px,3vw,42px);z-index:12;pointer-events:none}.sb-top,.sb-bottom{display:flex;justify-content:space-between;gap:20px;color:#405858;font-size:8px;letter-spacing:.16em}.sb-top b{color:#64f3b0}.sb-live{display:inline-block;width:5px;height:5px;margin-right:7px;border-radius:50%;background:#64f3b0;box-shadow:0 0 14px #64f3b0;animation:sbBlink .8s infinite}@keyframes sbBlink{50%{opacity:.2}}
+      #sb-gateway .corner{position:absolute;width:52px;height:52px;border-color:rgba(100,243,176,.4);border-style:solid;z-index:12}.sb-tl{left:28px;top:72px;border-width:1px 0 0 1px}.sb-tr{right:28px;top:72px;border-width:1px 1px 0 0}.sb-bl{left:28px;bottom:64px;border-width:0 0 1px 1px}.sb-br{right:28px;bottom:64px;border-width:0 1px 1px 0}
+      #sb-gateway .target{position:absolute;left:50%;top:50%;width:280px;height:280px;transform:translate(-50%,-50%);border:1px solid rgba(100,243,176,.12);border-radius:50%;z-index:5;animation:sbRotate 22s linear infinite}.target:before,.target:after{content:"";position:absolute;background:rgba(100,243,176,.2)}.target:before{width:1px;height:340px;left:50%;top:-30px}.target:after{height:1px;width:340px;top:50%;left:-30px}@keyframes sbRotate{to{transform:translate(-50%,-50%) rotate(360deg)}}
+      #sb-gateway .target i{position:absolute;inset:25%;border:1px dashed rgba(84,168,255,.18);border-radius:50%;animation:sbRotateReverse 10s linear infinite}@keyframes sbRotateReverse{to{transform:rotate(-360deg)}}
+      #sb-gateway .core{position:absolute;inset:0;z-index:8;display:grid;place-items:center;text-align:center;padding:20px}.core-inner{width:min(1100px,94vw)}
+      .protocol{color:#64f3b0;font-size:9px;letter-spacing:.45em;margin-bottom:25px}.gateway-name{position:relative;margin:0;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:clamp(76px,17vw,230px);line-height:.78;letter-spacing:-.105em;color:#effff8;text-shadow:0 0 70px rgba(100,243,176,.13)}
+      .gateway-name:before,.gateway-name:after{content:"SANDESH";position:absolute;inset:0;opacity:0;pointer-events:none}.gateway-name:before{color:#ff315b;transform:translate(-6px,0);animation:sbGlitch 3.8s infinite}.gateway-name:after{color:#1ddcff;transform:translate(6px,0);animation:sbGlitch 3.8s .06s infinite}@keyframes sbGlitch{0%,84%,100%{opacity:0;clip-path:inset(50% 0 50%)}87%{opacity:.8;clip-path:inset(5% 0 80%)}90%{opacity:.55;clip-path:inset(65% 0 15%)}93%{opacity:.65;clip-path:inset(35% 0 42%)}}
+      .gateway-sub{margin-top:25px;color:#607a77;font-size:9px;letter-spacing:.23em}.gateway-phase{display:inline-block;margin-top:18px;padding:8px 14px;border:1px solid #18362e;background:rgba(2,8,7,.75);color:#64f3b0;font-size:8px;letter-spacing:.16em;min-width:250px}
+      .side{position:absolute;z-index:13;top:50%;transform:translateY(-50%);width:255px;padding:14px;border:1px solid #153029;background:rgba(2,7,6,.72);backdrop-filter:blur(7px);box-shadow:0 20px 70px rgba(0,0,0,.45)}.side-left{left:clamp(18px,4vw,65px)}.side-right{right:clamp(18px,4vw,65px)}.side-title{display:flex;justify-content:space-between;color:#4c6663;font-size:8px;letter-spacing:.12em;margin-bottom:10px}.side-title b{color:#64f3b0;font-weight:500}.terminal-log{height:142px;overflow:hidden;color:#526e6b;font-size:8px}.terminal-log div{padding:3px 0;white-space:nowrap}.terminal-log .ok{color:#64f3b0}.terminal-log .blue{color:#5cd7ff}.meter{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;margin-top:10px;color:#425a58;font-size:7px}.meter i{height:2px;background:#132620;overflow:hidden}.meter i b{display:block;width:0;height:100%;background:#64f3b0;box-shadow:0 0 10px #64f3b0;transition:width .3s}.telemetry{display:grid;gap:8px}.telemetry-row{display:flex;justify-content:space-between;color:#49615f;font-size:8px;border-bottom:1px solid rgba(255,255,255,.05);padding-bottom:7px}.telemetry-row:last-child{border:0}.telemetry-row b{color:#64f3b0;font-weight:500}
+      .boot-ui{position:absolute;left:clamp(18px,4vw,65px);right:clamp(18px,4vw,65px);bottom:27px;z-index:14}.boot-bar{height:2px;background:#10231e}.boot-bar b{display:block;width:0;height:100%;background:#64f3b0;box-shadow:0 0 18px #64f3b0;transition:width .28s}.boot-meta{display:flex;justify-content:space-between;margin-top:8px;color:#425956;font-size:7px;letter-spacing:.12em}.boot-meta b{color:#64f3b0}
+      .gateway-skip{position:absolute;right:clamp(18px,3vw,42px);top:clamp(18px,3vw,42px);z-index:30;padding:7px 10px;border:1px solid #1b302d;background:rgba(2,6,5,.75);color:#49615f;font:700 7px "JetBrains Mono",monospace;letter-spacing:.1em;cursor:pointer}.gateway-skip:hover{color:#64f3b0;border-color:#64f3b0}
+      #sb-gateway.exit{animation:sbExit .9s cubic-bezier(.7,0,.15,1) forwards}@keyframes sbExit{0%{opacity:1;transform:scale(1);filter:none}25%{filter:contrast(1.8) brightness(1.35);transform:scale(1.01)}50%{transform:scale(1.02) skewX(-1deg);filter:contrast(2.1) brightness(1.6)}72%{transform:scale(1.045) skewX(1.5deg);opacity:.9}100%{opacity:0;transform:scale(1.12);filter:blur(13px)}}
+      @media(max-width:1050px){.side{width:215px}.target{opacity:.6}}
+      @media(max-width:800px){.side{display:none}.gateway-name{font-size:clamp(65px,22vw,135px)}.protocol{font-size:7px;letter-spacing:.27em}.gateway-sub{font-size:7px}.target{width:190px;height:190px}.target:before{height:240px;top:-25px}.target:after{width:240px;left:-25px}.corner{width:34px;height:34px}.sb-tl{left:18px;top:65px}.sb-tr{right:18px;top:65px}.sb-bl{left:18px;bottom:56px}.sb-br{right:18px;bottom:56px}.boot-ui{bottom:23px}}
+      @media(max-width:480px){.sb-top span:last-child,.sb-bottom span:first-child{display:none}.gateway-name{font-size:clamp(58px,24vw,110px)}.gateway-sub{line-height:1.7}.target{width:145px;height:145px}}
+      @media(prefers-reduced-motion:reduce){#sb-gateway *,#sb-gateway:before{animation:none!important;transition:none!important}}
     `;
     document.head.appendChild(style);
 
-    const entry = document.createElement("div");
-    entry.className = "sb-step-entry";
-    entry.setAttribute("role", "dialog");
-    entry.setAttribute("aria-modal", "true");
-    entry.setAttribute("aria-label", "Sandesh portfolio entry");
-    entry.innerHTML = `
-      <div class="sb-step-entry-bg" aria-hidden="true"></div>
-      <div class="sb-step-shell">
-        <div class="sb-step-top"><span class="sb-step-brand">SANDESH <b>//</b> PORTFOLIO ACCESS</span><span class="sb-step-live">● SYSTEM LIVE</span></div>
-        <div class="sb-step-body">
-          <section class="sb-step-terminal">
-            <div class="sb-step-counter" id="sbStepCounter">STEP 01 / 04</div>
-            <h1 class="sb-step-title" id="sbStepTitle">Welcome to <span>Sandesh.</span></h1>
-            <p class="sb-step-message" id="sbStepMessage">Initializing Sandesh portfolio...</p>
-            <div class="sb-step-log"><div><b id="sbLogMark">[ OK ]</b><span id="sbLogLabel">PORTFOLIO CORE</span><span id="sbLogValue">READY</span></div></div>
-            <div class="sb-step-progress"><i id="sbStepProgress"></i></div>
-          </section>
-          <aside class="sb-step-side">
-            <div class="sb-step-avatar" aria-hidden="true"><span>SB</span></div>
-            <strong class="sb-step-name">Sandesh Bajgai</strong>
-            <span class="sb-step-role">IT • NETWORKING • CYBERSECURITY<br>SOFTWARE • AI</span>
-            <div class="sb-step-status"><i></i><span id="sbStatus">SYSTEM INITIALIZING</span></div>
-            <button class="sb-step-enter" id="sbStepAction" type="button">CONTINUE →</button>
-            <button class="sb-step-skip" id="sbStepSkip" type="button">SKIP INTRO / ESC</button>
-            <p class="sb-step-hint">Visual portfolio gateway. No password or real authentication is used.</p>
-          </aside>
-        </div>
-      </div>`;
-    document.body.prepend(entry);
+    const gateway = document.createElement("div");
+    gateway.id = "sb-gateway";
+    gateway.innerHTML = `
+      <div class="bg"></div><div class="stars"></div><div class="grid"></div><div class="scan"></div><div class="crt"></div><div class="noise"></div>
+      <div class="hud"><div class="sb-top"><span><i class="sb-live"></i><b>LIVE</b> // SANDESH DIGITAL ENVIRONMENT</span><span>NODE-07 // SECURE CHANNEL</span></div><div class="sb-bottom"><span>CYBERSECURITY / NETWORKING / SOFTWARE / AI</span><span id="sbClock">00:00:00</span></div></div>
+      <i class="corner sb-tl"></i><i class="corner sb-tr"></i><i class="corner sb-bl"></i><i class="corner sb-br"></i>
+      <div class="target"><i></i></div>
+      <button class="gateway-skip" id="sbGatewaySkip" type="button">SKIP [ESC]</button>
+      <div class="core"><div class="core-inner"><div class="protocol" id="sbProtocol">PROTOCOL // SYSTEM WAKE</div><h1 class="gateway-name">SANDESH</h1><div class="gateway-sub" id="sbMessage">INITIALIZING DIGITAL ENVIRONMENT</div><div class="gateway-phase" id="sbPhase">SYSTEM INITIALIZING</div></div></div>
+      <section class="side side-left"><div class="side-title"><span>LIVE TERMINAL</span><b>STREAM</b></div><div class="terminal-log" id="sbLog"></div><div class="meter"><span>LOAD</span><i><b id="sbMeter"></b></i><span id="sbMeterValue">00%</span></div></section>
+      <section class="side side-right"><div class="side-title"><span>TELEMETRY</span><b>ACTIVE</b></div><div class="telemetry"><div class="telemetry-row"><span>NETWORK</span><b id="sbNetwork">SCANNING</b></div><div class="telemetry-row"><span>CORE</span><b id="sbCore">BOOTING</b></div><div class="telemetry-row"><span>SECURITY</span><b id="sbSecurity">CHECKING</b></div><div class="telemetry-row"><span>IDENTITY</span><b id="sbIdentity">PENDING</b></div><div class="telemetry-row"><span>ACCESS</span><b id="sbAccess">LOCKED</b></div></div></section>
+      <div class="boot-ui"><div class="boot-bar"><b id="sbBar"></b></div><div class="boot-meta"><span>PORTFOLIO BOOT SEQUENCE // VISUAL INTERFACE</span><b id="sbPercent">00%</b></div></div>`;
+    document.body.prepend(gateway);
     document.body.style.overflow = "hidden";
 
-    const counter = entry.querySelector("#sbStepCounter");
-    const title = entry.querySelector("#sbStepTitle");
-    const message = entry.querySelector("#sbStepMessage");
-    const label = entry.querySelector("#sbLogLabel");
-    const value = entry.querySelector("#sbLogValue");
-    const status = entry.querySelector("#sbStatus");
-    const progress = entry.querySelector("#sbStepProgress");
-    const action = entry.querySelector("#sbStepAction");
-    const skip = entry.querySelector("#sbStepSkip");
-    let index = 0;
+    const $ = (id) => gateway.querySelector(id);
+    const log = $("#sbLog"), bar = $("#sbBar"), meter = $("#sbMeter"), percent = $("#sbPercent"), meterValue = $("#sbMeterValue");
+    const phase = $("#sbPhase"), message = $("#sbMessage"), protocol = $("#sbProtocol");
+    const network = $("#sbNetwork"), core = $("#sbCore"), security = $("#sbSecurity"), identity = $("#sbIdentity"), access = $("#sbAccess");
+    const lines = [
+      ["[ OK ]","kernel interface initialized","CORE ONLINE"],
+      ["[ OK ]","loading encrypted visual modules","MODULES READY"],
+      ["[NET]","scanning portfolio network nodes","NETWORK LINK"],
+      ["[ OK ]","secure channel established","CHANNEL OPEN"],
+      ["[SEC]","running interface integrity check","INTEGRITY 100%"],
+      ["[ID ]","matching personal environment","IDENTITY FOUND"],
+      ["[ OK ]","loading projects / skills / credentials","CONTENT READY"],
+      ["[SYS]","all systems nominal","ACCESS GRANTED"]
+    ];
+    let progress = 0, closed = false;
 
-    function renderStep() {
-      const step = steps[index];
-      counter.textContent = `STEP ${String(index + 1).padStart(2, "0")} / 04`;
-      if (index === 0) title.innerHTML = "Welcome to <span>Sandesh.</span>";
-      else if (index === 1) title.innerHTML = "Identity <span>Verified.</span>";
-      else if (index === 2) title.innerHTML = "Connection <span>Online.</span>";
-      else title.innerHTML = "Access <span>Granted.</span>";
-      message.textContent = step[1];
-      label.textContent = step[2];
-      value.textContent = step[3];
-      status.textContent = index === 3 ? "ACCESS GRANTED" : step[3];
-      progress.style.width = `${((index + 1) / 4) * 100}%`;
-      action.textContent = index === 3 ? "ENTER SANDESH'S PORTFOLIO  →" : "CONTINUE  →";
+    function addLog(i){const row=document.createElement("div");row.innerHTML=`<span class="${i%3===2?'blue':'ok'}">${lines[i][0]}</span> ${lines[i][1]} <span style="color:#334a49">// ${lines[i][2]}</span>`;log.appendChild(row);while(log.children.length>8)log.removeChild(log.firstChild)}
+    function setState(p){progress=p;bar.style.width=p+"%";meter.style.width=p+"%";percent.textContent=String(p).padStart(2,"0")+"%";meterValue.textContent=String(p).padStart(2,"0")+"%"}
+    function tickClock(){const d=new Date();$("#sbClock").textContent=[d.getHours(),d.getMinutes(),d.getSeconds()].map(x=>String(x).padStart(2,"0")).join(":")}
+    tickClock();const clockTimer=setInterval(tickClock,1000);
+
+    function finish(){if(closed)return;closed=true;clearInterval(clockTimer);try{sessionStorage.setItem(KEY,"1")}catch(e){}gateway.classList.add("exit");document.body.style.overflow="";setTimeout(()=>{gateway.remove();style.remove()},reduced?0:900)}
+    function run(){
+      if(reduced){setState(100);phase.textContent="ACCESS GRANTED";message.textContent="ENTERING DIGITAL ENVIRONMENT";network.textContent="ONLINE";core.textContent="READY";security.textContent="SECURE";identity.textContent="VERIFIED";access.textContent="GRANTED";addLog(7);setTimeout(finish,250);return}
+      let i=0;const timer=setInterval(()=>{
+        if(closed){clearInterval(timer);return}
+        const item=lines[i];addLog(i);const p=Math.min(100,Math.round(((i+1)/lines.length)*100));setState(p);
+        if(i===1){protocol.textContent="PROTOCOL 02 // MODULE LOAD";phase.textContent="LOADING MODULES";core.textContent="READY"}
+        if(i===2){protocol.textContent="PROTOCOL 03 // NETWORK LINK";phase.textContent="NETWORK SCANNING";network.textContent="ONLINE"}
+        if(i===4){protocol.textContent="PROTOCOL 04 // SECURITY CHECK";phase.textContent="INTEGRITY VERIFIED";security.textContent="SECURE"}
+        if(i===5){protocol.textContent="PROTOCOL 05 // IDENTITY MATCH";phase.textContent="IDENTITY VERIFIED";identity.textContent="VERIFIED"}
+        if(i===7){protocol.textContent="PROTOCOL 06 // ACCESS GRANTED";phase.textContent="ACCESS GRANTED";message.textContent="ENTERING SANDESH'S DIGITAL ENVIRONMENT";access.textContent="GRANTED";setTimeout(finish,700)}
+        i++;if(i>=lines.length)clearInterval(timer);
+      },520);
     }
-
-    function closeEntry() {
-      entry.classList.add("sb-step-closing");
-      document.body.style.overflow = "";
-      window.setTimeout(function () { entry.remove(); style.remove(); }, reduced ? 0 : 560);
-    }
-
-    action.addEventListener("click", function () {
-      if (index < 3) { index += 1; renderStep(); }
-      else closeEntry();
-    });
-    skip.addEventListener("click", closeEntry);
-    document.addEventListener("keydown", function onKey(event) {
-      if (!document.body.contains(entry)) { document.removeEventListener("keydown", onKey); return; }
-      if (event.key === "Escape") { event.preventDefault(); closeEntry(); }
-      else if (event.key === "Enter") { event.preventDefault(); action.click(); }
-    });
-
-    renderStep();
-    action.focus({ preventScroll: true });
+    $("#sbGatewaySkip").addEventListener("click",finish);
+    document.addEventListener("keydown",function onKey(e){if(!document.body.contains(gateway)){document.removeEventListener("keydown",onKey);return}if(e.key==="Escape"){e.preventDefault();finish()}});
+    run();
   });
 })();

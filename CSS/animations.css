@@ -48,10 +48,7 @@
 .cert-card p:last-of-type{margin-top:9px}
 .cert-card .project-link{margin:18px 22px 22px}
 
-/* =========================================================
-   STAGE 7 — CONTACT / CONVERSION
-   Professional communication surface without changing form logic
-   ========================================================= */
+/* Stage 7 — Contact / Conversion */
 #contact .section-head{max-width:820px}
 #contact .section-head::after{content:"Have an opportunity, project idea, or technical question? Send a message and I’ll get back to you.";display:block;max-width:650px;margin-top:14px;color:var(--text-secondary);font-size:.92rem;line-height:1.75}
 .contact-grid{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(0,1.2fr);gap:20px;align-items:stretch}
@@ -80,15 +77,35 @@
 .contact-form .btn-full{min-height:50px;cursor:pointer}
 .contact-form .btn-full:disabled{cursor:wait;opacity:.65;transform:none}
 .hp-field{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}
-
 .site-footer{border-top:1px solid rgba(27,39,52,.8)}
 .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:28px;padding-bottom:28px}
 .footer-inner p{color:var(--text-muted);font-size:.72rem}
 .back-top{color:var(--accent);font:600 .62rem/1 "JetBrains Mono",monospace;letter-spacing:.08em;transition:transform .25s ease,color .25s ease}
 .back-top:hover{transform:translateY(-2px);color:var(--text-primary)}
 
+/* Contact refinement: make the section feel like a professional communication desk */
+#contact{position:relative}
+#contact::before{content:"";position:absolute;left:50%;top:38%;width:min(760px,90vw);height:420px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(100,243,176,.045),transparent 68%);pointer-events:none}
+#contact .section-head,#contact .contact-grid{position:relative;z-index:1}
+#contact .section-kicker{display:inline-flex;align-items:center;gap:9px}
+#contact .section-kicker::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px rgba(100,243,176,.7)}
+#contact .contact-info{overflow:hidden}
+#contact .contact-info::before,#contact .contact-form::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),rgba(84,168,255,.45),transparent);opacity:.9}
+#contact .contact-info::after{content:"AVAILABLE FOR SELECTED OPPORTUNITIES";position:absolute;right:20px;top:20px;padding:6px 8px;border:1px solid rgba(100,243,176,.16);border-radius:5px;background:rgba(5,7,10,.65);color:var(--accent);font:600 .48rem/1 "JetBrains Mono",monospace;letter-spacing:.08em}
+#contact .contact-lead{font-size:clamp(1rem,1.7vw,1.18rem);max-width:520px}
+#contact .contact-links li a{position:relative;min-height:67px;padding:15px 16px 15px 18px}
+#contact .contact-links li a::after{content:"↗";position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--text-muted);font:500 .9rem/1 "JetBrains Mono",monospace;transition:color .25s ease,transform .25s ease}
+#contact .contact-links li a:hover::after{color:var(--accent);transform:translate(3px,-50%)}
+#contact .contact-form{overflow:hidden}
+#contact .contact-form::after{content:"SECURE CHANNEL";position:absolute;right:20px;top:20px;padding:6px 8px;border:1px solid rgba(84,168,255,.17);border-radius:5px;background:rgba(5,7,10,.65);color:var(--accent-blue);font:600 .48rem/1 "JetBrains Mono",monospace;letter-spacing:.08em}
+#contact .contact-form .field:last-of-type{margin-bottom:16px}
+#contact .contact-form input::placeholder,#contact .contact-form textarea::placeholder{color:#526170;opacity:1}
+#contact .contact-form input:hover,#contact .contact-form textarea:hover{border-color:rgba(255,255,255,.13)}
+#contact .contact-form .btn-primary{box-shadow:0 12px 35px rgba(100,243,176,.08)}
+#contact .contact-form .btn-primary:hover{box-shadow:0 14px 40px rgba(100,243,176,.16)}
+
 @media(max-width:900px){.certs-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:800px){.contact-grid{grid-template-columns:1fr}.contact-info,.contact-form{padding:24px}}
+@media(max-width:800px){.contact-grid{grid-template-columns:1fr}.contact-info,.contact-form{padding:24px}.contact-info::after,.contact-form::after{position:static;display:inline-block;margin-top:22px}}
 @media(max-width:700px){.projects-grid{grid-template-columns:1fr}.projects-filter{width:100%;flex-wrap:nowrap;scrollbar-width:none}.projects-filter::-webkit-scrollbar{display:none}.filter-btn{flex:0 0 auto}#projectsGrid .project-card:first-child{grid-column:auto;min-height:290px}.certs-grid{grid-template-columns:1fr}.cert-card img{height:210px}}
-@media(max-width:560px){.contact-links li a{padding:13px}.footer-inner{align-items:flex-start;flex-direction:column}.contact-form textarea{min-height:130px}}
+@media(max-width:560px){.contact-links li a{padding:13px}.footer-inner{align-items:flex-start;flex-direction:column}.contact-form textarea{min-height:130px}.contact-info,.contact-form{padding:20px}#contact .contact-info::after,#contact .contact-form::after{font-size:.44rem}}
 @media(prefers-reduced-motion:reduce){.reveal,.reveal-left,.reveal-right,.stagger>*,.project-card,.project-link,.cert-card,.cert-card img,.contact-links li a,.back-top,.field-error{transition:none!important;animation:none!important}}

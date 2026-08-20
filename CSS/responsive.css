@@ -13,3 +13,23 @@
 html,body{max-width:100%;overflow-x:hidden}img,canvas,video,svg{max-width:100%;height:auto}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 @media print{.nav,.nav-progress,.hero-canvas,.scroll-cue,.bg-grid,.bg-noise,.hero-cta,.contact-form{display:none!important}body{background:white;color:black}.section,.section-alt{padding:30px 0;background:white;border:none}.about-copy,.about-panel,.skill-card,.project-card,.cert-card,.contact-info,.timeline-item{border:1px solid #ccc;background:white;color:black}}
+
+/* =========================================================
+   MOBILE PROJECTS QA
+   Prevent injected desktop project styles from overriding
+   the responsive layout on narrow screens.
+   ========================================================= */
+@media (max-width:700px){
+  #projects .section-inner{width:100%;min-width:0}
+  #projects .section-head{width:100%;max-width:100%;min-width:0}
+  #projects .section-head p{display:block;width:100%;max-width:760px;margin:18px 0 0;line-height:1.7;overflow-wrap:anywhere}
+  #projects .projects-filter{position:relative;z-index:5;display:flex;width:100%;max-width:100%;min-width:0;flex-wrap:nowrap;overflow-x:auto;gap:8px;margin:0 0 24px;padding:0 0 5px}
+  #projects #projectsGrid{display:grid;width:100%;max-width:100%;min-width:0;grid-template-columns:minmax(0,1fr)!important;gap:14px}
+  #projects #projectsGrid .project-card-pro{width:100%;min-width:0;min-height:0;padding:22px}
+  #projects #projectsGrid .project-card-pro p{width:auto;max-width:none;overflow-wrap:anywhere}
+}
+@media (max-width:430px){
+  #projects .section-head{margin-bottom:28px}
+  #projects .section-title{font-size:clamp(2.35rem,12vw,3.2rem)}
+  #projects #projectsGrid .project-card-pro{padding:19px}
+}

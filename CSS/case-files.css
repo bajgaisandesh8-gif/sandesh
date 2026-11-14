@@ -1,0 +1,24 @@
+/* Field documentation and evidence cards. */
+.case-files-section { position: relative; }
+.case-files-intro { max-width: 760px; margin-top: 18px; color: var(--text-secondary); line-height: 1.75; }
+.case-files-grid,.proof-work-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+.case-file-card,.proof-work-card { position: relative; min-width: 0; padding: 25px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface-card); transition: border-color var(--ease),transform var(--ease),box-shadow var(--ease); }
+.case-file-card:hover,.proof-work-card:hover { border-color: var(--line-strong); transform: translateY(-2px); box-shadow: var(--shadow-card); }
+.case-file-top,.proof-work-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.case-file-index { color: var(--text-muted); font: 600 .62rem "JetBrains Mono",monospace; letter-spacing: .12em; }
+.case-file-type,.proof-work-status { color: var(--accent-strong); font: 600 .58rem "JetBrains Mono",monospace; letter-spacing: .1em; }
+.case-file-card h3,.proof-work-card h3 { margin-top: 22px; color: var(--text); font-size: 1.2rem; letter-spacing: -.025em; }
+.case-file-card>p,.proof-work-card>p { margin-top: 10px; color: var(--text-secondary); font-size: .86rem; line-height: 1.75; }
+.case-file-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 17px; }
+.case-file-tags span { padding: 6px 8px; border: 1px solid var(--line); border-radius: 4px; color: var(--text-secondary); background: var(--surface-subtle); font: 500 .58rem "JetBrains Mono",monospace; }
+.case-file-card details { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line); }
+.case-file-card summary { color: var(--accent-strong); cursor: pointer; list-style: none; font: 700 .62rem "JetBrains Mono",monospace; letter-spacing: .1em; }
+.case-file-card summary::-webkit-details-marker { display: none; }.case-file-card summary::after { content: "＋"; float: right; color: var(--text-muted); }.case-file-card details[open] summary::after { content: "－"; }
+.case-file-notes { display: grid; gap: 13px; margin-top: 16px; }.case-file-notes h4 { color: var(--text); font: 600 .64rem "JetBrains Mono",monospace; letter-spacing: .08em; }.case-file-notes p { margin-top: 5px; color: var(--text-secondary); font-size: .8rem; line-height: 1.7; }
+.proof-work-heading { margin: 88px 0 30px; }.proof-work-card { display: flex; min-height: 205px; flex-direction: column; align-items: flex-start; }.proof-work-card h3 { margin-top: 18px; }
+.proof-work-card .proof-links { display: flex; flex-wrap: wrap; gap: 9px; margin-top: auto; padding-top: 20px; }.proof-work-card .proof-links a { color: var(--accent-strong); font: 700 .6rem "JetBrains Mono",monospace; letter-spacing: .07em; }.proof-work-card .proof-links a:hover { text-decoration: underline; }
+.proof-summary-list { display: grid; gap: 0; margin-top: 20px; }.proof-summary-list>a { display: grid; grid-template-columns: 28px 1fr 16px; align-items: center; gap: 10px; padding: 13px 0; border-top: 1px solid var(--line); }
+.proof-summary-index { color: var(--accent); font: 600 .6rem "JetBrains Mono",monospace; }.proof-summary-list strong { display: block; color: var(--text); font-size: .78rem; font-weight: 600; }.proof-summary-list small { display: block; margin-top: 4px; color: var(--text-muted); font-size: .68rem; }.proof-summary-arrow { color: var(--text-muted); }
+.proof-summary-note { margin-top: 17px; color: var(--text-muted); font-size: .68rem; line-height: 1.6; }
+@media(max-width:700px) { .case-files-grid,.proof-work-grid { grid-template-columns: 1fr; }.case-file-card,.proof-work-card { padding: 21px; }.proof-work-heading { margin-top: 68px; } }
+@media(prefers-reduced-motion:reduce) { .case-file-card,.proof-work-card { transition: none; } }

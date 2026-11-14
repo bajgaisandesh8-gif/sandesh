@@ -1,8 +1,8 @@
 /* =========================================================
    SANDESH BAJGAI PORTFOLIO — CONTACT
    ---------------------------------------------------------
-   Client-side validation + honeypot + Supabase submission
-   with a safe mailto fallback. Never reports a fake success.
+   Client-side validation + honeypot + explicit email fallback.
+   Ambiguous database outcomes never trigger an automatic resend.
 ========================================================= */
 (function () {
     "use strict";
@@ -65,8 +65,19 @@
 
     function setStatus(message, type = "") {
         if (!statusElement) return;
-        statusElement.textContent = message;
+        statusElement.replaceChildren(document.createTextNode(message));
         statusElement.className = "form-status" + (type ? ` ${type}` : "");
+    }
+
+    function setEmailFallback(data, message) {
+        if (!statusElement) return;
+        statusElement.replaceChildren(document.createTextNode(message + " "));
+        const link = document.createElement("a");
+        link.href = mailto(data);
+        link.textContent = "Open an email draft";
+        link.className = "contact-email-fallback";
+        statusElement.appendChild(link);
+        statusElement.className = "form-status error";
     }
 
     function setLoading(loading) {
@@ -84,22 +95,39 @@
 
     async function saveToSupabase(data) {
         const client = window.supabaseClient;
-        if (!client) return { success: false, reason: "not-configured" };
+        if (!client) return { outcome: "unavailable" };
 
         const payload = { name: data.name, email: data.email, subject: data.subject, message: data.message };
-        const tables = ["contact_messages", "contact_message"];
+        const controller = new AbortController();
+        let timeoutId;
 
-        for (const table of tables) {
-            try {
-                const request = client.from(table).insert(payload);
-                const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), SUPABASE_TIMEOUT_MS));
-                const { error } = await Promise.race([request, timeout]);
-                if (!error) return { success: true, reason: "saved" };
-            } catch (error) {
-                console.warn(`[Contact] ${table} unavailable.`, error);
+        try {
+            const request = client
+                .from("contact_messages")
+                .insert(payload)
+                .abortSignal(controller.signal);
+
+            const timeout = new Promise((_, reject) => {
+                timeoutId = window.setTimeout(() => {
+                    controller.abort();
+                    reject(new Error("Contact request timed out; server outcome is unknown."));
+                }, SUPABASE_TIMEOUT_MS);
+            });
+
+            const result = await Promise.race([request, timeout]);
+            if (!result.error) return { outcome: "saved" };
+
+            const status = Number(result.error.status);
+            if (status >= 400 && status < 500) {
+                return { outcome: "rejected", error: result.error };
             }
+            return { outcome: "unknown", error: result.error };
+        } catch (error) {
+            console.warn("[Contact] Submission outcome could not be confirmed.", error);
+            return { outcome: "unknown", error };
+        } finally {
+            if (timeoutId) window.clearTimeout(timeoutId);
         }
-        return { success: false, reason: "database-unavailable" };
     }
 
     form.addEventListener("submit", async (event) => {
@@ -116,17 +144,26 @@
         setStatus("SECURE CHANNEL: CONNECTING...", "loading");
 
         const saved = await saveToSupabase(result.data);
-        if (saved.success) {
+        setLoading(false);
+
+        if (saved.outcome === "saved") {
             form.reset();
             clearErrors();
-            setLoading(false);
             setStatus("Message received. I'll get back to you soon.", "success");
             return;
         }
 
-        setLoading(false);
-        setStatus("Database is unavailable. Opening your email app instead.", "error");
-        window.setTimeout(() => { window.location.href = mailto(result.data); }, 250);
+        if (saved.outcome === "rejected" || saved.outcome === "unavailable") {
+            setEmailFallback(result.data, "The database did not accept the message. You can send it directly instead:");
+            return;
+        }
+
+        // A timeout/network failure is ambiguous: the insert may have reached
+        // the server. Never auto-open email or silently retry, which could duplicate it.
+        setEmailFallback(
+            result.data,
+            "I couldn't confirm whether the message was saved. Don't submit it again yet; use the email draft only if you decide to send it separately."
+        );
     });
 
     [
@@ -139,5 +176,5 @@
         });
     });
 
-    console.log("%c[CONTACT]%c secure contact flow initialized.", "color:#64f3b0;font-weight:bold;", "color:inherit");
+    console.log("%c[CONTACT]%c single-attempt contact flow initialized.", "color:#64f3b0;font-weight:bold;", "color:inherit");
 })();

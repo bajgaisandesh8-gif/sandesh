@@ -146,8 +146,8 @@
 
         const particleCount =
             isMobile
-                ? 180
-                : 420;
+                ? 90
+                : 180;
 
 
         const connectionDistance =
@@ -238,7 +238,7 @@
         const particleMaterial =
             new THREE.PointsMaterial({
 
-                color: 0x64f3b0,
+                color: 0x55cfe2,
 
                 size:
                     isMobile
@@ -285,8 +285,8 @@
                 particleCount *
                 particleCount,
                 isMobile
-                    ? 3500
-                    : 7000
+                    ? 900
+                    : 2000
             );
 
 
@@ -308,7 +308,7 @@
         const lineMaterial =
             new THREE.LineBasicMaterial({
 
-                color: 0x64f3b0,
+                color: 0x55cfe2,
 
                 transparent: true,
 
@@ -423,6 +423,7 @@
 
         let pageVisible =
             !document.hidden;
+        let sceneVisible = true;
 
 
         document.addEventListener(
@@ -431,28 +432,31 @@
 
                 pageVisible =
                     !document.hidden;
+
+                syncAnimation();
             }
         );
+
+        if ("IntersectionObserver" in window) {
+            const sceneObserver = new IntersectionObserver((entries) => {
+                sceneVisible = entries[0].isIntersecting;
+                syncAnimation();
+            });
+            sceneObserver.observe(canvas);
+        }
 
 
         /* =================================================
            ANIMATION
         ================================================= */
 
-        let animationFrame;
+        let animationFrame = 0;
 
 
         function animate() {
 
-            animationFrame =
-                requestAnimationFrame(
-                    animate
-                );
-
-
-            if (!pageVisible) {
-                return;
-            }
+            animationFrame = 0;
+            if (!pageVisible || !sceneVisible) return;
 
 
             /* ---------------------------------------------
@@ -771,10 +775,29 @@
                 scene,
                 camera
             );
+
+            if (!reducedMotion) {
+                animationFrame = requestAnimationFrame(animate);
+            }
         }
 
 
-        animate();
+        function syncAnimation() {
+            if (!pageVisible || !sceneVisible) {
+                cancelAnimationFrame(animationFrame);
+                animationFrame = 0;
+                return;
+            }
+
+            if (reducedMotion) {
+                animate();
+            } else if (!animationFrame) {
+                animationFrame = requestAnimationFrame(animate);
+            }
+        }
+
+
+        syncAnimation();
 
 
         /* =================================================

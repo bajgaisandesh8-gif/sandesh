@@ -1,0 +1,46 @@
+/* Capability map and illustrative device topology share the site token system. */
+.topology-section { position: relative; isolation: isolate; }
+.topology-intro { max-width: 690px; margin-top: 18px; color: var(--text-secondary); line-height: 1.75; }
+.topology-shell { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-card); box-shadow: var(--shadow-card); }
+.topology-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--line); color: var(--text-secondary); font: 600 .62rem/1.4 "JetBrains Mono",monospace; letter-spacing: .1em; }
+.topology-live-dot { display: inline-block; width: 7px; height: 7px; margin-right: 9px; border-radius: 50%; background: var(--accent); }
+.topology-hint { color: var(--text-muted); font-size: .56rem; }
+.topology-graph { position: relative; min-height: 460px; overflow: hidden; background: radial-gradient(ellipse at 50% 50%,var(--accent-wash),transparent 42%),linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px); background-size: auto,32px 32px,32px 32px; }
+.topology-connections { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.topology-connections path { fill: none; stroke: var(--line-strong); stroke-width: 1.4; stroke-dasharray: 5 8; }
+.topology-connections circle { fill: none; stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 8; }
+.topology-center { position: absolute; top: 50%; left: 50%; z-index: 2; display: flex; width: 150px; height: 150px; transform: translate(-50%,-50%); flex-direction: column; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--line-strong); border-radius: 50%; background: var(--bg-raised); box-shadow: 0 0 0 10px var(--surface-subtle); }
+.topology-center-mark { display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid var(--line-strong); border-radius: 12px; color: var(--accent); font: 700 1rem "JetBrains Mono",monospace; }
+.topology-center strong { color: var(--text); font: 700 .76rem "JetBrains Mono",monospace; letter-spacing: .12em; }
+.topology-center small { color: var(--text-muted); font: 500 .48rem "JetBrains Mono",monospace; letter-spacing: .1em; }
+.topology-node { position: absolute; z-index: 3; display: flex; min-width: 174px; min-height: 76px; padding: 12px 14px; flex-direction: column; align-items: flex-start; justify-content: center; gap: 5px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-raised); color: var(--text); text-align: left; box-shadow: var(--shadow-card); transition: border-color var(--ease),background var(--ease),transform var(--ease); }
+.topology-node:hover,.topology-node:focus-visible,.topology-node.is-active { border-color: var(--line-strong); background: var(--bg-soft); box-shadow: 0 0 0 3px var(--accent-wash); }
+.topology-node:hover { transform: translateY(-2px); }
+.topology-node strong { font: 700 .62rem "JetBrains Mono",monospace; letter-spacing: .075em; }
+.topology-node small { color: var(--text-muted); font-size: .64rem; line-height: 1.35; }
+.node-icon { color: var(--accent); font: 700 1rem "JetBrains Mono",monospace; }
+.node-network { top: 12%; left: 8%; }.node-security { top: 3%; left: calc(50% - 87px); }.node-development { top: 12%; right: 8%; }.node-field { bottom: 12%; left: 8%; }.node-projects { bottom: 3%; left: calc(50% - 87px); }.node-learning { right: 8%; bottom: 12%; }
+.topology-detail { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 24px 26px; border-top: 1px solid var(--line); background: var(--surface-subtle); }
+.topology-detail-copy { max-width: 720px; }.topology-detail-kicker { color: var(--accent); font: 600 .58rem "JetBrains Mono",monospace; letter-spacing: .12em; }
+.topology-detail h3 { margin-top: 9px; color: var(--text); font-size: 1.18rem; letter-spacing: -.025em; }
+.topology-detail p { margin-top: 8px; color: var(--text-secondary); font-size: .84rem; line-height: 1.7; }
+.topology-detail-link { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 10px; padding: 11px 13px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); color: var(--accent-strong); font: 700 .58rem "JetBrains Mono",monospace; letter-spacing: .08em; transition: background var(--ease); }
+.topology-detail-link:hover { background: var(--accent-wash); }
+.topology-footnote { padding: 0 26px 18px; color: var(--text-muted); font-size: .66rem; line-height: 1.6; }
+.device-topology { margin: 0 20px 22px; padding: clamp(18px,3vw,28px); border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--bg-raised); }
+.device-topology-heading { max-width: 620px; }.device-topology-heading h3 { margin: 14px 0 0; font-size: clamp(1.25rem,2.5vw,1.7rem); letter-spacing: -.035em; }.device-topology-heading p { margin: 8px 0 0; color: var(--text-secondary); font-size: .82rem; }
+.device-topology-canvas { position: relative; height: 340px; margin-top: 22px; }
+.device-topology-lines { position: absolute; inset: 0; width: 100%; height: 100%; }.device-topology-lines path { fill: none; stroke: var(--line-strong); stroke-width: 2; stroke-dasharray: 5 6; }
+.device-node { position: absolute; display: flex; width: 150px; min-height: 64px; transform: translateX(-50%); flex-direction: row; align-items: center; justify-content: flex-start; gap: 11px; padding: 10px 13px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-card); color: var(--text); text-align: left; }
+.device-node span { color: var(--accent); font-size: 1.2rem; }.device-node strong { font-size: .77rem; font-weight: 600; }.device-node:hover,.device-node:focus-visible,.device-node[aria-pressed="true"] { border-color: var(--line-strong); background: var(--accent-wash); }
+.device-router { top: 0; left: 50%; }.device-switch { top: 100px; left: 50%; }.device-server { top: 205px; left: 21%; }.device-clients { top: 205px; left: 50%; }.device-ap { top: 205px; left: 79%; }.device-wireless { top: 278px; left: 79%; }
+.device-topology-status { min-height: 1.5em; margin: 12px 0 0; color: var(--text-secondary); font-size: .78rem; }
+@media(max-width:760px) {
+ .topology-graph { display: grid; min-height: 0; padding: 24px 16px; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+ .topology-connections { display: none; }.topology-center { position: relative; top: auto; left: auto; grid-column: 1/-1; width: 112px; height: 112px; margin: 0 auto 10px; transform: none; }.topology-center-mark { width: 34px; height: 34px; }
+ .topology-node { position: static; width: 100%; min-width: 0; min-height: 92px; }.topology-node strong { font-size: .57rem; }.topology-node small { font-size: .61rem; }
+ .topology-detail { align-items: flex-start; flex-direction: column; padding: 20px; }.topology-footnote { padding-inline: 20px; }.device-topology { margin-inline: 12px; }
+ .device-topology-canvas { display: grid; height: auto; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }.device-topology-lines { display: none; }.device-node { position: static; width: 100%; min-height: 58px; transform: none; padding: 9px; gap: 7px; }.device-node strong { font-size: .68rem; }
+}
+@media(max-width:380px) { .topology-graph { padding: 18px 10px; gap: 9px; }.topology-node { min-height: 88px; padding: 10px; }.topology-node strong { font-size: .52rem; }.topology-node small { font-size: .57rem; }.topology-toolbar { padding: 13px; }.topology-hint { font-size: .48rem; } }
+@media(prefers-reduced-motion:reduce) { .topology-node,.topology-detail-link,.device-node { transition: none; } }

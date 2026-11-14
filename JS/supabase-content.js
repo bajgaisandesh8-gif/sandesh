@@ -2,12 +2,11 @@
    SANDESH BAJGAI PORTFOLIO
    supabase-content.js
    ---------------------------------------------------------
-   Optional remote portfolio content loader.
+   Optional remote content loader.
 
-   The static portfolio remains the fallback. Remote data is
-   used only when Supabase is available AND the corresponding
-   table returns data. This prevents a broken/empty database
-   from blanking the live GitHub Pages site.
+   The static project engine owns skills filtering and project
+   cards/interactions. Remote data must not replace those
+   client-side views with a partial or incompatible dataset.
 ========================================================= */
 
 (function () {
@@ -28,20 +27,32 @@
         return Boolean(window.supabaseClient);
     }
 
-    async function fetchRows(table, columns = "*") {
+    function safeContentURL(value) {
+        if (!value) return "";
+        try {
+            const url = new URL(value, window.location.href);
+            return url.protocol === "https:" || url.origin === window.location.origin ? url.href : "";
+        } catch (_) {
+            return "";
+        }
+    }
+
+    async function fetchRows(table, columns, orderBy = []) {
         if (!clientReady()) return null;
 
         try {
-            const { data, error } = await window.supabaseClient
-                .from(table)
-                .select(columns)
-                .limit(MAX_ROWS);
+            let query = window.supabaseClient.from(table).select(columns);
+            orderBy.forEach(({ column, ascending = true, nullsFirst }) => {
+                const options = { ascending };
+                if (typeof nullsFirst === "boolean") options.nullsFirst = nullsFirst;
+                query = query.order(column, options);
+            });
 
+            const { data, error } = await query.limit(MAX_ROWS);
             if (error) {
                 console.warn(`[Supabase] ${table} unavailable:`, error.message);
                 return null;
             }
-
             return Array.isArray(data) ? data : [];
         } catch (error) {
             console.warn(`[Supabase] ${table} request failed:`, error);
@@ -49,104 +60,80 @@
         }
     }
 
-    function renderSkills(rows) {
-        const container = document.getElementById("skillsGrid");
-        if (!container || !rows.length) return;
-
-        container.innerHTML = rows
-            .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
-            .map((skill) => `
-                <article class="skill-card reveal" data-category="${escapeHTML(skill.category)}">
-                    <div class="skill-card-header">
-                        <span class="skill-category">${escapeHTML(skill.category)}</span>
-                    </div>
-                    <h3>${escapeHTML(skill.name || skill.title)}</h3>
-                    <p>${escapeHTML(skill.description)}</p>
-                    <div class="skill-tags">
-                        ${skill.level ? `<span>${escapeHTML(skill.level)}</span>` : ""}
-                    </div>
-                </article>
-            `).join("");
-    }
-
     function renderExperience(rows) {
         const container = document.getElementById("timeline");
-        if (!container || !rows.length) return;
+        const completeRows = rows.filter((item) => item.role && item.description);
+        if (!container || !completeRows.length) return;
 
-        container.innerHTML = rows
-            .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
-            .map((item) => {
-                const start = item.start_date || "";
-                const end = item.end_date || "Present";
-                const date = start ? `${start} — ${end}` : "EXPERIENCE";
-                return `
-                    <article class="timeline-item reveal">
-                        <span class="date">${escapeHTML(date)}</span>
-                        <h3>${escapeHTML(item.role)}</h3>
-                        <p class="timeline-company">${escapeHTML(item.company)}${item.location ? ` · ${escapeHTML(item.location)}` : ""}</p>
-                        <p>${escapeHTML(item.description)}</p>
-                    </article>
-                `;
-            }).join("");
-    }
-
-    function renderProjects(rows) {
-        const container = document.getElementById("projectsGrid");
-        if (!container || !rows.length) return;
-
-        container.innerHTML = rows
-            .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
-            .map((project) => `
-                <article class="project-card reveal" data-category="${escapeHTML(project.category)}">
-                    <div class="project-card-top">
-                        <span class="project-category">${escapeHTML(project.category)}</span>
-                    </div>
-                    ${project.cover_image ? `<img src="${escapeHTML(project.cover_image)}" alt="${escapeHTML(project.title)}" loading="lazy" decoding="async">` : ""}
-                    <h3>${escapeHTML(project.title)}</h3>
-                    <p>${escapeHTML(project.short_description)}</p>
-                    <div class="project-tech">
-                        ${project.github_url ? `<a class="project-link" href="${escapeHTML(project.github_url)}" target="_blank" rel="noopener noreferrer">GitHub</a>` : ""}
-                        ${project.live_url ? `<a class="project-link" href="${escapeHTML(project.live_url)}" target="_blank" rel="noopener noreferrer">Live Site</a>` : ""}
-                    </div>
+        container.innerHTML = completeRows.map((item) => {
+            const start = item.start_date || "";
+            const end = item.end_date || "";
+            const date = start ? (end ? `${start} — ${end}` : start) : "EXPERIENCE";
+            const role = item.company && item.company.includes("Soaltee Westend") && /intern/i.test(item.role || "")
+                ? "IT Support & Networking Assistant (Contract)"
+                : item.role;
+            return `
+                <article class="timeline-item reveal">
+                    <span class="date">${escapeHTML(date)}</span>
+                    <h3>${escapeHTML(role)}</h3>
+                    <p class="timeline-company">${escapeHTML(item.company)}${item.location ? ` · ${escapeHTML(item.location)}` : ""}</p>
+                    <p>${escapeHTML(item.description)}</p>
                 </article>
-            `).join("");
+            `;
+        }).join("");
     }
 
     function renderCertifications(rows) {
         const container = document.getElementById("certsGrid");
-        if (!container || !rows.length) return;
+        const completeRows = rows.filter((cert) => cert.title && String(cert.title).trim());
+        if (!container || !completeRows.length) return;
 
-        container.innerHTML = rows
-            .map((cert) => `
-                <article class="cert-card reveal">
-                    ${cert.certificate_image ? `<img src="${escapeHTML(cert.certificate_image)}" alt="${escapeHTML(cert.title)}" loading="lazy" decoding="async">` : ""}
-                    <h3>${escapeHTML(cert.title)}</h3>
-                    ${cert.issuer ? `<p>${escapeHTML(cert.issuer)}</p>` : ""}
-                    <p>${escapeHTML(cert.description)}</p>
-                    ${cert.credential_url ? `<a class="project-link" href="${escapeHTML(cert.credential_url)}" target="_blank" rel="noopener noreferrer">View Credential</a>` : ""}
-                </article>
-            `).join("");
+        container.innerHTML = completeRows.map((cert) => {
+            const imageURL = safeContentURL(cert.certificate_image);
+            const credentialURL = safeContentURL(cert.credential_url);
+            const issueDate = cert.issue_date && /^\d{4}-\d{2}-\d{2}$/.test(cert.issue_date)
+                ? `<p><time datetime="${escapeHTML(cert.issue_date)}">${escapeHTML(new Intl.DateTimeFormat(undefined, { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" }).format(new Date(`${cert.issue_date}T00:00:00Z`)))}</time></p>`
+                : "";
+            return `
+            <article class="cert-card reveal">
+                ${imageURL ? `<img src="${escapeHTML(imageURL)}" alt="${escapeHTML(cert.title)}" loading="lazy" decoding="async" width="600" height="360">` : ""}
+                <h3>${escapeHTML(cert.title)}</h3>
+                ${cert.issuer ? `<p>${escapeHTML(cert.issuer)}</p>` : ""}
+                ${issueDate}
+                ${cert.description ? `<p>${escapeHTML(cert.description)}</p>` : ""}
+                ${credentialURL ? `<a class="project-link" href="${escapeHTML(credentialURL)}" target="_blank" rel="noopener noreferrer">View Credential</a>` : ""}
+            </article>
+        `;
+        }).join("");
+
+        container.querySelectorAll("img").forEach((image) => {
+            image.addEventListener("error", () => image.remove(), { once: true });
+        });
     }
 
     async function loadRemoteContent() {
         if (!clientReady()) return;
 
-        const [skills, experience, projects, certifications] = await Promise.all([
-            fetchRows("skills", "id,name,category,description,level,featured,sort_order"),
-            fetchRows("experience", "id,role,company,location,start_date,end_date,description,featured,sort_order"),
-            fetchRows("projects", "id,title,slug,category,short_description,full_description,featured,published,github_url,live_url,cover_image,sort_order"),
-            fetchRows("certifications", "id,title,issuer,issue_date,credential_url,certificate_image,description")
+        const [experience, certifications] = await Promise.all([
+            fetchRows(
+                "experience",
+                "id,role,company,location,start_date,end_date,description,featured,sort_order",
+                [{ column: "sort_order" }, { column: "start_date", ascending: false, nullsFirst: false }]
+            ),
+            fetchRows(
+                "certifications",
+                "id,title,issuer,issue_date,credential_url,certificate_image,description",
+                [{ column: "issue_date", ascending: false, nullsFirst: false }, { column: "title" }]
+            )
         ]);
 
-        if (skills?.length) renderSkills(skills);
         if (experience?.length) renderExperience(experience);
-        if (projects?.length) renderProjects(projects);
         if (certifications?.length) renderCertifications(certifications);
 
-        if (skills?.length || experience?.length || projects?.length || certifications?.length) {
-            console.log("[Supabase] Remote portfolio content loaded.");
+        if (experience?.length || certifications?.length) {
+            console.log("[Supabase] Ordered remote experience and learning content loaded. Static skills and project views remain active.");
         } else {
-            console.info("[Supabase] No remote portfolio rows found. Static content remains active.");
+            console.info("[Supabase] No remote rows found. Static content remains active.");
         }
     }
 
@@ -156,16 +143,14 @@
             return;
         }
 
-        // supabase.js initializes on DOMContentLoaded. Give it a short window
-        // to finish before falling back permanently to static content.
         let attempts = 0;
-        const timer = setInterval(() => {
+        const timer = window.setInterval(() => {
             attempts += 1;
             if (clientReady()) {
-                clearInterval(timer);
+                window.clearInterval(timer);
                 loadRemoteContent();
             } else if (attempts >= 40) {
-                clearInterval(timer);
+                window.clearInterval(timer);
             }
         }, 250);
     }

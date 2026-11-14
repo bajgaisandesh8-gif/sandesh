@@ -1,0 +1,26 @@
+/* Optional portfolio-only command explorer. */
+.command-launcher { min-height: 40px; padding: 0 11px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: transparent; color: var(--text-secondary); font: 500 .56rem/1 "JetBrains Mono", monospace; letter-spacing: .035em; }
+.command-launcher:hover { border-color: var(--line-strong); color: var(--accent-strong); }
+.command-console[hidden] { display: none; }
+.command-console { position: fixed; inset: 0; z-index: 12000; display: grid; place-items: center; padding: 18px; }
+.command-console-backdrop { position: absolute; inset: 0; background: color-mix(in srgb, var(--text) 45%, transparent); }
+.command-console-panel { position: relative; display: flex; width: min(680px,100%); max-height: min(720px,calc(100vh - 36px)); flex-direction: column; overflow: hidden; border: 1px solid var(--line-strong); border-radius: var(--radius-lg); background: var(--bg-raised); box-shadow: var(--shadow-card); }
+.command-console-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 19px; border-bottom: 1px solid var(--line); }
+.command-console-brand { display: flex; align-items: center; gap: 9px; font: 600 .65rem/1.4 "JetBrains Mono", monospace; letter-spacing: .06em; }
+.command-console-indicator { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.command-console-close { width: 40px; height: 40px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: transparent; color: var(--text); font-size: 1.2rem; }
+.command-console-intro { padding: 13px 19px 4px; color: var(--text-secondary); font-size: .82rem; }
+.command-console-input-row { display: flex; align-items: center; gap: 10px; margin: 9px 19px 14px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); }
+.command-console-prompt { color: var(--accent); font-family: "JetBrains Mono", monospace; }
+.command-console-input { width: 100%; min-width: 0; padding: 12px 0; border: 0; outline: 0; background: transparent; font: .8rem "JetBrains Mono", monospace; }
+.command-console-suggestions { display: flex; flex-wrap: wrap; gap: 7px; padding: 0 19px 14px; }
+.command-console-suggestions button { min-height: 36px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 4px; background: transparent; color: var(--text-secondary); font: 500 .58rem/1 "JetBrains Mono", monospace; }
+.command-console-suggestions button:hover { border-color: var(--line-strong); color: var(--accent-strong); }
+.command-console-output { min-height: 150px; max-height: 300px; overflow: auto; padding: 16px 19px; border-top: 1px solid var(--line); color: var(--text-secondary); font: .74rem/1.8 "JetBrains Mono", monospace; }
+.command-console-output strong { display: block; margin-bottom: 5px; color: var(--accent); }
+.command-console-output p { margin: 0 0 9px; white-space: pre-line; }
+.command-console-output a { color: var(--accent-strong); text-decoration: underline; }
+.command-console-foot { padding: 10px 19px; border-top: 1px solid var(--line); color: var(--text-muted); font: 500 .54rem/1.4 "JetBrains Mono", monospace; letter-spacing: .035em; }
+.command-console-open { overflow: hidden; }
+@media (max-width: 700px) { .command-console { padding: 10px; } .command-console-panel { max-height: calc(100vh - 20px); } .command-console-output { min-height: 125px; max-height: 34vh; } }
+@media (prefers-reduced-motion: reduce) { .command-launcher { transition: none; } }

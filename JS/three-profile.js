@@ -52,11 +52,11 @@
            original image cannot be blown out by 3D lights.
         ------------------------------------------------- */
         scene.add(new THREE.AmbientLight(0xffffff, 0.65));
-        const keyLight = new THREE.PointLight(0x64f3b0, 4.5, 18);
+        const keyLight = new THREE.PointLight(0x55cfe2, 3.2, 18);
         keyLight.position.set(3, 4, 6);
         scene.add(keyLight);
 
-        const fillLight = new THREE.PointLight(0x54a8ff, 2.5, 16);
+        const fillLight = new THREE.PointLight(0x318da3, 1.4, 16);
         fillLight.position.set(-4, -2, 4);
         scene.add(fillLight);
 
@@ -79,7 +79,7 @@
         });
 
         const edgeMaterial = new THREE.MeshStandardMaterial({
-            color: 0x64f3b0,
+            color: 0x55cfe2,
             metalness: 0.9,
             roughness: 0.2,
             emissive: 0x123d2c,
@@ -114,7 +114,7 @@
         /* Thin floating frame around the 3D card. */
         const frameGeometry = new THREE.BoxGeometry(3.72, 4.62, 0.12);
         const frameMaterial = new THREE.MeshBasicMaterial({
-            color: 0x64f3b0,
+            color: 0x55cfe2,
             wireframe: true,
             transparent: true,
             opacity: 0.3
@@ -129,7 +129,7 @@
         function createRing(radius, tube, rotation, opacity) {
             const geometry = new THREE.TorusGeometry(radius, tube, 16, 96);
             const material = new THREE.MeshBasicMaterial({
-                color: 0x64f3b0,
+                color: 0x55cfe2,
                 transparent: true,
                 opacity,
                 wireframe: true
@@ -140,9 +140,9 @@
             return ring;
         }
 
-        const ringOne = createRing(3.0, 0.018, { x: Math.PI / 2.4, y: 0.25, z: 0 }, 0.28);
-        const ringTwo = createRing(3.3, 0.014, { x: Math.PI / 2.1, y: -0.35, z: 0.5 }, 0.18);
-        const ringThree = createRing(3.6, 0.01, { x: 1.1, y: 0.8, z: 0.2 }, 0.12);
+        const ringOne = createRing(3.0, 0.018, { x: Math.PI / 2.4, y: 0.25, z: 0 }, 0.18);
+        const ringTwo = createRing(3.3, 0.014, { x: Math.PI / 2.1, y: -0.35, z: 0.5 }, 0.1);
+        const ringThree = createRing(3.6, 0.01, { x: 1.1, y: 0.8, z: 0.2 }, 0.06);
 
         /* -------------------------------------------------
            Orbiting nodes
@@ -150,9 +150,9 @@
         const nodeGroup = new THREE.Group();
         group.add(nodeGroup);
         const nodeGeometry = new THREE.SphereGeometry(0.055, 8, 8);
-        const nodeMaterial = new THREE.MeshBasicMaterial({ color: 0x64f3b0, transparent: true, opacity: 0.85 });
+        const nodeMaterial = new THREE.MeshBasicMaterial({ color: 0x55cfe2, transparent: true, opacity: 0.7 });
         const nodes = [];
-        const nodeCount = 18;
+        const nodeCount = 12;
 
         for (let i = 0; i < nodeCount; i++) {
             const node = new THREE.Mesh(nodeGeometry, nodeMaterial);
@@ -167,14 +167,14 @@
         const orbitGeometry = new THREE.BufferGeometry();
         const orbitPositions = new Float32Array(nodeCount * 6);
         orbitGeometry.setAttribute("position", new THREE.BufferAttribute(orbitPositions, 3));
-        const orbitMaterial = new THREE.LineBasicMaterial({ color: 0x64f3b0, transparent: true, opacity: 0.16, depthWrite: false });
+        const orbitMaterial = new THREE.LineBasicMaterial({ color: 0x55cfe2, transparent: true, opacity: 0.11, depthWrite: false });
         const orbitLines = new THREE.LineSegments(orbitGeometry, orbitMaterial);
         group.add(orbitLines);
 
         /* -------------------------------------------------
            Particles
         ------------------------------------------------- */
-        const particleCount = window.innerWidth < 768 ? 70 : 140;
+        const particleCount = window.innerWidth < 768 ? 36 : 80;
         const particlePositions = new Float32Array(particleCount * 3);
         for (let i = 0; i < particleCount; i++) {
             const index = i * 3;
@@ -187,7 +187,7 @@
         const particleGeometry = new THREE.BufferGeometry();
         particleGeometry.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
         const particleMaterial = new THREE.PointsMaterial({
-            color: 0x64f3b0,
+            color: 0x55cfe2,
             size: 0.045,
             transparent: true,
             opacity: 0.5,
@@ -225,21 +225,19 @@
         resize();
         window.addEventListener("resize", resize);
 
-        const fallback = profileImage.closest(".profile-fallback");
-        if (fallback) fallback.style.opacity = "0";
-
-        let visible = true;
+        let visible = !("IntersectionObserver" in window);
         if ("IntersectionObserver" in window) {
             const observer = new IntersectionObserver(entries => {
                 visible = entries[0].isIntersecting;
+                syncAnimation();
             });
             observer.observe(container);
         }
 
-        let frameId;
+        let frameId = 0;
         function animate(time) {
-            frameId = requestAnimationFrame(animate);
-            if (!visible) return;
+            frameId = 0;
+            if (!visible || document.hidden) return;
 
             if (!reducedMotion) {
                 mouse.x += (mouse.targetX - mouse.x) * 0.06;
@@ -252,11 +250,11 @@
                 photoCard.rotation.z = Math.sin(time * 0.0008) * 0.012;
                 frame.rotation.z = photoCard.rotation.z;
 
-                ringOne.rotation.z += 0.0015;
-                ringTwo.rotation.x += 0.001;
-                ringTwo.rotation.z -= 0.0012;
-                ringThree.rotation.y += 0.0008;
-                particles.rotation.y = time * 0.00005;
+                ringOne.rotation.z += 0.0005;
+                ringTwo.rotation.x += 0.00035;
+                ringTwo.rotation.z -= 0.0004;
+                ringThree.rotation.y += 0.00025;
+                particles.rotation.y = time * 0.000025;
             }
 
             for (let i = 0; i < nodes.length; i++) {
@@ -284,9 +282,22 @@
             orbitGeometry.attributes.position.needsUpdate = true;
 
             renderer.render(scene, camera);
+
+            if (!reducedMotion) frameId = requestAnimationFrame(animate);
         }
 
-        animate(performance.now());
+        function syncAnimation() {
+            if (!visible || document.hidden) {
+                cancelAnimationFrame(frameId);
+                frameId = 0;
+                return;
+            }
+            if (reducedMotion) animate(performance.now());
+            else if (!frameId) frameId = requestAnimationFrame(animate);
+        }
+
+        document.addEventListener("visibilitychange", syncAnimation);
+        syncAnimation();
 
         window.addEventListener("beforeunload", function () {
             cancelAnimationFrame(frameId);

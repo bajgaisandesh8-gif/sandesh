@@ -82,7 +82,7 @@
                 return `
                     <article class="timeline-item reveal">
                         <span class="date">${escapeHTML(date)}</span>
-                        <h3>${escapeHTML(item.role)}</h3>
+                        <h3>${escapeHTML(item.company && item.company.includes("Soaltee Westend") && /intern/i.test(item.role || "") ? "IT Support & Networking Assistant (Contract)" : item.role)}</h3>
                         <p class="timeline-company">${escapeHTML(item.company)}${item.location ? ` · ${escapeHTML(item.location)}` : ""}</p>
                         <p>${escapeHTML(item.description)}</p>
                     </article>

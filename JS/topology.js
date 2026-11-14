@@ -77,5 +77,27 @@
     if (button && graph.contains(button)) selectNode(button.dataset.node);
   });
 
+  const deviceStatus = document.getElementById("deviceTopologyStatus");
+  const deviceDescriptions = {
+    router: "The router forwards traffic between this example local network and upstream networks.",
+    switch: "The switch connects wired devices within the local network and links the access point.",
+    server: "A server provides shared services or resources to devices on the network.",
+    clients: "Wired clients connect through switch ports, typically using Ethernet cabling.",
+    ap: "A wireless access point bridges wireless clients to the wired local network through the switch.",
+    wireless: "Wireless clients associate with an access point to reach permitted network services."
+  };
+  document.querySelectorAll("[data-device-node]").forEach((button) => {
+    const describe = () => {
+      if (!deviceStatus) return;
+      deviceStatus.textContent = button.getAttribute("data-description") || deviceDescriptions[button.getAttribute("data-device-node")] || "This device connects to other components in the illustrative network.";
+      document.querySelectorAll("[data-device-node]").forEach((node) => {
+        node.setAttribute("aria-pressed", String(node === button));
+      });
+    };
+    button.addEventListener("focus", describe);
+    button.addEventListener("click", describe);
+    button.addEventListener("pointerenter", describe);
+  });
+
   selectNode("networking");
 })();

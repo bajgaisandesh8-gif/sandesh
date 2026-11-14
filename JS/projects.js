@@ -4,11 +4,12 @@
 
   const portfolioData = {
     skills: [
-      { category: "networking", title: "Networking", description: "Practical understanding of networking, connectivity and infrastructure fundamentals.", tags: ["IPv4", "IPv6", "DHCP", "DNS", "Subnetting", "TCP/IP", "Wi-Fi"] },
-      { category: "infrastructure", title: "IT Infrastructure", description: "Hands-on exposure to switches, access points, servers, CCTV and IT hardware.", tags: ["Switches", "PoE", "STP", "Fiber", "CCTV", "NVR", "Printers"] },
+      { category: "networking", title: "Networking", stage: "FOUNDATIONS + PRACTICE", description: "Practical understanding of networking, connectivity and infrastructure fundamentals.", tags: ["IPv4", "IPv6", "DHCP", "DNS", "Subnetting", "TCP/IP", "Wi-Fi"] },
+      { category: "infrastructure", title: "IT Infrastructure", stage: "PRACTICAL EXPOSURE", description: "Hands-on exposure to switches, access points, servers, CCTV and IT hardware.", tags: ["Switches", "PoE", "STP", "Fiber", "CCTV", "NVR", "Printers"] },
       {
         category: "development",
         title: "Web Development",
+        stage: "BUILDING PROJECTS",
         description: "Building responsive websites while exploring frontend, backend, databases, CMS platforms and modern development tooling.",
         tags: [
           "HTML5", "CSS3", "JavaScript", "Responsive Design", "DOM APIs",
@@ -16,8 +17,8 @@
           "REST APIs", "Git", "GitHub", "VS Code", "Bootstrap", "WordPress"
         ]
       },
-      { category: "cybersecurity", title: "Cybersecurity", description: "Developing knowledge in cybersecurity, networking security and defensive concepts.", tags: ["Linux", "Networking Security", "System Security", "Threat Awareness", "Security Basics"] },
-      { category: "ai", title: "AI & Automation", description: "Using modern AI tools to improve development, design and productivity workflows.", tags: ["Generative AI", "Prompt Engineering", "AI Tools", "Automation"] }
+      { category: "cybersecurity", title: "Cybersecurity", stage: "CURRENTLY LEARNING", description: "Developing knowledge in cybersecurity, networking security and defensive concepts.", tags: ["Linux", "Networking Security", "System Security", "Threat Awareness", "Security Basics"] },
+      { category: "ai", title: "AI & Automation", stage: "ACTIVE USE", description: "Using modern AI tools to improve development, design and productivity workflows.", tags: ["Generative AI", "Prompt Engineering", "AI Tools", "Automation"] }
     ],
 
     experience: [{
@@ -44,6 +45,8 @@
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 
+  const projectSlug = item => item.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
   const reveal = container => {
     if (!container) return;
     container.querySelectorAll(".reveal").forEach((element, index) => {
@@ -59,7 +62,7 @@
     el.innerHTML = items.map((item, index) => `
       <article class="skill-card reveal" data-category="${esc(item.category)}">
         <span class="card-index">${String(index + 1).padStart(2, "0")}</span>
-        <div class="skill-card-header"><span class="skill-category">${esc(item.category)}</span></div>
+        <div class="skill-card-header"><span class="skill-category">${esc(item.category)}</span><span class="skill-stage">${esc(item.stage || "CURRENT FOCUS")}</span></div>
         <h3>${esc(item.title)}</h3>
         <p>${esc(item.description)}</p>
         <div class="skill-tags">${item.tags.map(tag => `<span>${esc(tag)}</span>`).join("")}</div>
@@ -87,16 +90,16 @@
     el.innerHTML = items.map((item, index) => {
       const originalIndex = portfolioData.projects.indexOf(item);
       return `
-        <article class="project-card project-card-pro reveal ${item.featured ? "is-featured" : ""}" data-project-index="${originalIndex}" tabindex="0" role="button" aria-label="Open details for ${esc(item.title)}">
+        <article class="project-card project-card-pro reveal ${item.featured ? "is-featured" : ""}" data-project-index="${originalIndex}">
           <div class="project-top"><span class="project-category">${esc(item.category)}</span><span class="project-status">${esc(item.status || "PROJECT")}</span></div>
           <div class="project-number">${String(index + 1).padStart(2, "0")}</div>
           <div class="project-icon" aria-hidden="true">⌁</div>
           <h3>${esc(item.title)}</h3><p>${esc(item.description)}</p>
           <div class="project-tech">${item.technologies.map(tag => `<span>${esc(tag)}</span>`).join("")}</div>
           <div class="project-actions">
-            <button type="button" class="project-details" data-project="${originalIndex}">VIEW DETAILS</button>
-            ${item.link && item.link !== "#" ? `<a class="project-link" href="${esc(item.link)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">LIVE ↗</a>` : ""}
-            ${item.github ? `<a class="project-link secondary" href="${esc(item.github)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">GITHUB ↗</a>` : ""}
+            <button type="button" class="project-details" data-project="${originalIndex}" aria-haspopup="dialog">VIEW DETAILS</button>
+            ${item.link && item.link !== "#" ? `<a class="project-link" href="${esc(item.link)}" target="_blank" rel="noopener noreferrer">LIVE ↗</a>` : ""}
+            ${item.github ? `<a class="project-link secondary" href="${esc(item.github)}" target="_blank" rel="noopener noreferrer">GITHUB ↗</a>` : ""}
           </div>
         </article>`;
     }).join("");
@@ -116,56 +119,84 @@
     reveal(el);
   }
 
-  function openProject(index) {
+  function openProject(index, options = {}) {
     const item = portfolioData.projects[index];
     if (!item) return;
     let modal = document.getElementById("projectModal");
+    const opener = document.activeElement;
     if (!modal) {
       modal = document.createElement("div");
       modal.id = "projectModal";
       modal.className = "project-modal";
       modal.innerHTML = `
         <div class="project-modal-backdrop" data-close-project></div>
-        <div class="project-modal-panel" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+        <div class="project-modal-panel" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle" aria-describedby="projectModalDescription" tabindex="-1">
           <button class="project-modal-close" type="button" data-close-project aria-label="Close project details">×</button>
-          <span class="modal-kicker">PROJECT // DETAIL</span>
+          <span class="modal-kicker">PROJECT // CASE STUDY</span>
           <div class="modal-category" id="projectModalCategory"></div>
           <h2 id="projectModalTitle"></h2><p id="projectModalDescription"></p>
-          <div class="modal-tech" id="projectModalTech"></div><div class="modal-actions" id="projectModalActions"></div>
+          <div class="case-study-sections" id="projectModalSections"></div>
+          <h3 class="case-study-stack-title">Technology</h3><div class="modal-tech" id="projectModalTech"></div><div class="modal-actions" id="projectModalActions"></div>
         </div>`;
       document.body.appendChild(modal);
-      modal.addEventListener("click", event => { if (event.target.matches("[data-close-project]")) closeProject(); });
-      document.addEventListener("keydown", event => { if (event.key === "Escape" && modal.classList.contains("open")) closeProject(); });
+      modal.addEventListener("keydown", event => {
+        if (!modal.classList.contains("open")) return;
+        if (event.key === "Escape") { event.preventDefault(); closeProject(); return; }
+        if (event.key !== "Tab") return;
+        const focusable = [...modal.querySelectorAll("button:not([disabled]),a[href]")];
+        if (!focusable.length) return;
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      });
+      modal.addEventListener("click", event => {
+        if (event.target.matches("[data-close-project]")) closeProject();
+      });
     }
+    modal._opener = options.fromHistory ? (modal._opener || null) : opener;
     modal.querySelector("#projectModalCategory").textContent = `${item.category} // ${item.status || "PROJECT"}`;
     modal.querySelector("#projectModalTitle").textContent = item.title;
     modal.querySelector("#projectModalDescription").textContent = item.description;
+    const documented = [
+      ["Problem and goals", "Not yet documented in the portfolio."],
+      ["Current status", item.status || "Not documented"],
+      ["Architecture and implementation", "Not yet documented in the portfolio."],
+      ["Challenges and lessons", "Not yet documented in the portfolio."]
+    ];
+    modal.querySelector("#projectModalSections").innerHTML = documented.map(([heading, body]) => `<section class="case-study-section"><h3>${esc(heading)}</h3><p>${esc(body)}</p></section>`).join("");
     modal.querySelector("#projectModalTech").innerHTML = item.technologies.map(tag => `<span>${esc(tag)}</span>`).join("");
     modal.querySelector("#projectModalActions").innerHTML = `${item.link && item.link !== "#" ? `<a class="btn btn-primary" href="${esc(item.link)}" target="_blank" rel="noopener noreferrer">OPEN LIVE ↗</a>` : ""}${item.github ? `<a class="btn btn-secondary" href="${esc(item.github)}" target="_blank" rel="noopener noreferrer">VIEW GITHUB ↗</a>` : ""}`;
     modal.classList.add("open");
     document.body.classList.add("project-modal-open");
+    if (!options.fromHistory) {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("project") !== projectSlug(item)) {
+        url.searchParams.set("project", projectSlug(item));
+        window.history.pushState({ project: projectSlug(item) }, "", url);
+      }
+    }
     modal.querySelector(".project-modal-close").focus();
   }
 
-  function closeProject() {
+  function closeProject(options = {}) {
     const modal = document.getElementById("projectModal");
     if (!modal) return;
+    const opener = modal._opener;
     modal.classList.remove("open");
     document.body.classList.remove("project-modal-open");
+    if (!options.fromHistory) {
+      const url = new URL(window.location.href);
+      if (url.searchParams.has("project")) {
+        url.searchParams.delete("project");
+        window.history.replaceState(window.history.state, "", url);
+      }
+    }
+    if (opener && typeof opener.focus === "function") opener.focus();
   }
 
   function bindProjectCards() {
-    document.querySelectorAll(".project-card-pro").forEach(card => {
-      const index = Number(card.dataset.projectIndex);
-      card.addEventListener("click", () => openProject(index));
-      card.addEventListener("keydown", event => {
-        if ((event.key === "Enter" || event.key === " ") && !event.target.closest("a,button")) {
-          event.preventDefault(); openProject(index);
-        }
-      });
-    });
     document.querySelectorAll(".project-details").forEach(button => button.addEventListener("click", event => {
-      event.stopPropagation(); openProject(Number(button.dataset.project));
+      openProject(Number(button.dataset.project));
     }));
   }
 
@@ -182,26 +213,19 @@
     }));
   }
 
-  function injectStyles() {
-    if (document.getElementById("project-engine-styles")) return;
-    const style = document.createElement("style");
-    style.id = "project-engine-styles";
-    style.textContent = `
-      #projectsGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-      .project-card-pro{position:relative;min-height:310px;padding:26px;overflow:hidden;cursor:pointer;transition:transform .35s ease,border-color .25s ease,box-shadow .35s ease;background:linear-gradient(145deg,#081219,#03080c);border:1px solid #172a32}
-      .project-card-pro:hover,.project-card-pro:focus-visible{transform:translateY(-8px);border-color:rgba(100,243,176,.55);box-shadow:0 28px 75px rgba(0,0,0,.42),0 0 35px rgba(100,243,176,.07);outline:none}
-      .project-top{display:flex;justify-content:space-between;gap:10px;position:relative;z-index:1}.project-category,.project-status,.modal-kicker{font:600 8px "JetBrains Mono",monospace;letter-spacing:.14em;color:#64f3b0}.project-status{color:#506a70}
-      .project-number{position:absolute;right:24px;top:62px;color:#263d44;font:700 48px "JetBrains Mono",monospace;opacity:.5}.project-icon{position:relative;margin-top:40px;width:48px;height:48px;display:grid;place-items:center;border:1px solid rgba(100,243,176,.25);color:#64f3b0;border-radius:8px;font-size:24px}.project-card-pro h3{position:relative;margin:18px 0 10px;font-size:1.35rem}.project-card-pro p{position:relative;color:#71858b;line-height:1.7}
-      .project-tech{position:relative;display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}.project-tech span,.modal-tech span{padding:6px 8px;border:1px solid #1a3037;background:#071014;color:#7d9695;font:500 8px "JetBrains Mono",monospace}
-      .project-actions{position:relative;display:flex;flex-wrap:wrap;gap:7px;margin-top:20px}.project-actions button,.project-actions a{min-height:36px;padding:8px 11px;border:1px solid #254039;background:#07120f;color:#64f3b0;text-decoration:none;font:700 8px "JetBrains Mono",monospace;letter-spacing:.08em;cursor:pointer}.project-actions .secondary{color:#789093;border-color:#203038}.project-actions button:hover,.project-actions a:hover{border-color:#64f3b0;background:#0a1b16}
-      .project-modal{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease}.project-modal.open{opacity:1;visibility:visible}.project-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(12px)}.project-modal-panel{position:relative;width:min(700px,100%);padding:34px;border:1px solid rgba(100,243,176,.3);background:linear-gradient(145deg,#071116,#03080b);box-shadow:0 35px 120px #000;transform:translateY(15px) scale(.98);transition:transform .25s ease}.project-modal.open .project-modal-panel{transform:none}.project-modal-close{position:absolute;right:15px;top:15px;width:38px;height:38px;border:1px solid #20353b;background:#071014;color:#8ca2a0;cursor:pointer;font-size:20px}.project-modal-close:hover{color:#64f3b0;border-color:#64f3b0}.modal-category{margin:15px 0 9px;color:#536d72;font:600 8px "JetBrains Mono",monospace;letter-spacing:.15em}.project-modal-panel h2{margin:0;font-size:clamp(2rem,5vw,3.5rem)}.project-modal-panel>p{margin:18px 0;color:#819398;line-height:1.8}.modal-tech{display:flex;flex-wrap:wrap;gap:6px}.modal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}.project-modal-open{overflow:hidden}.card-index{position:absolute;right:15px;top:13px;color:#33474c;font:600 8px "JetBrains Mono",monospace;letter-spacing:.12em}.cert-card{position:relative}.cert-status{position:absolute;right:15px;top:30px;color:#385258;font:600 7px "JetBrains Mono",monospace;letter-spacing:.12em}
-      @media(max-width:760px){#projectsGrid{grid-template-columns:1fr}.project-card-pro{min-height:280px;padding:21px}.project-modal-panel{padding:25px 20px}.project-actions{display:grid;grid-template-columns:1fr 1fr}.project-actions>*{width:100%}}@media(max-width:430px){.project-actions{grid-template-columns:1fr}.project-number{font-size:36px}}@media(prefers-reduced-motion:reduce){.project-card-pro,.project-modal,.project-modal-panel{transition:none!important}}
-    `;
-    document.head.appendChild(style);
-  }
-
   document.addEventListener("DOMContentLoaded", () => {
-    injectStyles(); renderSkills(); renderExperience(); renderProjects(); renderCertifications(); initializeFilters();
+    renderSkills(); renderExperience(); renderProjects(); renderCertifications(); initializeFilters();
+    const showLinkedProject = () => {
+      const slug = new URL(window.location.href).searchParams.get("project");
+      const index = portfolioData.projects.findIndex(item => projectSlug(item) === slug);
+      if (index >= 0 && !document.getElementById("projectModal")?.classList.contains("open")) openProject(index, { fromHistory: true });
+      else if (slug && index < 0) console.info("[Projects] The requested project detail is not available in this local dataset.");
+    };
+    showLinkedProject();
+    window.addEventListener("popstate", () => {
+      if (document.getElementById("projectModal")?.classList.contains("open")) closeProject({ fromHistory: true });
+      else showLinkedProject();
+    });
   }, { once: true });
 
   window.SandeshProjects = { data: portfolioData, openProject, closeProject, renderProjects, renderSkills };

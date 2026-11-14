@@ -1,30 +1,26 @@
-/* PORTFOLIO COMMAND INTERFACE — Phase 3 */
-.command-launcher{position:fixed;right:22px;bottom:22px;z-index:9000;display:inline-flex;align-items:center;gap:10px;padding:12px 15px;border:1px solid rgba(100,243,176,.42);border-radius:8px;background:rgba(5,13,15,.94);color:#64f3b0;box-shadow:0 12px 36px rgba(0,0,0,.38);font:700 .65rem "JetBrains Mono",monospace;letter-spacing:.1em;cursor:pointer;backdrop-filter:blur(12px);transition:transform .2s ease,border-color .2s ease,background .2s ease}
-.command-launcher:hover,.command-launcher:focus-visible{transform:translateY(-3px);border-color:#64f3b0;background:#091915;outline:2px solid rgba(100,243,176,.22);outline-offset:3px}
-.command-launcher kbd{padding:3px 5px;border:1px solid rgba(100,243,176,.25);border-radius:4px;color:#9bb8ad;font:inherit;font-size:.55rem}
-.command-console[hidden]{display:none}
-.command-console{position:fixed;inset:0;z-index:12000;display:grid;place-items:center;padding:18px}
-.command-console-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(10px)}
-.command-console-panel{position:relative;width:min(680px,100%);max-height:min(720px,calc(100vh - 36px));display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(100,243,176,.3);border-radius:12px;background:linear-gradient(145deg,#0a1519,#04090d);box-shadow:0 32px 110px rgba(0,0,0,.7)}
-.command-console-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px 20px;border-bottom:1px solid rgba(148,163,184,.13)}
-.command-console-brand{display:flex;align-items:center;gap:10px;color:#dcebe5;font:700 .72rem "JetBrains Mono",monospace;letter-spacing:.1em}
-.command-console-indicator{width:8px;height:8px;border-radius:50%;background:#64f3b0;box-shadow:0 0 12px rgba(100,243,176,.7)}
-.command-console-close{width:34px;height:34px;border:1px solid rgba(148,163,184,.2);border-radius:6px;background:#0b1418;color:#a9b9b8;font-size:20px;cursor:pointer}
-.command-console-close:hover{border-color:#64f3b0;color:#64f3b0}
-.command-console-intro{padding:16px 20px 8px;color:#81989a;font-size:.8rem;line-height:1.6}
-.command-console-input-row{display:flex;align-items:center;gap:10px;margin:8px 20px 14px;padding:0 13px;border:1px solid rgba(100,243,176,.32);border-radius:7px;background:rgba(2,8,11,.8)}
-.command-console-prompt{color:#64f3b0;font:700 .85rem "JetBrains Mono",monospace}
-.command-console-input{width:100%;min-width:0;padding:14px 0;border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;color:#e2eee9!important;font:500 .82rem "JetBrains Mono",monospace}
-.command-console-input::placeholder{color:#52686d}
-.command-console-suggestions{display:flex;flex-wrap:wrap;gap:7px;padding:0 20px 16px}
-.command-console-suggestions button{padding:7px 9px;border:1px solid rgba(148,163,184,.16);border-radius:5px;background:rgba(255,255,255,.025);color:#91aaa7;font:600 .58rem "JetBrains Mono",monospace;cursor:pointer}
-.command-console-suggestions button:hover,.command-console-suggestions button:focus-visible{border-color:rgba(100,243,176,.45);color:#64f3b0;outline:none}
-.command-console-output{min-height:170px;max-height:300px;overflow:auto;padding:17px 20px 20px;border-top:1px solid rgba(148,163,184,.1);background:rgba(1,5,8,.42);color:#9db0ae;font:.76rem/1.8 "JetBrains Mono",monospace}
-.command-console-output strong{display:block;margin-bottom:5px;color:#64f3b0;font-size:.68rem;letter-spacing:.08em}
-.command-console-output p{margin:0 0 9px;white-space:pre-line}
-.command-console-output a{color:#64f3b0;text-decoration:underline;text-underline-offset:3px}
-.command-console-foot{padding:11px 20px;border-top:1px solid rgba(148,163,184,.1);color:#52696d;font:500 .57rem "JetBrains Mono",monospace;letter-spacing:.04em}
-@media(max-width:600px){.command-launcher{right:14px;bottom:14px;padding:11px 12px}.command-console{padding:10px}.command-console-panel{max-height:calc(100vh - 20px)}.command-console-output{min-height:140px;max-height:34vh}}
-@media(prefers-reduced-motion:reduce){.command-launcher{transition:none}}
-
-.command-console-open{overflow:hidden}
+/* Optional portfolio-only command explorer. */
+.command-launcher { min-height: 40px; padding: 0 11px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: transparent; color: var(--text-secondary); font: 500 .56rem/1 "JetBrains Mono", monospace; letter-spacing: .035em; }
+.command-launcher:hover { border-color: var(--line-strong); color: var(--accent-strong); }
+.command-console[hidden] { display: none; }
+.command-console { position: fixed; inset: 0; z-index: 12000; display: grid; place-items: center; padding: 18px; }
+.command-console-backdrop { position: absolute; inset: 0; background: color-mix(in srgb, var(--text) 45%, transparent); }
+.command-console-panel { position: relative; display: flex; width: min(680px,100%); max-height: min(720px,calc(100vh - 36px)); flex-direction: column; overflow: hidden; border: 1px solid var(--line-strong); border-radius: var(--radius-lg); background: var(--bg-raised); box-shadow: var(--shadow-card); }
+.command-console-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 19px; border-bottom: 1px solid var(--line); }
+.command-console-brand { display: flex; align-items: center; gap: 9px; font: 600 .65rem/1.4 "JetBrains Mono", monospace; letter-spacing: .06em; }
+.command-console-indicator { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.command-console-close { width: 40px; height: 40px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: transparent; color: var(--text); font-size: 1.2rem; }
+.command-console-intro { padding: 13px 19px 4px; color: var(--text-secondary); font-size: .82rem; }
+.command-console-input-row { display: flex; align-items: center; gap: 10px; margin: 9px 19px 14px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); }
+.command-console-prompt { color: var(--accent); font-family: "JetBrains Mono", monospace; }
+.command-console-input { width: 100%; min-width: 0; padding: 12px 0; border: 0; outline: 0; background: transparent; font: .8rem "JetBrains Mono", monospace; }
+.command-console-suggestions { display: flex; flex-wrap: wrap; gap: 7px; padding: 0 19px 14px; }
+.command-console-suggestions button { min-height: 36px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 4px; background: transparent; color: var(--text-secondary); font: 500 .58rem/1 "JetBrains Mono", monospace; }
+.command-console-suggestions button:hover { border-color: var(--line-strong); color: var(--accent-strong); }
+.command-console-output { min-height: 150px; max-height: 300px; overflow: auto; padding: 16px 19px; border-top: 1px solid var(--line); color: var(--text-secondary); font: .74rem/1.8 "JetBrains Mono", monospace; }
+.command-console-output strong { display: block; margin-bottom: 5px; color: var(--accent); }
+.command-console-output p { margin: 0 0 9px; white-space: pre-line; }
+.command-console-output a { color: var(--accent-strong); text-decoration: underline; }
+.command-console-foot { padding: 10px 19px; border-top: 1px solid var(--line); color: var(--text-muted); font: 500 .54rem/1.4 "JetBrains Mono", monospace; letter-spacing: .035em; }
+.command-console-open { overflow: hidden; }
+@media (max-width: 700px) { .command-console { padding: 10px; } .command-console-panel { max-height: calc(100vh - 20px); } .command-console-output { min-height: 125px; max-height: 34vh; } }
+@media (prefers-reduced-motion: reduce) { .command-launcher { transition: none; } }

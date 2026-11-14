@@ -27,6 +27,16 @@
         return Boolean(window.supabaseClient);
     }
 
+    function safeContentURL(value) {
+        if (!value) return "";
+        try {
+            const url = new URL(value, window.location.href);
+            return url.protocol === "https:" || url.origin === window.location.origin ? url.href : "";
+        } catch (_) {
+            return "";
+        }
+    }
+
     async function fetchRows(table, columns, orderBy = []) {
         if (!clientReady()) return null;
 
@@ -52,9 +62,10 @@
 
     function renderExperience(rows) {
         const container = document.getElementById("timeline");
-        if (!container || !rows.length) return;
+        const completeRows = rows.filter((item) => item.role && item.description);
+        if (!container || !completeRows.length) return;
 
-        container.innerHTML = rows.map((item) => {
+        container.innerHTML = completeRows.map((item) => {
             const start = item.start_date || "";
             const end = item.end_date || "";
             const date = start ? (end ? `${start} — ${end}` : start) : "EXPERIENCE";
@@ -74,17 +85,30 @@
 
     function renderCertifications(rows) {
         const container = document.getElementById("certsGrid");
-        if (!container || !rows.length) return;
+        const completeRows = rows.filter((cert) => cert.title && String(cert.title).trim());
+        if (!container || !completeRows.length) return;
 
-        container.innerHTML = rows.map((cert) => `
+        container.innerHTML = completeRows.map((cert) => {
+            const imageURL = safeContentURL(cert.certificate_image);
+            const credentialURL = safeContentURL(cert.credential_url);
+            const issueDate = cert.issue_date && /^\d{4}-\d{2}-\d{2}$/.test(cert.issue_date)
+                ? `<p><time datetime="${escapeHTML(cert.issue_date)}">${escapeHTML(new Intl.DateTimeFormat(undefined, { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" }).format(new Date(`${cert.issue_date}T00:00:00Z`)))}</time></p>`
+                : "";
+            return `
             <article class="cert-card reveal">
-                ${cert.certificate_image ? `<img src="${escapeHTML(cert.certificate_image)}" alt="${escapeHTML(cert.title)}" loading="lazy" decoding="async">` : ""}
+                ${imageURL ? `<img src="${escapeHTML(imageURL)}" alt="${escapeHTML(cert.title)}" loading="lazy" decoding="async" width="600" height="360">` : ""}
                 <h3>${escapeHTML(cert.title)}</h3>
                 ${cert.issuer ? `<p>${escapeHTML(cert.issuer)}</p>` : ""}
-                <p>${escapeHTML(cert.description)}</p>
-                ${cert.credential_url ? `<a class="project-link" href="${escapeHTML(cert.credential_url)}" target="_blank" rel="noopener noreferrer">View Credential</a>` : ""}
+                ${issueDate}
+                ${cert.description ? `<p>${escapeHTML(cert.description)}</p>` : ""}
+                ${credentialURL ? `<a class="project-link" href="${escapeHTML(credentialURL)}" target="_blank" rel="noopener noreferrer">View Credential</a>` : ""}
             </article>
-        `).join("");
+        `;
+        }).join("");
+
+        container.querySelectorAll("img").forEach((image) => {
+            image.addEventListener("error", () => image.remove(), { once: true });
+        });
     }
 
     async function loadRemoteContent() {

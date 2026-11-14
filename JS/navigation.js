@@ -26,34 +26,57 @@
             return;
         }
 
-        function openMenu() {
-            navLinksContainer.classList.add("open");
-            navToggle.classList.add("active");
-            navToggle.setAttribute("aria-expanded", "true");
-            navToggle.setAttribute("aria-label", "Close menu");
-            document.body.classList.add("menu-open");
+        let liveRegion = document.getElementById("a11yLive");
+        if (!liveRegion) {
+            liveRegion = document.createElement("div");
+            liveRegion.id = "a11yLive";
+            liveRegion.className = "a11y-live";
+            liveRegion.setAttribute("aria-live", "polite");
+            liveRegion.setAttribute("aria-atomic", "true");
+            document.body.appendChild(liveRegion);
         }
 
-        function closeMenu() {
-            navLinksContainer.classList.remove("open");
-            navToggle.classList.remove("active");
-            navToggle.setAttribute("aria-expanded", "false");
-            navToggle.setAttribute("aria-label", "Open menu");
-            document.body.classList.remove("menu-open");
+        function announceMenuState(message) {
+            liveRegion.textContent = "";
+            window.requestAnimationFrame(function () {
+                liveRegion.textContent = message;
+            });
+        }
+
+        function setMenuOpen(open, options) {
+            const shouldOpen = Boolean(open);
+            const wasOpen = navLinksContainer.classList.contains("open");
+            navLinksContainer.classList.toggle("open", shouldOpen);
+            navToggle.classList.toggle("active", shouldOpen);
+            navToggle.setAttribute("aria-expanded", String(shouldOpen));
+            navToggle.setAttribute("aria-label", shouldOpen ? "Close menu" : "Open menu");
+            navToggle.textContent = shouldOpen ? "×" : "☰";
+            document.body.classList.toggle("menu-open", shouldOpen);
+
+            if (wasOpen !== shouldOpen) {
+                announceMenuState(shouldOpen ? "Navigation menu opened" : "Navigation menu closed");
+            }
+
+            if (shouldOpen && !wasOpen && options?.focusFirst) {
+                navLinksContainer.querySelector("a")?.focus();
+            } else if (!shouldOpen && wasOpen && options?.restoreFocus) {
+                navToggle.focus();
+            }
+        }
+
+        function closeMenu(options) {
+            setMenuOpen(false, options);
         }
 
         navToggle.addEventListener("click", function (event) {
             event.stopPropagation();
-
-            if (navLinksContainer.classList.contains("open")) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
+            setMenuOpen(!navLinksContainer.classList.contains("open"), { focusFirst: true });
         });
 
         navLinks.forEach(function (link) {
-            link.addEventListener("click", closeMenu);
+            link.addEventListener("click", function () {
+                closeMenu({ restoreFocus: true });
+            });
         });
 
         document.addEventListener("click", function (event) {
@@ -63,8 +86,32 @@
         });
 
         document.addEventListener("keydown", function (event) {
+            if (!navLinksContainer.classList.contains("open")) return;
+
             if (event.key === "Escape") {
-                closeMenu();
+                closeMenu({ restoreFocus: true });
+                return;
+            }
+
+            const links = Array.from(navLinksContainer.querySelectorAll("a[href]"));
+            const currentIndex = links.indexOf(document.activeElement);
+            if (!links.length || currentIndex < 0) return;
+
+            let nextIndex;
+            if (event.key === "ArrowDown") nextIndex = (currentIndex + 1) % links.length;
+            else if (event.key === "ArrowUp") nextIndex = (currentIndex - 1 + links.length) % links.length;
+            else if (event.key === "Home") nextIndex = 0;
+            else if (event.key === "End") nextIndex = links.length - 1;
+            else return;
+
+            event.preventDefault();
+            links[nextIndex].focus();
+        });
+
+        navLinksContainer.addEventListener("keydown", function (event) {
+            if (event.key === "Tab" && event.shiftKey && document.activeElement === navLinksContainer.querySelector("a[href]")) {
+                event.preventDefault();
+                navToggle.focus();
             }
         });
 
@@ -133,7 +180,7 @@
         window.addEventListener("scroll", handleScroll, { passive: true });
 
         window.addEventListener("resize", function () {
-            if (window.innerWidth > 900) closeMenu();
+            if (window.innerWidth > 1080) closeMenu();
             updateActiveSection();
             updateScrollProgress();
         });
@@ -141,6 +188,8 @@
         updateActiveSection();
         updateScrollProgress();
         updateNavbarState();
+
+        document.documentElement.classList.add("js-navigation");
 
         console.log(
             "%c[NAVIGATION]%c initialized.",

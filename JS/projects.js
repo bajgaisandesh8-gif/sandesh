@@ -21,23 +21,22 @@
     ],
 
     experience: [{
-      date: "INTERNSHIP",
-      title: "IT & Network Intern",
+      date: "CONTRACT EXPERIENCE · 2026",
+      title: "IT Support & Networking Assistant (Contract)",
       company: "Soaltee Westend Itahari",
-      description: "Worked with hotel IT infrastructure including networking, Wi-Fi, access points, switches, CCTV, NVR, printers, projectors, POS systems and general technical support."
+      description: "Supported day-to-day hotel IT and network operations, with practical exposure to access points, switches, structured cabling, CCTV/NVR systems, connected devices and technical troubleshooting."
     }],
 
     projects: [
-      { category: "WEB", title: "Developer Portfolio", description: "A handcrafted developer and cybersecurity portfolio built with HTML5, CSS3 and Vanilla JavaScript.", technologies: ["HTML5", "CSS3", "JavaScript", "Three.js"], link: "https://bajgaisandesh8-gif.github.io/sandesh/", github: "https://github.com/bajgaisandesh8-gif/sandesh", status: "LIVE", featured: true },
-      { category: "NETWORKING", title: "Hotel Network QA", description: "Practical quality-assurance work involving access points, Wi-Fi, TVs and network-related infrastructure checks.", technologies: ["Networking", "Wi-Fi", "AP", "QA"], link: "#", status: "FIELD WORK" },
-      { category: "IT", title: "IT Infrastructure Practice", description: "Hands-on experience with Ethernet, RJ45 termination, switches, fiber, projectors, printers and CCTV infrastructure.", technologies: ["Ethernet", "RJ45", "Switching", "Fiber", "CCTV"], link: "#", status: "PRACTICAL" },
-      { category: "AI", title: "AI-Assisted Workflow", description: "Exploring AI tools for development, design, content creation and productivity.", technologies: ["AI", "Automation", "Prompting"], link: "#", status: "EXPLORING" }
+      { category: "WEB", title: "Developer Portfolio", description: "A handcrafted personal portfolio built with HTML, CSS, Vanilla JavaScript and Three.js, with a Supabase-powered content layer.", technologies: ["HTML5", "CSS3", "JavaScript", "Three.js", "Supabase"], link: "https://bajgaisandesh8-gif.github.io/sandesh/", github: "https://github.com/bajgaisandesh8-gif/sandesh", status: "LIVE", featured: true },
+      { category: "NETWORKING", title: "NETSCOPE", description: "A networking-focused project using a React frontend, Flask backend and Supabase, with network discovery capabilities under development.", technologies: ["React", "Flask", "Python", "Supabase", "Nmap"], github: "https://github.com/bajgaisandesh8-gif/NETSCOPE", status: "IN DEVELOPMENT" },
+      { category: "NETWORKING", title: "NETLAB", description: "A planned networking learning and simulation platform for students and teachers. The project is currently at the specification and planning stage.", technologies: ["Next.js", "Flask", "Supabase", "Networking Labs"], status: "SPECIFICATION" }
     ],
 
     certifications: [
-      { title: "Networking Fundamentals", description: "Networking concepts including IP addressing, subnetting, DHCP, DNS and connectivity." },
-      { title: "Web Development", description: "Practical development using HTML, CSS and JavaScript, with ongoing exploration of backend, databases, CMS platforms and development tools." },
-      { title: "IT Infrastructure", description: "Hands-on exposure to hardware, network infrastructure and technical support." }
+      { title: "Networking Fundamentals", description: "Ongoing study of IP addressing, subnetting, DHCP, DNS, TCP/IP and connectivity concepts. This is a learning area, not a formal certification." },
+      { title: "Web Development", description: "Building with HTML, CSS and JavaScript while learning backend development, databases, APIs and development workflows." },
+      { title: "IT Infrastructure", description: "Continuing to build practical knowledge of hardware, switching, wireless access points, structured cabling and technical support." }
     ]
   };
 
@@ -111,7 +110,7 @@
     el.innerHTML = portfolioData.certifications.map((item, index) => `
       <article class="cert-card reveal">
         <span class="card-index">${String(index + 1).padStart(2, "0")}</span>
-        <span class="cert-status">CREDENTIAL</span>
+        <span class="cert-status">LEARNING AREA</span>
         <h3>${esc(item.title)}</h3><p>${esc(item.description)}</p>
       </article>`).join("");
     reveal(el);

@@ -1,0 +1,45 @@
+/* =========================================================
+   CAPABILITY TOPOLOGY — Phase 1
+   Reuses the existing graphite / green visual system.
+========================================================= */
+.topology-section{position:relative;isolation:isolate}
+.topology-intro{max-width:690px;margin-top:18px;color:var(--text-secondary);line-height:1.75}
+.topology-shell{overflow:hidden;border:1px solid rgba(100,243,176,.16);border-radius:18px;background:linear-gradient(145deg,rgba(10,18,24,.96),rgba(4,9,13,.98));box-shadow:0 28px 80px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.025)}
+.topology-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid rgba(148,163,184,.1);color:#83a49b;font:600 .62rem/1.4 "JetBrains Mono",monospace;letter-spacing:.12em}
+.topology-live-dot{display:inline-block;width:7px;height:7px;margin-right:9px;border-radius:50%;background:#64f3b0;box-shadow:0 0 12px rgba(100,243,176,.7)}
+.topology-hint{color:#627780;font-size:.56rem}
+.topology-graph{position:relative;min-height:460px;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,rgba(100,243,176,.055),transparent 42%),linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:auto,32px 32px,32px 32px}
+.topology-connections{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.topology-connections path{fill:none;stroke:url(#topologyLine);stroke-width:1.4;stroke-dasharray:5 8}
+.topology-connections circle{fill:none;stroke:rgba(100,243,176,.09);stroke-width:1;stroke-dasharray:2 8}
+.topology-center{position:absolute;left:50%;top:50%;z-index:2;display:flex;width:150px;height:150px;transform:translate(-50%,-50%);flex-direction:column;align-items:center;justify-content:center;gap:7px;border:1px solid rgba(100,243,176,.42);border-radius:50%;background:radial-gradient(circle,rgba(16,38,35,.98),rgba(5,13,16,.98) 72%);box-shadow:0 0 0 10px rgba(100,243,176,.025),0 0 55px rgba(100,243,176,.12)}
+.topology-center-mark{display:grid;width:42px;height:42px;place-items:center;border:1px solid rgba(100,243,176,.38);border-radius:12px;color:#64f3b0;font:700 1rem "JetBrains Mono",monospace}
+.topology-center strong{color:#e5f5ee;font:700 .76rem "JetBrains Mono",monospace;letter-spacing:.12em}
+.topology-center small{color:#71928a;font:500 .48rem "JetBrains Mono",monospace;letter-spacing:.1em}
+.topology-node{position:absolute;z-index:3;display:flex;min-width:174px;min-height:76px;padding:12px 14px;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;border:1px solid rgba(133,163,164,.18);border-radius:10px;background:rgba(7,16,21,.94);color:#d6e6e1;text-align:left;cursor:pointer;box-shadow:0 12px 28px rgba(0,0,0,.2);transition:border-color .2s ease,background .2s ease,box-shadow .2s ease,transform .2s ease}
+.topology-node:hover,.topology-node:focus-visible,.topology-node.is-active{border-color:rgba(100,243,176,.58);background:rgba(9,27,25,.98);box-shadow:0 0 0 3px rgba(100,243,176,.06),0 16px 38px rgba(0,0,0,.3);outline:none}
+.topology-node:hover{transform:translateY(-2px)}
+.topology-node strong{font:700 .62rem "JetBrains Mono",monospace;letter-spacing:.075em}
+.topology-node small{color:#7e9696;font-size:.64rem;line-height:1.35}
+.node-icon{color:#64f3b0;font:700 1rem "JetBrains Mono",monospace}
+.node-network{left:8%;top:12%}.node-security{left:calc(50% - 87px);top:3%}.node-development{right:8%;top:12%}.node-field{left:8%;bottom:12%}.node-projects{left:calc(50% - 87px);bottom:3%}.node-learning{right:8%;bottom:12%}
+.topology-detail{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:24px 26px;border-top:1px solid rgba(148,163,184,.1);background:rgba(3,9,13,.62)}
+.topology-detail-copy{max-width:720px}.topology-detail-kicker{color:#64f3b0;font:600 .58rem "JetBrains Mono",monospace;letter-spacing:.12em}
+.topology-detail h3{margin-top:9px;color:#e4eee9;font-size:1.18rem;letter-spacing:-.025em}
+.topology-detail p{margin-top:8px;color:#8da1a4;font-size:.84rem;line-height:1.7}
+.topology-detail-link{flex:0 0 auto;display:inline-flex;align-items:center;gap:10px;padding:11px 13px;border:1px solid rgba(100,243,176,.24);border-radius:6px;color:#64f3b0;text-decoration:none;font:700 .58rem "JetBrains Mono",monospace;letter-spacing:.08em;transition:background .2s ease,border-color .2s ease}
+.topology-detail-link:hover{border-color:#64f3b0;background:rgba(100,243,176,.06)}
+.topology-footnote{padding:0 26px 18px;color:#60767b;font-size:.66rem;line-height:1.6}
+@media(max-width:760px){
+ .topology-graph{display:grid;min-height:0;padding:24px 16px;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .topology-connections{display:none}
+ .topology-center{position:relative;left:auto;top:auto;grid-column:1/-1;width:112px;height:112px;margin:0 auto 10px;transform:none}
+ .topology-center-mark{width:34px;height:34px}
+ .topology-node{position:static;min-width:0;min-height:92px;width:100%;padding:12px}
+ .topology-node strong{font-size:.57rem}
+ .topology-node small{font-size:.61rem}
+ .topology-detail{align-items:flex-start;flex-direction:column;padding:20px}
+ .topology-footnote{padding:0 20px 18px}
+}
+@media(max-width:380px){.topology-graph{padding:18px 10px;gap:9px}.topology-node{padding:10px;min-height:88px}.topology-node strong{font-size:.52rem}.topology-node small{font-size:.57rem}.topology-toolbar{padding:13px}.topology-hint{font-size:.48rem}}
+@media(prefers-reduced-motion:reduce){.topology-node,.topology-detail-link{transition:none}}

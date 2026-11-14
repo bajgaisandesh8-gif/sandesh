@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="CSS/style.css">
 <link rel="stylesheet" href="CSS/responsive.css">
 <link rel="stylesheet" href="CSS/animations.css">
+<link rel="stylesheet" href="CSS/topology.css">
 <meta name="google-site-verification" content="ijjj6JN9LufXcQA5lamscGn9NdmsHHmF3GbeOpE4vKI" />
 </head>
 <body>
@@ -24,6 +25,7 @@
 <a href="#home" class="nav-logo" aria-label="Sandesh Bajgai home"><span class="logo-bracket">&lt;</span>SB<span class="logo-bracket">/&gt;</span></a>
 <nav class="nav-links" id="navLinks" aria-label="Primary navigation">
 <a class="nav-link active" data-section="home" href="#home">HOME</a>
+<a class="nav-link" data-section="topology" href="#topology">MAP</a>
 <a class="nav-link" data-section="about" href="#about">ABOUT</a>
 <a class="nav-link" data-section="skills" href="#skills">SKILLS</a>
 <a class="nav-link" data-section="experience" href="#experience">EXPERIENCE</a>
@@ -51,6 +53,37 @@
 </div>
 <div class="scroll-cue" aria-hidden="true"><span></span>SCROLL</div>
 </section>
+<section class="section topology-section" id="topology" aria-labelledby="topologyTitle">
+<div class="section-inner">
+  <div class="section-head reveal">
+    <span class="section-tag">01 — CAPABILITY TOPOLOGY</span>
+    <h2 class="section-title" id="topologyTitle">Explore My Technical Map</h2>
+    <p class="topology-intro">A connected view of the areas I'm learning, building in, and gaining practical experience with. Select a node to explore its context.</p>
+  </div>
+  <div class="topology-shell reveal">
+    <div class="topology-toolbar"><span><i class="topology-live-dot" aria-hidden="true"></i> PERSONAL CAPABILITY MAP</span><span class="topology-hint">SELECT A NODE TO INSPECT</span></div>
+    <div class="topology-graph" id="capabilityTopology">
+      <svg class="topology-connections" viewBox="0 0 800 460" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="topologyLine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#64f3b0" stop-opacity=".08"/><stop offset=".5" stop-color="#64f3b0" stop-opacity=".65"/><stop offset="1" stop-color="#54a8ff" stop-opacity=".12"/></linearGradient></defs>
+        <path d="M400 230 L155 92 M400 230 L400 62 M400 230 L645 92 M400 230 L155 368 M400 230 L400 398 M400 230 L645 368" />
+        <circle cx="400" cy="230" r="130" />
+      </svg>
+      <div class="topology-center"><span class="topology-center-mark">SB</span><strong>SANDESH</strong><small>TECHNOLOGY EXPLORER</small></div>
+      <button class="topology-node node-network is-active" type="button" data-node="networking" aria-pressed="true"><span class="node-icon" aria-hidden="true">⌘</span><strong>NETWORKING</strong><small>Infrastructure · TCP/IP</small></button>
+      <button class="topology-node node-security" type="button" data-node="cybersecurity" aria-pressed="false"><span class="node-icon" aria-hidden="true">⌁</span><strong>CYBERSECURITY</strong><small>Linux · Security basics</small></button>
+      <button class="topology-node node-development" type="button" data-node="development" aria-pressed="false"><span class="node-icon" aria-hidden="true">{ }</span><strong>DEVELOPMENT</strong><small>Web · Backend · APIs</small></button>
+      <button class="topology-node node-field" type="button" data-node="field" aria-pressed="false"><span class="node-icon" aria-hidden="true">▤</span><strong>FIELD EXPERIENCE</strong><small>IT support · Cabling</small></button>
+      <button class="topology-node node-projects" type="button" data-node="projects" aria-pressed="false"><span class="node-icon" aria-hidden="true">◈</span><strong>PROJECTS</strong><small>NETLAB · NETSCOPE</small></button>
+      <button class="topology-node node-learning" type="button" data-node="learning" aria-pressed="false"><span class="node-icon" aria-hidden="true">⌖</span><strong>LEARNING</strong><small>Grade 12 · Self-study</small></button>
+    </div>
+    <div class="topology-detail" id="topologyDetail" aria-live="polite" aria-atomic="true">
+      <div class="topology-detail-copy"><span class="topology-detail-kicker">NODE 01 / NETWORKING</span><h3>Networking &amp; Infrastructure</h3><p>Exploring how devices, services and networks connect — supported by practical exposure to switching, wireless access points, structured cabling and network troubleshooting.</p></div>
+      <a class="topology-detail-link" href="#skills">EXPLORE SKILLS <span aria-hidden="true">↗</span></a>
+    </div>
+    <p class="topology-footnote">This map represents learning areas and documented work — it is not a live network monitor or a claim of professional certification.</p>
+  </div>
+</div>
+</section>
 <section class="section" id="about"><div class="section-inner"><div class="section-head reveal"><span class="section-tag">01 — ABOUT</span><h2 class="section-title">Who I Am</h2></div><div class="about-grid"><div class="about-copy reveal-left"><p class="about-lead">Passionate about networking, AI, cybersecurity, and modern software development, I continuously learn, build, and innovate to create impactful technology solutions.</p><p class="about-body">I'm early in my journey across technology's most interesting intersections — from wiring server rooms to writing code to studying how systems get attacked and defended. I don't claim to be an expert in everything I touch; I'm building real, honest skill one project and one internship at a time.</p><div class="values-row"><span class="value-chip">Analytical</span><span class="value-chip">Reliable</span><span class="value-chip">Ambitious</span></div></div><div class="about-panel reveal-right"><h3 class="panel-title">EXPERTISE LEVELS</h3><p class="panel-sub">Honest self-assessment — not inflated for effect.</p><div class="level-row"><div class="level-head"><span>Networking &amp; IT Infrastructure</span><span class="level-tag">Practical Experience</span></div><div class="level-bar"><div class="level-fill" style="--fill:78%"></div></div></div><div class="level-row"><div class="level-head"><span>Cybersecurity Fundamentals</span><span class="level-tag">Working Knowledge</span></div><div class="level-bar"><div class="level-fill" style="--fill:55%"></div></div></div><div class="level-row"><div class="level-head"><span>Software Development</span><span class="level-tag">Working Knowledge</span></div><div class="level-bar"><div class="level-fill" style="--fill:60%"></div></div></div><div class="level-row"><div class="level-head"><span>AI &amp; AI-Assisted Development</span><span class="level-tag">Learning</span></div><div class="level-bar"><div class="level-fill" style="--fill:40%"></div></div></div></div></div></div></section>
 <section class="section section-alt" id="skills"><div class="section-inner"><div class="section-head reveal"><span class="section-tag">02 — SKILLS</span><h2 class="section-title">Technical Toolkit</h2></div><div class="skills-filter" id="skillsFilter" role="tablist" aria-label="Filter skills"><button class="filter-btn active" type="button" data-category="all" aria-selected="true">ALL</button><button class="filter-btn" type="button" data-category="networking" aria-selected="false">NETWORKING</button><button class="filter-btn" type="button" data-category="infrastructure" aria-selected="false">INFRASTRUCTURE</button><button class="filter-btn" type="button" data-category="development" aria-selected="false">DEVELOPMENT</button><button class="filter-btn" type="button" data-category="cybersecurity" aria-selected="false">CYBERSECURITY</button><button class="filter-btn" type="button" data-category="ai" aria-selected="false">AI</button></div><div class="skills-grid stagger" id="skillsGrid"></div></div></section>
 <section class="section" id="experience"><div class="section-inner"><div class="section-head reveal"><span class="section-tag">03 — EXPERIENCE</span><h2 class="section-title">Where I've Worked</h2></div><div class="timeline" id="timeline"></div><div class="section-head reveal" style="margin-top:80px;margin-bottom:30px;"><span class="section-tag">FIELD NOTES</span><h2 class="section-title" style="font-size:clamp(1.8rem,4vw,3rem);">Networking in Practice</h2></div><div class="projects-grid network-gallery"><article class="project-card reveal"><img src="ASSETS/IMAGES/AP.jpg" alt="Enterprise wireless access point" loading="lazy" decoding="async"><div class="project-meta">01 / WIRELESS</div><h3>Enterprise Access Point</h3><p>Practical exposure to wireless infrastructure and access-point deployment.</p></article><article class="project-card reveal"><img src="ASSETS/IMAGES/ap-2.jpg" alt="Wireless access point" loading="lazy" decoding="async"><div class="project-meta">02 / NETWORK</div><h3>Wireless Infrastructure</h3><p>Hands-on exposure to access points and hotel Wi-Fi infrastructure.</p></article><article class="project-card reveal"><img src="ASSETS/IMAGES/rack.jpg" alt="Server rack infrastructure" loading="lazy" decoding="async"><div class="project-meta">03 / SERVER</div><h3>Server Infrastructure</h3><p>Exposure to rack-mounted equipment and structured IT infrastructure.</p></article><article class="project-card reveal"><img src="ASSETS/IMAGES/switchrack.jpg" alt="Network switch rack" loading="lazy" decoding="async"><div class="project-meta">04 / SWITCHING</div><h3>Network Switching</h3><p>Practical exposure to switches, rack infrastructure and connectivity.</p></article><article class="project-card reveal"><img src="ASSETS/IMAGES/camera-nvr.jpg" alt="Camera and NVR equipment" loading="lazy" decoding="async"><div class="project-meta">05 / CCTV</div><h3>Camera &amp; NVR</h3><p>Hands-on exposure to CCTV infrastructure, network video recording and surveillance systems.</p></article><article class="project-card reveal"><img src="ASSETS/IMAGES/optical fiber.jpg" alt="Optical fiber infrastructure" loading="lazy" decoding="async"><div class="project-meta">06 / FIBER</div><h3>Optical Fiber</h3><p>Practical exposure to fiber infrastructure used for high-speed network connectivity.</p></article><article class="project-card reveal"><img src="ASSETS/IMAGES/8-port-switch.jpg" alt="8-port network switch" loading="lazy" decoding="async"><div class="project-meta">07 / SWITCHING</div><h3>8-Port Switch</h3><p>Hands-on exposure to network switching hardware and structured connectivity.</p></article></div></div></section>
@@ -77,6 +110,7 @@
 <script src="JS/projects.js"></script>
 <script src="JS/contact.js"></script>
 <script src="JS/animations.js"></script>
+<script src="JS/topology.js"></script>
 <script src="JS/entry-experience.js"></script>
 <script src="JS/ui-upgrade-v3.js"></script>
 <script src="JS/app.js"></script>

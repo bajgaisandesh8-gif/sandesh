@@ -2,11 +2,11 @@
    SANDESH BAJGAI PORTFOLIO
    supabase-content.js
    ---------------------------------------------------------
-   Optional remote portfolio content loader.
+   Optional remote content loader.
 
-   The static project engine owns project-card rendering and
-   interactions. Remote project rows are intentionally not
-   allowed to replace that grid with a partial database subset.
+   The static project engine owns skills filtering and project
+   cards/interactions. Remote data must not replace those
+   client-side views with a partial or incompatible dataset.
 ========================================================= */
 
 (function () {
@@ -50,28 +50,14 @@
         }
     }
 
-    function renderSkills(rows) {
-        const container = document.getElementById("skillsGrid");
-        if (!container || !rows.length) return;
-
-        container.innerHTML = rows.map((skill) => `
-            <article class="skill-card reveal" data-category="${escapeHTML(skill.category)}">
-                <div class="skill-card-header"><span class="skill-category">${escapeHTML(skill.category)}</span></div>
-                <h3>${escapeHTML(skill.name || skill.title)}</h3>
-                <p>${escapeHTML(skill.description)}</p>
-                <div class="skill-tags">${skill.level ? `<span>${escapeHTML(skill.level)}</span>` : ""}</div>
-            </article>
-        `).join("");
-    }
-
     function renderExperience(rows) {
         const container = document.getElementById("timeline");
         if (!container || !rows.length) return;
 
         container.innerHTML = rows.map((item) => {
             const start = item.start_date || "";
-            const end = item.end_date || "Present";
-            const date = start ? `${start} — ${end}` : "EXPERIENCE";
+            const end = item.end_date || "";
+            const date = start ? (end ? `${start} — ${end}` : start) : "EXPERIENCE";
             const role = item.company && item.company.includes("Soaltee Westend") && /intern/i.test(item.role || "")
                 ? "IT Support & Networking Assistant (Contract)"
                 : item.role;
@@ -104,12 +90,7 @@
     async function loadRemoteContent() {
         if (!clientReady()) return;
 
-        const [skills, experience, certifications] = await Promise.all([
-            fetchRows(
-                "skills",
-                "id,name,category,description,level,featured,sort_order",
-                [{ column: "category" }, { column: "sort_order" }]
-            ),
+        const [experience, certifications] = await Promise.all([
             fetchRows(
                 "experience",
                 "id,role,company,location,start_date,end_date,description,featured,sort_order",
@@ -122,14 +103,13 @@
             )
         ]);
 
-        if (skills?.length) renderSkills(skills);
         if (experience?.length) renderExperience(experience);
         if (certifications?.length) renderCertifications(certifications);
 
-        if (skills?.length || experience?.length || certifications?.length) {
-            console.log("[Supabase] Ordered remote portfolio content loaded. Static project cards remain authoritative.");
+        if (experience?.length || certifications?.length) {
+            console.log("[Supabase] Ordered remote experience and learning content loaded. Static skills and project views remain active.");
         } else {
-            console.info("[Supabase] No remote portfolio rows found. Static content remains active.");
+            console.info("[Supabase] No remote rows found. Static content remains active.");
         }
     }
 

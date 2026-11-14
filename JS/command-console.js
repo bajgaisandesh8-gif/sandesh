@@ -60,7 +60,7 @@
   dialog.addEventListener("click", event => {
     if (event.target.matches("[data-close-command]")) closeConsole();
   });
-  input.addEventListener("keydown", event => {
+  dialog.addEventListener("keydown", event => {\n    if (event.key !== "Tab") return;\n    const focusable = Array.from(dialog.querySelectorAll("button:not([disabled]), input:not([disabled]), a[href]")).filter(el => el.offsetParent !== null);\n    if (!focusable.length) return;\n    const first = focusable[0];\n    const last = focusable[focusable.length - 1];\n    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }\n    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }\n  });\n  input.addEventListener("keydown", event => {
     if (event.key === "Enter") { event.preventDefault(); runCommand(input.value); }
     if (event.key === "Escape") { event.preventDefault(); closeConsole(); }
   });

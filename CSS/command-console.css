@@ -26,3 +26,5 @@
 .command-console-foot{padding:11px 20px;border-top:1px solid rgba(148,163,184,.1);color:#52696d;font:500 .57rem "JetBrains Mono",monospace;letter-spacing:.04em}
 @media(max-width:600px){.command-launcher{right:14px;bottom:14px;padding:11px 12px}.command-console{padding:10px}.command-console-panel{max-height:calc(100vh - 20px)}.command-console-output{min-height:140px;max-height:34vh}}
 @media(prefers-reduced-motion:reduce){.command-launcher{transition:none}}
+
+.command-console-open{overflow:hidden}
